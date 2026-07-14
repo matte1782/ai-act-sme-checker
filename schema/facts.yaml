@@ -1,0 +1,22 @@
+# L3 facts schema - Gate 2 SYNTHETIC facts only (no legal content).
+# Real questionnaire facts arrive with the corpus at Gate 3.
+facts:
+  - name: f_true
+    type: bool
+    i18n: {it: "fatto vero (sintetico)", en: "true fact (synthetic)"}
+  - name: f_false
+    type: bool
+    i18n: {it: "fatto falso (sintetico)", en: "false fact (synthetic)"}
+  - name: f_unknown
+    type: bool
+    i18n: {it: "fatto ignoto (sintetico)", en: "unknown fact (synthetic)"}
+  - name: a
+    type: bool
+    i18n: {it: "fatto a (sintetico)", en: "fact a (synthetic)"}
+  - name: b
+    type: enum
+    values: [x, y, z]
+    i18n: {it: "fatto b (sintetico)", en: "fact b (synthetic)"}
+  - name: d_start
+    type: date
+    i18n: {it: "data inizio (sintetica)", en: "start date (synthetic)"}

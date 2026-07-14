@@ -96,3 +96,16 @@ THE SAME change; divergence between doc and code is a DEFECT
 script (verifies links resolve and cited line ranges exist) is
 pre-registered here and built at Gate 3; format above is fixed
 now to stay machine-checkable.
+
+## ADR-005a: amends ADR-005 - trace-checker anticipated to Gate 2
+Date: 2026-07-14. Status: ACCEPTED. HEAD: 9525b96.
+ADR-005 scheduled the trace-checker for Gate 3. Anticipated to
+Gate 2 at owner request: day-0 deterministic verification.
+`scripts/check.sh` is the single gate entry point (tests +
+trace-check + log-parse). Every gate session ends with its
+verbatim output: `GATE_PASS`, or `GATE_FAIL <reason>` reported
+as PARTIAL. `PARTIAL: N` from the trace-checker flags
+unimplemented sections deterministically. Gate rule hardened
+project-wide: numeric gates count DISTINCTIVE markers only
+(e.g. 'Impl: TBD', never 'Impl:'); expected counts derivable
+from repo state are captured live in Phase 0, never hardcoded.
