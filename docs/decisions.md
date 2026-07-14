@@ -109,3 +109,28 @@ unimplemented sections deterministically. Gate rule hardened
 project-wide: numeric gates count DISTINCTIVE markers only
 (e.g. 'Impl: TBD', never 'Impl:'); expected counts derivable
 from repo state are captured live in Phase 0, never hardcoded.
+
+## ADR-007: sub-agents - adversarial verification ONLY
+Date: 2026-07-14. Status: ACCEPTED. HEAD: edacd2d.
+Amends the CLAUDE.md exclusion ("no sub-agents yet"), which the
+Gate-2 bypass hunt de facto violated (disclosed, high yield:
+17 findings incl. 1 CRITICAL). Regularized: sub-agents are
+PERMITTED exclusively for post-GREEN adversarial verification
+(bypass hunts, property fuzzing, spec attacks) and PROHIBITED
+for implementation, tests-as-spec authoring, or doc writing.
+Rationale: builder/attacker separation is structural
+anti-confirmation-bias. Every hunt logs one GATE event with
+findings count; confirmed findings become pinning tests before
+fixes (TDD preserved).
+
+## ADR-008: validation test contract - malformed-class enumeration
+Date: 2026-07-14. Status: ACCEPTED. HEAD: edacd2d.
+Root cause of the Gate-2 CRITICAL (whitespace citations loading):
+the spec said "missing/empty" without enumerating adverse
+classes. Contract, binding for every validation surface (loader,
+manifest, oracle, CLI input): tests MUST enumerate at minimum:
+(1) missing field; (2) empty value; (3) whitespace-only string;
+(4) wrong type; (5) unknown/misspelled key; (6) boundary values
+(dates at applies_from/until edges, zero/negative counts);
+(7) duplicate identifiers. A validation feature without this
+enumeration is INCOMPLETE regardless of GREEN status.

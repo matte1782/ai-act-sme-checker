@@ -11,6 +11,8 @@ RuleValidationError; rule ids are unique per file.
 """
 import dataclasses
 import datetime as dt
+import pathlib
+import re
 from typing import Optional
 
 import yaml
@@ -27,10 +29,36 @@ _RULE_KEYS = {
     "rationale_key",
 }
 _LOGIC_KINDS = ("fact", "all", "any", "not")
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 class RuleValidationError(ValueError):
     """Raised when a rule is missing citation, validity dates, or logic."""
+
+
+class _StrictYamlLoader(yaml.SafeLoader):
+    """SafeLoader that rejects duplicate mapping keys (R1, ADR-008 (7)).
+
+    PyYAML's default lets the LAST duplicate win silently, so a second
+    'applies_from' could shadow the temporal window without a trace.
+    """
+
+    def construct_mapping(self, node, deep=False):
+        seen = set()
+        for key_node, _ in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            try:
+                duplicate = key in seen
+            except TypeError as exc:
+                raise RuleValidationError(
+                    f"unhashable mapping key at {key_node.start_mark}"
+                ) from exc
+            if duplicate:
+                raise RuleValidationError(
+                    f"duplicate mapping key {key!r} at {key_node.start_mark}"
+                )
+            seen.add(key)
+        return super().construct_mapping(node, deep=deep)
 
 
 @dataclasses.dataclass(frozen=True)
@@ -60,6 +88,12 @@ def _to_date(value, rule_id, field):
     if isinstance(value, dt.date):
         return value
     if isinstance(value, str):
+        # R3: fromisoformat (>=3.11) accepts '20260101' and friends;
+        # gate on the canonical form BEFORE parsing (ADR-008 (6)).
+        if not _DATE_RE.match(value):
+            raise RuleValidationError(
+                f"rule {rule_id}: {field} {value!r} must match YYYY-MM-DD"
+            )
         try:
             return dt.date.fromisoformat(value)
         except ValueError as exc:
@@ -167,14 +201,22 @@ def parse_rule(data):
     )
 
 
-def load_rules_file(path):
+def load_yaml_strict(path):
+    """Parse a YAML file rejecting duplicate mapping keys (ADR-008 (7)).
+    Corpus manifest/timeline and rules files share this gate."""
     try:
         with open(path, encoding="utf-8") as fh:
-            data = yaml.safe_load(fh)
+            # SafeLoader-derived (no arbitrary-type construction);
+            # only adds duplicate-key rejection on top of safe_load.
+            return yaml.load(fh, Loader=_StrictYamlLoader)
     except (OSError, UnicodeDecodeError, yaml.YAMLError) as exc:
         raise RuleValidationError(
-            f"{path}: unreadable rules file ({type(exc).__name__})"
+            f"{path}: unreadable YAML ({type(exc).__name__})"
         ) from exc
+
+
+def load_rules_file(path):
+    data = load_yaml_strict(path)
     if not isinstance(data, dict) or not isinstance(data.get("rules"), list):
         raise RuleValidationError(f"{path}: expected a top-level 'rules' list")
     rules = [parse_rule(entry) for entry in data["rules"]]
@@ -183,4 +225,38 @@ def load_rules_file(path):
         if rule.id in seen:
             raise RuleValidationError(f"{path}: duplicate rule id {rule.id!r}")
         seen.add(rule.id)
+    return rules
+
+
+def load_rules_dir(path):
+    """R2: load ALL *.yaml rules files in path (sorted) and reject
+    cross-file duplicate rule ids. Fail-closed at the directory surface:
+    a missing dir, an empty dir, or a stray .yml file (which the *.yaml
+    glob would silently skip) is an error, never a silent empty engine.
+    """
+    root = pathlib.Path(path)
+    if not root.is_dir():
+        raise RuleValidationError(f"{path}: not a directory")
+    stray = sorted(entry.name for entry in root.glob("*.yml"))
+    if stray:
+        raise RuleValidationError(
+            f"{path}: .yml files would silently escape the *.yaml glob: "
+            f"{stray} (rename to .yaml)"
+        )
+    files = sorted(root.glob("*.yaml"))
+    if not files:
+        raise RuleValidationError(
+            f"{path}: no *.yaml rules files (refusing an empty engine)"
+        )
+    rules = []
+    origin = {}
+    for file in files:
+        for rule in load_rules_file(file):
+            if rule.id in origin:
+                raise RuleValidationError(
+                    f"duplicate rule id {rule.id!r} across files: "
+                    f"{origin[rule.id]} and {file.name}"
+                )
+            origin[rule.id] = file.name
+            rules.append(rule)
     return rules

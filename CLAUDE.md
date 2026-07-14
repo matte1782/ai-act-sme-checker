@@ -17,6 +17,11 @@ No claude-mem.
 - Fix the code, not the harness. Never weaken a check or disable
   a hook to make something pass.
 - Observation separate from interpretation.
+- Sub-agents: adversarial verification only, never
+  implementation (ADR-007).
+- Validation tests enumerate malformed classes: missing, empty,
+  whitespace, wrong-type, unknown-key, boundary, duplicate
+  (ADR-008).
 
 ## Project non-negotiables (the engine's ethics)
 - FAIL-CLOSED: when the rules do not decide, the verdict is

@@ -7,14 +7,14 @@ UNDETERMINED (fail-closed, ADR-001/003). All sections carry an
 `corpus/manifest.yaml`: each legal source = {id, instrument,
 ELI/EUR-Lex ref, version_date, amending_acts[], sha256 of local
 text}. Rules cite corpus ids, never raw URLs.
-Impl: TBD
+Impl: [corpus/manifest.yaml:L1-L141](corpus/manifest.yaml)
 
 ## L2 Rules layer
 `rules/*.yaml`: rule = {id, legal_source{corpus_id, article,
 paragraph}, applies_from, applies_until?, logic (typed predicate
 tree over facts), verdict, rationale_key}. Loader REJECTS a rule
 missing legal_source or applies_from (INV-2).
-Impl: [engine/loader.py:L1-L186](engine/loader.py)
+Impl: [engine/loader.py:L1-L262](engine/loader.py)
 
 ## L3 Facts schema
 `schema/facts.yaml`: typed facts (bool/enum/date) with i18n keys
@@ -34,7 +34,7 @@ CLI first. Renderer contract: refuses to emit any user-facing
 output lacking the NOT-LEGAL-ADVICE disclaimer block (INV-4).
 Every verdict rendered with: citation, as_of stamp, corpus
 version, explanation tree.
-Impl: [engine/render.py:L1-L71](engine/render.py)
+Impl: [engine/render.py:L1-L88](engine/render.py)
 
 ## L6 Oracle & tests
 `oracle/golden/*.yaml`: frozen SME scenarios, each with expected

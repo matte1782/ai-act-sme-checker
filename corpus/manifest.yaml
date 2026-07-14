@@ -1,0 +1,141 @@
+# L1 corpus manifest (Gate 3a, ingested 2026-07-14).
+# Dual verification: EXPECTED_VALUES table vs fetched documents, with
+# blind extraction (6 agents, no expected values shown - ADR-007).
+# E1/E2/E3 CONFIRMED. E4 and E5 mismatches resolved by owner ruling
+# (see .idos/events.jsonl 2026-07-14); nothing reconciled silently.
+corpus_version: aia-omnibus-preOJ-9247-26
+
+refresh_task:
+  mandatory: true
+  trigger: >-
+    OJ publication of the Digital Omnibus on AI (procedure
+    2025/0359 COD; signature 2026-07-08, publication expected by
+    2026-07-30, entry into force = publication + 3 days per Art. 3)
+  action: >-
+    re-run Gate 3a Phase C on OJ publication; bump corpus_version;
+    golden oracle UNCHANGED (dates already reflect final agreement)
+  checked: "2026-07-14"
+
+# E5 (fail-closed): reference VERIFIED from the operative provision;
+# thresholds taken from the fetched source text, which REFUTED the
+# E-table's numbers (expected <=1500 staff / <=EUR 300M / <=EUR 150M).
+smc_definition:
+  referenced_by: >-
+    new Art. 3 point (14b) of Regulation (EU) 2024/1689 as amended
+    (ST 9247/26 ANNEX I, doc page 28)
+  instrument: >-
+    Commission Recommendation (EU) 2025/1099 of 21 May 2025,
+    point (2) of the Annex
+  celex: "32025H1099"
+  thresholds_source_verified:
+    staff: fewer than 750 persons
+    turnover: annual turnover not exceeding EUR 150 million, or
+    balance_sheet: annual balance sheet total not exceeding EUR 129 million
+  e_table_refuted: >-
+    E-table attributed '<=1500 staff, <=EUR 300M turnover, <=EUR 150M
+    balance' to 2025/1099; the fetched source text says <750 staff,
+    <=EUR 150M turnover or <=EUR 129M balance. Owner ruling 2026-07-14:
+    record source values, keep this refutation note.
+  caution: >-
+    recital (4) of ST 9247/26 cites 'Recommendation 2025/3500/EC' while
+    operative Art. 3(14b) cites (EU) 2025/1099; the operative provision
+    controls. Re-check the reference on the OJ-published omnibus text.
+
+sources:
+  - id: aia-2024-1689-en
+    instrument: >-
+      Regulation (EU) 2024/1689 (AI Act), English, OJ L 2024/1689,
+      12.7.2024, in force 2024-08-01 (Art. 113: publication + 20 days)
+    celex_or_eli: "CELEX 32024R1689; ELI http://data.europa.eu/eli/reg/2024/1689/oj"
+    version_date: "2024-07-12"
+    amending_acts:
+      - >-
+        Digital Omnibus on AI (2025/0359 COD): EP position 2026-06-16,
+        Council approval 2026-06-29, signed 2026-07-08, NOT yet in OJ -
+        agreed text ingested as omnibus-st-9247-26-en
+    retrieved: "2026-07-14"
+    sha256: "bba630444b3278e881066774002a1d7824308934f49ccfa203e65be43692f55e"
+    status: FINAL
+    file: raw/aia_32024R1689_en.pdf
+
+  - id: aia-2024-1689-it
+    instrument: >-
+      Regolamento (UE) 2024/1689 (AI Act), Italian, GU L 2024/1689,
+      12.7.2024, in vigore 2024-08-01
+    celex_or_eli: "CELEX 32024R1689; ELI http://data.europa.eu/eli/reg/2024/1689/oj"
+    version_date: "2024-07-12"
+    amending_acts:
+      - "Digital Omnibus on AI (2025/0359 COD), see aia-2024-1689-en"
+    retrieved: "2026-07-14"
+    sha256: "a61b61706aee6676e3988ab696162d71d759c3debd48b2ecccac3555207f2b0c"
+    status: FINAL
+    file: raw/aia_32024R1689_it.pdf
+
+  - id: omnibus-st-9247-26-en
+    instrument: >-
+      Digital Omnibus on AI - compromise text amending Regulations (EU)
+      2024/1689 and (EU) 2018/1139 (Council doc ST 9247/26 INIT,
+      13 May 2026: Coreper-confirmed agreement of 2026-05-06 endorsing
+      doc 9034/26; procedure 2025/0359 COD). PROVISIONAL until OJ
+      publication - see refresh_task.
+    celex_or_eli: >-
+      ST 9247/26 INIT (register.consilium.europa.eu, no CELEX until OJ
+      publication; proposal was COM/2025/836 = CELEX 52025PC0836)
+    version_date: "2026-05-13"
+    amending_acts: []
+    retrieved: "2026-07-14"
+    sha256: "9f102e689f9a539f4be178729aaf389ec081a810878b15abcc1abcfb5168bc11"
+    status: PROVISIONAL
+    file: raw/st_9247_2026_init_en.pdf
+
+  - id: guidelines-prohibited-practices-en
+    instrument: >-
+      Commission Guidelines on prohibited AI practices (AI Act),
+      C(2025) 5052 final, adopted 29.7.2025. E4 note: E-table expected
+      C(2025) 884 final (04.02.2025), which is the 2-page approval of
+      the draft; owner ruling 2026-07-14 ingested the adopted text.
+    celex_or_eli: "C(2025) 5052 final"
+    version_date: "2025-07-29"
+    amending_acts: []
+    retrieved: "2026-07-14"
+    sha256: "298bf8677884b333fae6d5f84aac947f45a59dff6027ca038ba08615092fd82f"
+    status: FINAL
+    file: raw/guidelines_prohibited_practices_en.pdf
+
+  - id: guidelines-ai-system-definition-en
+    instrument: >-
+      Commission Guidelines on the definition of an AI system (AI Act),
+      C(2025) 5053 final, adopted 29.7.2025. E4 note: E-table expected
+      C(2025) 924 (06.02.2025), the 2-page approval of the draft;
+      owner ruling 2026-07-14 ingested the adopted text.
+    celex_or_eli: "C(2025) 5053 final"
+    version_date: "2025-07-29"
+    amending_acts: []
+    retrieved: "2026-07-14"
+    sha256: "fe39f41d061184a913c32f1f92aaaa30a096858fa168c6053e22a19eef58910e"
+    status: FINAL
+    file: raw/guidelines_ai_system_definition_en.pdf
+
+  - id: rec-2025-1099-smc-en
+    instrument: >-
+      Commission Recommendation (EU) 2025/1099 of 21 May 2025 on the
+      definition of small mid-cap enterprises (SMC source referenced by
+      the omnibus, see smc_definition)
+    celex_or_eli: "CELEX 32025H1099"
+    version_date: "2025-05-21"
+    amending_acts: []
+    retrieved: "2026-07-14"
+    sha256: "cb11adc0b562764d08671112e6310aeb64dfc747af112edc964519a4df814a76"
+    status: FINAL
+    file: raw/rec_2025_1099_smc_en.pdf
+
+pending:
+  - id: guidelines-art6-classification
+    instrument: >-
+      Commission Guidelines on the classification of high-risk AI
+      systems (Art. 6 AI Act)
+    status: PENDING
+    reason: >-
+      DRAFT only - targeted consultation open 2026-05-19 to 2026-07-23
+      (digital-strategy.ec.europa.eu consultations, checked 2026-07-14);
+      final expected end 2026. Excluded from the corpus until adopted.

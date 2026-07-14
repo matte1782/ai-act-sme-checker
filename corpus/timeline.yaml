@@ -1,0 +1,58 @@
+# Post-Omnibus applicability timeline (E3), dual-verified 2026-07-14:
+# every row confirmed by two independent blind extractors against
+# ST 9247/26 (amended Art. 113/111(4)/57(1)) or, for rows the omnibus
+# leaves untouched, the base act's Art. 113 (aia-2024-1689-en).
+# tests/test_corpus_manifest.py embeds this table as a fixture - the
+# second anchor of the dual verification. Do not edit one without the
+# other, and never to silence a failing test.
+entries:
+  - obligation: "Art. 5 original prohibitions"
+    article: "Art. 5 (Chapter II); amended Art. 113(3)(a)"
+    applies_from: "2025-02-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "Art. 5 NCII/CSAM (new, Omnibus)"
+    article: "Art. 5(1)(ba),(bb), 5(1a), 5(1b); amended Art. 113(3)(a)"
+    applies_from: "2026-12-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "Art. 4 literacy (softened)"
+    article: "Art. 4 (Chapter I, as replaced); amended Art. 113(3)(a)"
+    applies_from: "2025-02-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "Art. 50(1),(3),(4) transparency"
+    article: "Art. 50(1),(3),(4); base Art. 113 general date, unamended"
+    applies_from: "2026-08-02"
+    source_id: aia-2024-1689-en
+
+  - obligation: "Art. 50(2) marking, new systems"
+    article: "Art. 50(2); base Art. 113 general date, unamended"
+    applies_from: "2026-08-02"
+    source_id: aia-2024-1689-en
+
+  - obligation: "Art. 50(2) marking, legacy systems"
+    article: "Art. 50(2) via new Art. 111(4)"
+    applies_from: "2026-12-02"
+    condition: "placed on market before 2026-08-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "GPAI Art. 51-55"
+    article: "Art. 51-55 (Chapter V); base Art. 113(3)(b), unamended"
+    applies_from: "2025-08-02"
+    source_id: aia-2024-1689-en
+
+  - obligation: "Annex III high-risk (Chapter III)"
+    article: "Art. 6(2) + Annex III; amended Art. 113(3)(c)(i)"
+    applies_from: "2027-12-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "Annex I embedded high-risk"
+    article: "Art. 6(1) + Annex I; amended Art. 113(3)(c)(ii)"
+    applies_from: "2028-08-02"
+    source_id: omnibus-st-9247-26-en
+
+  - obligation: "National sandboxes deadline"
+    article: "Art. 57(1), as amended (operational by 2 August 2027)"
+    applies_from: "2027-08-02"
+    source_id: omnibus-st-9247-26-en

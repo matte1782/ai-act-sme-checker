@@ -4,7 +4,11 @@ The disclaimer block is a STRUCTURAL argument (INV-4): the renderer
 refuses to emit any user-facing output unless the caller passes the
 exact block. Every verdict is rendered with citation, as_of stamp,
 corpus version, and its explanation tree.
+
+R4: the as_of stamp is cross-checked against every Verdict.as_of; a
+report must never stamp a date its verdicts were not evaluated at.
 """
+import datetime as dt
 
 DISCLAIMER = (
     "=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===\n"
@@ -19,6 +23,11 @@ DISCLAIMER = (
 
 class MissingDisclaimerError(ValueError):
     """Refusal to render user-facing output without the disclaimer (INV-4)."""
+
+
+class AsOfMismatchError(ValueError):
+    """Refusal to stamp a report with an as_of its verdicts were not
+    evaluated at (R4)."""
 
 
 def _safe(text):
@@ -47,6 +56,14 @@ def render_report(verdicts, as_of, corpus_version, disclaimer):
     if disclaimer != DISCLAIMER:
         raise MissingDisclaimerError(
             "refusing to render: output lacks the exact NOT-LEGAL-ADVICE block"
+        )
+    if isinstance(as_of, dt.datetime) or not isinstance(as_of, dt.date):
+        raise AsOfMismatchError(f"as_of must be a datetime.date, got {as_of!r}")
+    stale = [verdict.rule_id for verdict in verdicts if verdict.as_of != as_of]
+    if stale:
+        raise AsOfMismatchError(
+            f"verdicts evaluated at a different as_of than the report stamp "
+            f"{as_of.isoformat()}: {stale}"
         )
     lines = [
         DISCLAIMER,
