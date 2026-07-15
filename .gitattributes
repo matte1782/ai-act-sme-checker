@@ -5,3 +5,4 @@
 *.md text eol=lf
 *.yaml text eol=lf
 *.py text eol=lf
+*.sha256 text eol=lf
