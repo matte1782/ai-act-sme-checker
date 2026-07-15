@@ -1,0 +1,9 @@
+id: S11
+title_it: "Deepfake pubblicato senza disclosure"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  deepfake_published: true, deepfake_disclosed: false}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART50_4, status: NON_COMPLIANT,
+     cite: "AIA Art. 50(4)"}

@@ -1,0 +1,11 @@
+id: S13
+title_it: "Marcatura contenuti sintetici, legacy, dopo la grazia"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: provider,
+  generates_synthetic_content: true,
+  content_marked_machine_readable: false,
+  system_on_market_before_2026_08_02: true}
+as_of: 2027-01-15
+expect:
+  - {rule_group: ART50_2, status: NON_COMPLIANT,
+     cite: "AIA Art. 50(2)"}

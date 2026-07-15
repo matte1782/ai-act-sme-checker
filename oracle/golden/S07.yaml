@@ -1,0 +1,11 @@
+id: S07
+title_it: "Capacita NCII senza safeguard, prima del 2026-12-02"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: provider,
+  ncii_generation_capability: true,
+  ncii_safeguards_state_of_art: false}
+as_of: 2026-11-01
+expect:
+  - {rule_group: ART5_NCII, status: INACTIVE,
+     cite: "AIA Art. 5 as amended (Omnibus);
+            applies_from 2026-12-02"}

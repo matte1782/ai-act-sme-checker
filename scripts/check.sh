@@ -10,6 +10,13 @@ rc=$?
 if [ "$rc" -ne 0 ] && [ "$rc" -ne 5 ]; then status=1; fi
 echo "== trace"
 "$PY" scripts/trace_check.py || status=1
+echo "== oracle"
+# ADR-009: the golden set is FROZEN; any byte drift fails the gate.
+( cd oracle && sha256sum -c FREEZE.sha256 --quiet ) \
+  || { echo "ORACLE_FROZEN_VIOLATION"; status=1; }
+# Self-arming: ORACLE_PENDING (exit 0) is the ONLY sanctioned
+# non-evaluating pass; once rules/*.yaml exist it evaluates for real.
+"$PY" scripts/oracle_check.py || status=1
 echo "== session log"
 if [ -f .idos/session_log.jsonl ]; then
   tail -1 .idos/session_log.jsonl | "$PY" -c \

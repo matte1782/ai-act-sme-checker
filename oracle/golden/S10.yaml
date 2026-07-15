@@ -1,0 +1,9 @@
+id: S10
+title_it: "Uso personale non professionale - fuori ambito"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: true, operator_role: deployer,
+  interacts_with_persons: true, interaction_disclosed: false}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART50_1, status: NOT_APPLICABLE,
+     cite: "AIA Art. 2(10)"}

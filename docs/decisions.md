@@ -134,3 +134,33 @@ manifest, oracle, CLI input): tests MUST enumerate at minimum:
 (dates at applies_from/until edges, zero/negative counts);
 (7) duplicate identifiers. A validation feature without this
 enumeration is INCOMPLETE regardless of GREEN status.
+
+## ADR-009: oracle golden set v1 FROZEN
+Date: 2026-07-14. Status: ACCEPTED. HEAD: 5d65927.
+14 scenarios (S01-S14) authored in chat 2026-07-14, installed
+verbatim, frozen: sha256 in oracle/FREEZE.sha256, verified by
+check.sh on every run. Modification protocol: any change to a
+frozen scenario requires an ADR-009x amendment stating the legal
+reason + citation, then re-freeze; silent edits are DEFECTs.
+Golden set = Gate-4 spec: rules and facts schema are written to
+satisfy these cases; engine extensions required: INACTIVE
+matching (applicability leaf) and NOT_APPLICABLE status
+(Art. 2 scope). Known dependency: dates reflect the Omnibus
+final agreement; if the Gate-3a preOJ branch was taken and the
+OJ text diverges on a date, that is an ADR-009a amendment, not
+a silent fix.
+FREEZE hashes:
+fb29f9376b95440b24f6962af75a18c3477abade66dd1d8040361860eabc5844 *golden/S01.yaml
+b299589388cd6654b5ae713ab73873669f5bbcdc4899a7103b1cfdcc99369336 *golden/S02.yaml
+4ac8658f10aa1c6956326f4bec2c6c6f91f72e0d8667e00bc20a8d3a7af2bbe7 *golden/S03.yaml
+dfddee7e5f383c85867e3db6417f6cb0f9f9237fb909439fbd8fbc4f88883114 *golden/S04.yaml
+6a3e1eee8e3c1cfbaff62960032a8795ecfef8f59f583e80ceb263cb6f31d8e6 *golden/S05.yaml
+836dcd80b1955f0b13f17c319c0d5b278575c334e5b1ed75024b3fd991c1fb62 *golden/S06.yaml
+281e6a79b7ea6a7772eb6002d4e33051add8e22ef71cbaefd77d34e150639ede *golden/S07.yaml
+8ed66f339c8b659dd90ea22a13106709c77ab8b59ded93ef348f831cb0737123 *golden/S08.yaml
+aec90aa12d002893e24908e2cacd0bb0ead6e568ef22f5fda38f051c779e6e26 *golden/S09.yaml
+b73fa03c550787a9327035b2bdd6a619862bce696d009303c0a092cb25e29cb4 *golden/S10.yaml
+a89429c49bfe1cc65104abfaf88c6957873a540be25e52641d8c3b4baa2b1be6 *golden/S11.yaml
+82ae4ddfb9f7b44849bc86a6e6a5a6ba9621f338a6eb65dcb3731951c085d060 *golden/S12.yaml
+963d35b40f010ced54d54c0c171d7e7fc6ac74804f7c8c80415c5d311ceccc21 *golden/S13.yaml
+41f9ee853c929ec5d5dd5dcc9536240f9f2f71cd9a6ce92527b816887b3e2fb8 *golden/S14.yaml

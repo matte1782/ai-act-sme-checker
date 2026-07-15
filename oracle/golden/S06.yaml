@@ -1,0 +1,10 @@
+id: S06
+title_it: "Riconoscimento emozioni, eccezione medica/sicurezza"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  emotion_recognition_workplace: true,
+  emotion_medical_safety_exception: true}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART5_EMOTION_WORKPLACE, status: COMPLIANT,
+     cite: "AIA Art. 5(1)(f), exception clause"}

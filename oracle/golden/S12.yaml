@@ -1,0 +1,13 @@
+id: S12
+title_it: "Marcatura contenuti sintetici, sistema legacy,
+  finestra di grazia"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: provider,
+  generates_synthetic_content: true,
+  content_marked_machine_readable: false,
+  system_on_market_before_2026_08_02: true}
+as_of: 2026-10-01
+expect:
+  - {rule_group: ART50_2, status: INACTIVE,
+     cite: "AIA Art. 50(2) + Omnibus legacy grace;
+            applies_from 2026-12-02 for legacy"}

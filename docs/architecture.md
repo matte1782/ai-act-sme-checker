@@ -41,8 +41,11 @@ Impl: [engine/render.py:L1-L88](engine/render.py)
 verdicts AND its own public-source citation (auditability for
 future legal review). Property tests = invariants below. Golden
 set is frozen BEFORE rules are authored (anti-confirmation-bias
-gate).
-Impl: TBD
+gate). v1: S01-S14 frozen via oracle/FREEZE.sha256 (ADR-009,
+verified by check.sh); self-arming checker scripts/oracle_check.py
+(ORACLE_PENDING until Gate-4 rules land), its ADR-008 test
+enumeration in tests/test_oracle_check.py.
+Impl: [scripts/oracle_check.py:L1-L300](scripts/oracle_check.py)
 
 ## Invariants (each becomes a property test)
 - INV-1 fail-closed: no COMPLIANT verdict may depend on any

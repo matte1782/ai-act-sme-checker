@@ -1,0 +1,13 @@
+id: S14
+title_it: "Caso d'uso Annex III (selezione del personale) -
+  obblighi high-risk non ancora applicabili"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  annex_iii_use_case: employment_recruitment}
+as_of: 2026-09-01
+expect:
+  - {rule_group: HR_ANNEX_III, status: INACTIVE,
+     cite: "AIA Chapter III + Omnibus;
+            applies_from 2027-12-02"}
+note: "v1: informational deadline output, non verdict-bearing
+  (ADR-002); il renderer deve esporre la deadline 2027-12-02."

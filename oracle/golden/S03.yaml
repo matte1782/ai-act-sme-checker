@@ -1,0 +1,9 @@
+id: S03
+title_it: "Chatbot con informativa"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  interacts_with_persons: true, interaction_disclosed: true}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART50_1, status: COMPLIANT,
+     cite: "AIA Art. 50(1)"}

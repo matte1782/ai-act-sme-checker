@@ -1,0 +1,9 @@
+id: S04
+title_it: "Social scoring"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: provider,
+  practice_social_scoring: true}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART5_SOCIAL_SCORING, status: NON_COMPLIANT,
+     cite: "AIA Art. 5(1)(c); applies_from 2025-02-02"}

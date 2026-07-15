@@ -1,0 +1,10 @@
+id: S09
+title_it: "Fatto chiave ignoto - fail-closed"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART50_1, status: UNDETERMINED,
+     cite: "AIA Art. 50(1)"}
+note: "interacts_with_persons omesso: la spiegazione DEVE
+  nominarlo tra gli unknown_facts."

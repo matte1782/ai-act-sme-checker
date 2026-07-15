@@ -1,0 +1,9 @@
+id: S02
+title_it: "Stessi fatti, prima dell'applicabilita"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  interacts_with_persons: true, interaction_disclosed: false}
+as_of: 2026-07-15
+expect:
+  - {rule_group: ART50_1, status: INACTIVE,
+     cite: "AIA Art. 50(1); applies_from 2026-08-02"}

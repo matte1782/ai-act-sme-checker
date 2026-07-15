@@ -1,0 +1,9 @@
+id: S01
+title_it: "Chatbot senza informativa, dopo applicabilita"
+facts: {is_ai_system: true, in_eu_market: true,
+  personal_nonprofessional_use: false, operator_role: deployer,
+  interacts_with_persons: true, interaction_disclosed: false}
+as_of: 2026-09-01
+expect:
+  - {rule_group: ART50_1, status: NON_COMPLIANT,
+     cite: "AIA Art. 50(1)"}
