@@ -22,6 +22,10 @@ No claude-mem.
 - Validation tests enumerate malformed classes: missing, empty,
   whitespace, wrong-type, unknown-key, boundary, duplicate
   (ADR-008).
+- Entry: dirty tree only per ADR-010; precedents live in ADRs,
+  never in agent memory.
+- Rules: statute-first, opposite-comment, timeline-anchored
+  dates, expressiveness STOPs (ADR-011).
 
 ## Project non-negotiables (the engine's ethics)
 - FAIL-CLOSED: when the rules do not decide, the verdict is

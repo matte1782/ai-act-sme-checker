@@ -1,0 +1,24 @@
+# Synthetic facts schema (TEST fixture only; no legal content).
+# Relocated from schema/facts.yaml at Gate 4 (ADR-009 canonical vocabulary
+# replaces it in production). Used by tests/test_facts_schema.py, whose
+# assertions are preserved verbatim - only the load path moved here.
+facts:
+  - name: f_true
+    type: bool
+    i18n: {it: "fatto vero (sintetico)", en: "true fact (synthetic)"}
+  - name: f_false
+    type: bool
+    i18n: {it: "fatto falso (sintetico)", en: "false fact (synthetic)"}
+  - name: f_unknown
+    type: bool
+    i18n: {it: "fatto ignoto (sintetico)", en: "unknown fact (synthetic)"}
+  - name: a
+    type: bool
+    i18n: {it: "fatto a (sintetico)", en: "fact a (synthetic)"}
+  - name: b
+    type: enum
+    values: [x, y, z]
+    i18n: {it: "fatto b (sintetico)", en: "fact b (synthetic)"}
+  - name: d_start
+    type: date
+    i18n: {it: "data inizio (sintetica)", en: "start date (synthetic)"}

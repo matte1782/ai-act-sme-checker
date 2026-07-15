@@ -23,6 +23,10 @@ from engine.facts import UNKNOWN, k3_all, k3_any, k3_not
 STATUS_COMPLIANT = "COMPLIANT"
 STATUS_NON_COMPLIANT = "NON_COMPLIANT"
 STATUS_UNDETERMINED = "UNDETERMINED"
+# X1 (Gate-4, ADR-009): a rule outside its material scope (Art. 2) is
+# NOT_APPLICABLE - distinct from UNDETERMINED (we lack a fact) and from
+# the temporal-INACTIVE shape (UNDETERMINED + applicability leaf).
+STATUS_NOT_APPLICABLE = "NOT_APPLICABLE"
 
 _LOGIC_KINDS = ("fact", "all", "any", "not")
 
@@ -104,13 +108,37 @@ def _eval_node(node, facts, citation, unknowns):
     return value, {"op": "not", "value": _label(value), "children": [child_tree]}
 
 
-def _applicability_reason(rule, as_of):
-    if as_of < rule.applies_from:
-        return f"not yet applicable (applies_from {rule.applies_from.isoformat()})"
+def _applicability_reason(applies_from, applies_until, as_of):
+    if as_of < applies_from:
+        return f"not yet applicable (applies_from {applies_from.isoformat()})"
     # applies_until is INCLUSIVE: the rule is active through its last day.
-    if rule.applies_until is not None and as_of > rule.applies_until:
-        return f"no longer applicable (applies_until {rule.applies_until.isoformat()})"
+    if applies_until is not None and as_of > applies_until:
+        return f"no longer applicable (applies_until {applies_until.isoformat()})"
     return None
+
+
+def _resolve_applies_from(applies_from, facts, citation):
+    """X3 fail-closed date selection. Returns (date|None, when_children,
+    unknown_facts). A scalar resolves immediately. For a branch list the
+    first branch whose 'when' is TRUE wins; a 'when' that is UNKNOWN
+    stops selection (date is None, facts named) rather than skipping to
+    the default - a wrong-deadline verdict is never rendered on a guess."""
+    if isinstance(applies_from, dt.date):
+        return applies_from, [], []
+    unknowns = set()
+    children = []
+    for branch in applies_from:
+        if "default" in branch:
+            return branch["default"], children, []
+        value, tree = _eval_node(branch["when"], facts, citation, unknowns)
+        children.append(tree)
+        if value is True:
+            return branch["date"], children, []
+        if value is UNKNOWN:
+            return None, children, sorted(unknowns)
+        # value is False: this window does not apply; try the next branch.
+    # The loader guarantees a trailing default, so this is unreachable.
+    raise EvaluationError("applies_from branch list without a default")
 
 
 def evaluate(rules, facts, as_of_date, corpus_version):
@@ -121,7 +149,42 @@ def evaluate(rules, facts, as_of_date, corpus_version):
     verdicts = []
     for rule in rules:
         citation = rule.legal_source
-        reason = _applicability_reason(rule, as_of_date)
+        cite_leaf = {
+            "corpus_id": citation["corpus_id"],
+            "article": citation["article"],
+        }
+
+        def _verdict(status, explanation, unknown_facts):
+            return Verdict(
+                rule_id=rule.id,
+                status=status,
+                citation=dict(citation),
+                explanation=explanation,
+                unknown_facts=unknown_facts,
+                rationale_key=rule.rationale_key,
+                as_of=as_of_date,
+                corpus_version=corpus_version,
+            )
+
+        # X3: resolve the temporal window (may consult facts; fail-closed).
+        resolved_from, when_children, from_unknowns = _resolve_applies_from(
+            rule.applies_from, facts, citation
+        )
+        if resolved_from is None:
+            reason = "date selection needs unknown facts: " + ", ".join(from_unknowns)
+            explanation = {
+                "op": "rule",
+                "rule_id": rule.id,
+                "value": "UNKNOWN",
+                "reason": reason,
+                "unknown_facts": list(from_unknowns),
+                "children": when_children,
+            }
+            verdicts.append(_verdict(STATUS_UNDETERMINED, explanation, list(from_unknowns)))
+            continue
+
+        # X4 precedence (1): temporal beats scope and logic -> INACTIVE shape.
+        reason = _applicability_reason(resolved_from, rule.applies_until, as_of_date)
         if reason is not None:
             explanation = {
                 "op": "rule",
@@ -134,26 +197,62 @@ def evaluate(rules, facts, as_of_date, corpus_version):
                         "op": "applicability",
                         "value": "UNKNOWN",
                         "reason": reason,
-                        "citation": {
-                            "corpus_id": citation["corpus_id"],
-                            "article": citation["article"],
-                        },
+                        "citation": dict(cite_leaf),
                     }
                 ],
             }
-            verdicts.append(
-                Verdict(
-                    rule_id=rule.id,
-                    status=STATUS_UNDETERMINED,
-                    citation=dict(citation),
-                    explanation=explanation,
-                    unknown_facts=[],
-                    rationale_key=rule.rationale_key,
-                    as_of=as_of_date,
-                    corpus_version=corpus_version,
-                )
-            )
+            verdicts.append(_verdict(STATUS_UNDETERMINED, explanation, []))
             continue
+
+        # X4 precedence (2): applicable_if scope gate.
+        if rule.applicable_if is not None:
+            scope_unknowns = set()
+            scope_value, scope_tree = _eval_node(
+                rule.applicable_if, facts, citation, scope_unknowns
+            )
+            if scope_value is UNKNOWN:
+                # X5: unknown scope is UNDETERMINED (named), never NOT_APPLICABLE.
+                named = sorted(scope_unknowns)
+                explanation = {
+                    "op": "rule",
+                    "rule_id": rule.id,
+                    "value": "UNKNOWN",
+                    "reason": "unknown scope facts: " + ", ".join(named),
+                    "unknown_facts": named,
+                    "children": [
+                        {
+                            "op": "scope",
+                            "value": "UNKNOWN",
+                            "reason": "material scope undetermined",
+                            "citation": dict(cite_leaf),
+                            "children": [scope_tree],
+                        }
+                    ],
+                }
+                verdicts.append(_verdict(STATUS_UNDETERMINED, explanation, named))
+                continue
+            if scope_value is False:
+                explanation = {
+                    "op": "rule",
+                    "rule_id": rule.id,
+                    "value": "NOT_APPLICABLE",
+                    "reason": "out of material scope (applicable_if is false)",
+                    "unknown_facts": [],
+                    "children": [
+                        {
+                            "op": "scope",
+                            "value": "FALSE",
+                            "reason": "rule not applicable (applicable_if is false)",
+                            "citation": dict(cite_leaf),
+                            "children": [scope_tree],
+                        }
+                    ],
+                }
+                verdicts.append(_verdict(STATUS_NOT_APPLICABLE, explanation, []))
+                continue
+            # scope_value is True: in scope; fall through to logic.
+
+        # X4 precedence (3): logic.
         unknowns = set()
         value, tree = _eval_node(rule.logic, facts, citation, unknowns)
         unknown_facts = sorted(unknowns)
@@ -179,16 +278,5 @@ def evaluate(rules, facts, as_of_date, corpus_version):
         }
         if status == STATUS_UNDETERMINED and unknown_facts:
             explanation["reason"] = "unknown facts: " + ", ".join(unknown_facts)
-        verdicts.append(
-            Verdict(
-                rule_id=rule.id,
-                status=status,
-                citation=dict(citation),
-                explanation=explanation,
-                unknown_facts=unknown_facts,
-                rationale_key=rule.rationale_key,
-                as_of=as_of_date,
-                corpus_version=corpus_version,
-            )
-        )
+        verdicts.append(_verdict(status, explanation, unknown_facts))
     return verdicts

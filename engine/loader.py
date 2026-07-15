@@ -24,6 +24,8 @@ _RULE_KEYS = {
     "legal_source",
     "applies_from",
     "applies_until",
+    "applicable_if",
+    "timeline_ref",
     "logic",
     "verdict",
     "rationale_key",
@@ -65,11 +67,15 @@ class _StrictYamlLoader(yaml.SafeLoader):
 class Rule:
     id: str
     legal_source: dict
-    applies_from: dt.date
+    # X3: a date, OR a branch list [{when: <tree>, date}, ..., {default: date}]
+    applies_from: object
     applies_until: Optional[dt.date]
     logic: dict
     verdict: str
     rationale_key: str
+    # X2 (optional) scope predicate; X3 anti-drift date anchors (ADR-011(4)).
+    applicable_if: Optional[dict] = None
+    timeline_ref: Optional[list] = None
 
 
 def _req_str(value, rule_id, field):
@@ -101,6 +107,59 @@ def _to_date(value, rule_id, field):
                 f"rule {rule_id}: {field} {value!r} is not an ISO date"
             ) from exc
     raise RuleValidationError(f"rule {rule_id}: {field} {value!r} is not a date")
+
+
+def _parse_applies_from(value, rule_id):
+    """X3: applies_from is either a scalar date or a conditional branch
+    list. Validated per ADR-008 (missing/empty/wrong-type/unknown-key/
+    boundary/duplicate) so date selection can never fail open at runtime."""
+    if not isinstance(value, list):
+        return _to_date(value, rule_id, "applies_from")
+    if not value:
+        raise RuleValidationError(
+            f"rule {rule_id}: applies_from branch list is empty"
+        )
+    parsed = []
+    default_seen = False
+    last = len(value) - 1
+    for index, branch in enumerate(value):
+        at = f"applies_from[{index}]"
+        if not isinstance(branch, dict) or not branch:
+            raise RuleValidationError(
+                f"rule {rule_id}: {at} must be a non-empty mapping"
+            )
+        keys = set(branch)
+        if "default" in keys:
+            if keys != {"default"}:
+                raise RuleValidationError(
+                    f"rule {rule_id}: {at} default branch takes only 'default', "
+                    f"got {sorted(keys, key=repr)}"
+                )
+            if index != last:
+                raise RuleValidationError(
+                    f"rule {rule_id}: {at} 'default' branch must be last"
+                )
+            parsed.append({"default": _to_date(branch["default"], rule_id, f"{at}.default")})
+            default_seen = True
+        else:
+            if keys != {"when", "date"}:
+                raise RuleValidationError(
+                    f"rule {rule_id}: {at} branch keys must be exactly "
+                    f"'when','date', got {sorted(keys, key=repr)}"
+                )
+            _validate_logic(branch["when"], rule_id, f"{at}.when")
+            parsed.append(
+                {
+                    "when": branch["when"],
+                    "date": _to_date(branch["date"], rule_id, f"{at}.date"),
+                }
+            )
+    if not default_seen:
+        raise RuleValidationError(
+            f"rule {rule_id}: applies_from branch list needs exactly one "
+            f"'default' branch (last)"
+        )
+    return parsed
 
 
 def _validate_logic(node, rule_id, path="logic"):
@@ -174,11 +233,11 @@ def parse_rule(data):
         _req_str(source.get(field), rule_id, f"legal_source.{field}")
     if data.get("applies_from") is None:
         raise RuleValidationError(f"rule {rule_id}: missing applies_from")
-    applies_from = _to_date(data["applies_from"], rule_id, "applies_from")
+    applies_from = _parse_applies_from(data["applies_from"], rule_id)
     applies_until = None
     if data.get("applies_until") is not None:
         applies_until = _to_date(data["applies_until"], rule_id, "applies_until")
-        if applies_until < applies_from:
+        if isinstance(applies_from, dt.date) and applies_until < applies_from:
             raise RuleValidationError(
                 f"rule {rule_id}: applies_until precedes applies_from"
             )
@@ -186,6 +245,23 @@ def parse_rule(data):
     if not isinstance(logic, dict) or not logic:
         raise RuleValidationError(f"rule {rule_id}: missing/empty logic tree")
     _validate_logic(logic, rule_id)
+    # X2: optional scope predicate, validated with the same grammar as logic.
+    applicable_if = data.get("applicable_if")
+    if applicable_if is not None:
+        if not isinstance(applicable_if, dict) or not applicable_if:
+            raise RuleValidationError(
+                f"rule {rule_id}: applicable_if must be a non-empty predicate mapping"
+            )
+        _validate_logic(applicable_if, rule_id, "applicable_if")
+    # ADR-011(4): timeline_ref anchors every date to corpus/timeline.yaml.
+    timeline_ref = data.get("timeline_ref")
+    if timeline_ref is not None:
+        if not isinstance(timeline_ref, list) or not timeline_ref:
+            raise RuleValidationError(
+                f"rule {rule_id}: timeline_ref must be a non-empty list of strings"
+            )
+        for index, item in enumerate(timeline_ref):
+            _req_str(item, rule_id, f"timeline_ref[{index}]")
     verdict = data.get("verdict")
     if verdict not in VERDICTS:
         raise RuleValidationError(f"rule {rule_id}: verdict must be one of {VERDICTS}")
@@ -198,6 +274,8 @@ def parse_rule(data):
         logic=logic,
         verdict=verdict,
         rationale_key=rationale_key,
+        applicable_if=applicable_if,
+        timeline_ref=list(timeline_ref) if timeline_ref is not None else None,
     )
 
 

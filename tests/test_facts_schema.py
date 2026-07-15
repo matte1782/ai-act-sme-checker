@@ -13,7 +13,9 @@ from engine.facts import (
     validate_facts,
 )
 
-SCHEMA_PATH = "schema/facts.yaml"
+# Gate 4: the synthetic schema moved here so schema/facts.yaml holds the
+# canonical vocabulary; only this path constant changed, assertions intact.
+SCHEMA_PATH = "tests/fixtures/facts_synthetic.yaml"
 
 
 @pytest.fixture()

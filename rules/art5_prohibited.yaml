@@ -1,0 +1,83 @@
+# L2 rules - Article 5 prohibited practices.
+# Statute-first (ADR-011(1)): social scoring and workplace emotion from the
+# base act (corpus/raw/aia_32024R1689_en.pdf Art. 5(1)(c),(f)); the NCII
+# prohibition from the Omnibus (corpus/raw/st_9247_2026_init_en.pdf, new
+# Art. 5(1)(ba) + Art. 5(1a)). Dates anchored to corpus/timeline.yaml.
+#
+# v1 scope note (disclosed - ADR-011(5)): the law-enforcement / lawful-use
+# carve-outs of Art. 5 and the detailed Art. 5(1a) consent/foreseeability
+# tests are not separately modelled; the frozen vocabulary reduces Art.
+# 5(1a)(a)(ii) to "capability present AND no state-of-the-art safeguards".
+# Omissions are conservative (never a false COMPLIANT on a prohibited use).
+
+# opposite: [ART5_SOCIAL_SCORING] ruling a social-scoring system COMPLIANT would deny that Art. 5(1)(c) prohibits it outright, with no compliant configuration.
+# opposite: [ART5_EMOTION_WORKPLACE] ruling workplace emotion recognition COMPLIANT absent the medical/safety ground would ignore that Art. 5(1)(f) prohibits it save that exception.
+# opposite: [ART5_NCII] ruling an unsafeguarded NCII-capable system COMPLIANT would deny the Art. 5(1)(ba)/(1a) prohibition on systems that foreseeably produce such material without safeguards.
+rules:
+  - id: ART5_SOCIAL_SCORING
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Art. 5(1)(c)"
+      paragraph: "1"
+    applies_from: "2025-02-02"
+    timeline_ref: ["Art. 5 original prohibitions"]
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 5(1)(c): social scoring is a prohibited practice - its presence is
+    # the violation (no compliant configuration exists).
+    logic: {fact: practice_social_scoring, op: eq, value: true}
+    verdict: NON_COMPLIANT
+    rationale_key: art5.social_scoring_prohibited
+
+  - id: ART5_EMOTION_WORKPLACE
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Art. 5(1)(f)"
+      paragraph: "1"
+    applies_from: "2025-02-02"
+    timeline_ref: ["Art. 5 original prohibitions"]
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 5(1)(f): inferring emotions in the workplace OR education
+    # institutions is prohibited EXCEPT for medical or safety reasons. The
+    # frozen fact name is 'workplace', but the questionnaire meaning covers
+    # both Art. 5(1)(f) areas (hunt F1); adding an education leaf to the logic
+    # is impossible without breaking S06's frozen COMPLIANT (it would be
+    # UNKNOWN and demote it). Violation = in a prohibited area AND no exception.
+    logic:
+      all:
+        - {fact: emotion_recognition_workplace, op: eq, value: true}
+        - {fact: emotion_medical_safety_exception, op: eq, value: false}
+    verdict: NON_COMPLIANT
+    rationale_key: art5.emotion_workplace_no_exception
+
+  - id: ART5_NCII
+    legal_source:
+      corpus_id: omnibus-st-9247-26-en
+      article: "Art. 5(1)(ba) as amended (Omnibus)"
+      paragraph: "1"
+    applies_from: "2026-12-02"
+    timeline_ref: ["Art. 5 NCII/CSAM (new, Omnibus)"]
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 5(1a)(a): prohibited where (i) generating NCII is the intended
+    # purpose (regardless of safeguards), OR (ii) the system can foreseeably
+    # generate NCII AND lacks state-of-the-art safeguards. Both branches
+    # modelled (hunt F3 closed the (i) gap).
+    logic:
+      any:
+        - {fact: ncii_intended_purpose, op: eq, value: true}
+        - all:
+            - {fact: ncii_generation_capability, op: eq, value: true}
+            - {fact: ncii_safeguards_state_of_art, op: eq, value: false}
+    verdict: NON_COMPLIANT
+    rationale_key: art5.ncii_prohibited

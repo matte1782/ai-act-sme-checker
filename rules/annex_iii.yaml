@@ -1,0 +1,42 @@
+# L2 rule - Annex III high-risk (Chapter III obligations).
+# Statute-first (ADR-011(1)): Art. 6(2) + Annex III (base act) classify the
+# listed use cases as high-risk; the Omnibus sets their Chapter III
+# applicability to 2027-12-02 (amended Art. 113(3)(c)(i),
+# corpus/raw/st_9247_2026_init_en.pdf). Date anchored via timeline_ref.
+#
+# VERDICT-SAFE BY CONSTRUCTION (ADR-002 v1; PROMPT 6 Phase E):
+# - the Annex III use case only puts the rule IN SCOPE (applicable_if); it
+#   is NEVER by itself a source of NON_COMPLIANT;
+# - before 2027-12-02 the rule is INACTIVE - the renderer still exposes the
+#   applies_from deadline through the applicability leaf (S14 note);
+# - after activation the verdict rests solely on whether the deployer has
+#   MET the Chapter III obligations (chapter_iii_obligations_met). If that
+#   fact is unanswered the rule fails closed to UNDETERMINED - it never
+#   fabricates NON_COMPLIANT from the use case alone.
+
+# opposite: [HR_ANNEX_III] ruling a high-risk deployer that HAS met its Chapter III obligations NON_COMPLIANT would misapply Art. 6(2)/Chapter III, which is satisfied once those obligations are met.
+rules:
+  - id: HR_ANNEX_III
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Chapter III (Art. 6(2), Annex III)"
+      paragraph: "6(2)"
+    applies_from: "2027-12-02"
+    timeline_ref: ["Annex III high-risk (Chapter III)"]
+    # In scope only for an in-market AI system, not purely personal use
+    # (Art. 2(10)), AND an actual Annex III high-risk use case.
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}
+        - fact: annex_iii_use_case
+          op: in
+          value: [employment_recruitment, education, critical_infrastructure,
+                  credit_scoring, law_enforcement]
+    # Verdict rests ONLY on whether Chapter III obligations are met; an
+    # unanswered fact fails closed to UNDETERMINED (never NON_COMPLIANT from
+    # the use case).
+    logic: {fact: chapter_iii_obligations_met, op: eq, value: true}
+    verdict: COMPLIANT
+    rationale_key: annex_iii.chapter_iii_obligations

@@ -164,3 +164,39 @@ a89429c49bfe1cc65104abfaf88c6957873a540be25e52641d8c3b4baa2b1be6 *golden/S11.yam
 82ae4ddfb9f7b44849bc86a6e6a5a6ba9621f338a6eb65dcb3731951c085d060 *golden/S12.yaml
 963d35b40f010ced54d54c0c171d7e7fc6ac74804f7c8c80415c5d311ceccc21 *golden/S13.yaml
 41f9ee853c929ec5d5dd5dcc9536240f9f2f71cd9a6ce92527b816887b3e2fb8 *golden/S14.yaml
+
+## ADR-010: session entry protocol; precedents live in ADRs only
+Date: 2026-07-15. Status: ACCEPTED. HEAD: 694556b.
+Gates 3a/3b entered on dirty trees; the agent applied a
+'standing owner ruling' (commit-first) recalled from a prior
+session. Disclosed and correct in outcome, but precedent held in
+agent memory is drift by construction. Codified: at session
+entry, if every dirty path belongs to the previous gate's
+deliverables AND check.sh ends GATE_PASS, exactly one
+baseline-restoring commit is authorized; any other dirty state
+is a STOP. No other cross-session ruling may be applied unless
+written in an ADR. Commit messages are not ADRs.
+
+## ADR-011: rule authoring protocol (anti-confirmation-bias)
+Date: 2026-07-15. Status: ACCEPTED. HEAD: 694556b.
+The rule author can see the 14 frozen cases: teaching-to-the-test
+is the structural temptation of Gate 4. Protocol, binding:
+(1) STATUTE-FIRST: before authoring a rule, read the cited
+article in corpus/raw (the manifest names the files); the rule
+encodes the article, the oracle only judges the outcome. Logic
+reverse-engineered from a golden scenario is a DEFECT.
+(2) PRE-MORTEM (prospective hindsight, Klein): before any code,
+write docs/gate4_premortem.md - 'this gate failed in 3 months:
+why?' - >=3 concrete causes, <=15 lines total.
+(3) CONSIDER-THE-OPPOSITE (Lord/Lepper/Preston): every rule
+carries a '# opposite: [<RULE_ID>] <one line: why the contrary
+verdict would violate the cited provision>' comment; enforced by
+test (comment ids must equal loaded rule ids, both directions).
+(4) NO HAND-TYPED DATES: every rule declares timeline_ref
+(list of corpus/timeline.yaml obligation strings); a test
+asserts every date in the rule is covered by its referenced
+entries. Dates are anchored, never re-typed from memory.
+(5) EXPRESSIVENESS STOP: where the rule grammar cannot express
+the cited provision faithfully (an exception, a scope nuance),
+STOP with the article text quoted - never approximate silently.
+Deterministic gates: (3) and (4) sandbox-verified 2026-07-14.

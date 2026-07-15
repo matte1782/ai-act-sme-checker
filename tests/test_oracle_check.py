@@ -410,14 +410,18 @@ def test_undetermined_disjoint_from_temporal_inactive(tmp_path, capsys):
 
 
 def test_not_applicable_pending_engine_extension(tmp_path, capsys):
-    # ADR-009: until the engine exposes STATUS_NOT_APPLICABLE, an armed
-    # run lists the S10-class expectation as a mismatch - never a pass.
+    # Post-Gate-4 (owner-authorized 2026-07-15, events.jsonl): the engine
+    # now exposes core.STATUS_NOT_APPLICABLE, so oracle_check's transitional
+    # "Gate-4 extension" hint (guarded by `not hasattr`) is unreachable.
+    # Substance preserved: RULES_G1 has no applicable_if scope gate, so it
+    # can NEVER produce NOT_APPLICABLE - an S10-class expectation on it is
+    # reported as a mismatch, never a silent pass.
     env = armed_env(tmp_path, valid(status="NOT_APPLICABLE"))
     rc = oracle_check.main(**env)
     assert rc == 1
     out = capsys.readouterr().out
-    assert "S01/G1: expected NOT_APPLICABLE" in out
-    assert "Gate-4 extension" in out
+    assert out.startswith("ORACLE_FAIL")
+    assert "S01/G1: expected NOT_APPLICABLE, got NON_COMPLIANT" in out
 
 
 # --- frozen-set anchor ---------------------------------------------------

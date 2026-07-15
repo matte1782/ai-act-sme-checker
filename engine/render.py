@@ -43,6 +43,20 @@ def _render_node(node, depth):
             f"{pad}- fact {_safe(node['fact'])} -> {node['value']} "
             f"[{_safe(node['citation']['corpus_id'])} {_safe(node['citation']['article'])}]"
         ]
+    if node.get("op") == "scope":
+        # X1: a NOT_APPLICABLE / scope-undetermined leaf carries its own
+        # citation (INV-5 non-vacuous), rendered like a fact leaf's.
+        cite = node.get("citation", {})
+        header = f"{pad}- scope -> {node.get('value', '?')}"
+        if node.get("reason"):
+            header += f" ({_safe(node['reason'])})"
+        header += (
+            f" [{_safe(cite.get('corpus_id', ''))} {_safe(cite.get('article', ''))}]"
+        )
+        lines = [header]
+        for child in node.get("children", []):
+            lines.extend(_render_node(child, depth + 1))
+        return lines
     header = f"{pad}- {_safe(node.get('op', '?'))} -> {node.get('value', '?')}"
     if node.get("reason"):
         header += f" ({_safe(node['reason'])})"

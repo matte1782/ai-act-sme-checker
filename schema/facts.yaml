@@ -1,22 +1,120 @@
-# L3 facts schema - Gate 2 SYNTHETIC facts only (no legal content).
-# Real questionnaire facts arrive with the corpus at Gate 3.
+# L3 canonical facts schema (Gate 4, ADR-009).
+# The vocabulary is the UNION of the fact names used by the frozen golden
+# set oracle/golden/S01-S14 (the scenarios DEFINE the vocabulary), plus the
+# chapter-III-obligations fact HR_ANNEX_III needs to fail closed (Phase E).
+# Italian is first-class, plain SME language (no legalese). The
+# questionnaire is generated FROM this schema; no free-text fact enters
+# the engine (ADR-003). The synthetic schema moved to
+# tests/fixtures/facts_synthetic.yaml.
 facts:
-  - name: f_true
+  # --- material / territorial scope (Art. 2) ---
+  - name: is_ai_system
     type: bool
-    i18n: {it: "fatto vero (sintetico)", en: "true fact (synthetic)"}
-  - name: f_false
+    i18n:
+      it: "Il sistema e un sistema di IA (sono inclusi gli approcci logici e knowledge-based)?"
+      en: "Is the system an AI system (logic- and knowledge-based approaches are included)?"
+  - name: in_eu_market
     type: bool
-    i18n: {it: "fatto falso (sintetico)", en: "false fact (synthetic)"}
-  - name: f_unknown
+    i18n:
+      it: "Il sistema e immesso sul mercato UE, messo in servizio o utilizzato nell'Unione?"
+      en: "Is the system placed on the EU market, put into service, or used in the Union?"
+  - name: personal_nonprofessional_use
     type: bool
-    i18n: {it: "fatto ignoto (sintetico)", en: "unknown fact (synthetic)"}
-  - name: a
-    type: bool
-    i18n: {it: "fatto a (sintetico)", en: "fact a (synthetic)"}
-  - name: b
+    i18n:
+      it: "E usato da una persona fisica per un'attivita puramente personale e non professionale?"
+      en: "Is it used by a natural person in a purely personal, non-professional activity?"
+  - name: operator_role
     type: enum
-    values: [x, y, z]
-    i18n: {it: "fatto b (sintetico)", en: "fact b (synthetic)"}
-  - name: d_start
-    type: date
-    i18n: {it: "data inizio (sintetica)", en: "start date (synthetic)"}
+    values: [provider, deployer]
+    i18n:
+      it: "Qual e il tuo ruolo: fornitore (provider) o deployer (utilizzatore professionale)?"
+      en: "What is your role: provider or deployer?"
+
+  # --- Art. 50 transparency ---
+  - name: interacts_with_persons
+    type: bool
+    i18n:
+      it: "Il sistema e destinato a interagire direttamente con le persone fisiche?"
+      en: "Is the system intended to interact directly with natural persons?"
+  - name: interaction_disclosed
+    type: bool
+    i18n:
+      it: "Le persone sono informate che stanno interagendo con un sistema di IA?"
+      en: "Are the persons informed that they are interacting with an AI system?"
+  - name: deepfake_published
+    type: bool
+    # Art. 50(4) triggers on a deployer's system that GENERATES or manipulates
+    # deep-fake content, not on publication alone - the question captures that
+    # (hunt F2). 'false' means the system does not produce deep fakes at all.
+    i18n:
+      it: "Il sistema genera, pubblica o diffonde deepfake (immagini, audio o video artificiali)?"
+      en: "Does the system generate, publish or disseminate deep fakes (artificial image, audio or video)?"
+  - name: deepfake_disclosed
+    type: bool
+    i18n:
+      it: "E dichiarato che il contenuto e stato generato o manipolato artificialmente?"
+      en: "Is it disclosed that the content was artificially generated or manipulated?"
+  - name: generates_synthetic_content
+    type: bool
+    i18n:
+      it: "Il sistema genera contenuti sintetici (audio, immagini, video o testo)?"
+      en: "Does the system generate synthetic content (audio, image, video or text)?"
+  - name: content_marked_machine_readable
+    type: bool
+    i18n:
+      it: "I contenuti sintetici sono marcati in un formato leggibile dalla macchina?"
+      en: "Is the synthetic output marked in a machine-readable format?"
+  - name: system_on_market_before_2026_08_02
+    type: bool
+    i18n:
+      it: "Il sistema era gia immesso sul mercato prima del 2 agosto 2026?"
+      en: "Was the system already placed on the market before 2 August 2026?"
+
+  # --- Art. 5 prohibited practices ---
+  - name: practice_social_scoring
+    type: bool
+    i18n:
+      it: "Il sistema valuta o classifica le persone in base al comportamento sociale (punteggio sociale)?"
+      en: "Does the system evaluate or classify people based on social behaviour (social scoring)?"
+  - name: emotion_recognition_workplace
+    type: bool
+    i18n:
+      it: "Il sistema deduce le emozioni delle persone sul luogo di lavoro o negli istituti di istruzione?"
+      en: "Does the system infer people's emotions in the workplace or in education settings?"
+  - name: emotion_medical_safety_exception
+    type: bool
+    i18n:
+      it: "Il riconoscimento delle emozioni e destinato a motivi medici o di sicurezza?"
+      en: "Is the emotion recognition intended for medical or safety reasons?"
+  - name: ncii_generation_capability
+    type: bool
+    i18n:
+      it: "Il sistema puo generare immagini intime non consensuali (NCII)?"
+      en: "Can the system generate non-consensual intimate images (NCII)?"
+  - name: ncii_safeguards_state_of_art
+    type: bool
+    i18n:
+      it: "Sono presenti salvaguardie tecniche allo stato dell'arte contro tale utilizzo?"
+      en: "Are state-of-the-art safeguards against that use in place?"
+  - name: ncii_intended_purpose
+    type: bool
+    # Art. 5(1a)(a)(i): if generating/manipulating NCII is the system's
+    # intended purpose it is prohibited regardless of safeguards (hunt F3).
+    i18n:
+      it: "Generare o manipolare NCII e lo scopo previsto del sistema?"
+      en: "Is generating or manipulating NCII the system's intended purpose?"
+
+  # --- Annex III high-risk (Chapter III) ---
+  - name: annex_iii_use_case
+    type: enum
+    values:
+      [none, employment_recruitment, education, critical_infrastructure,
+       credit_scoring, law_enforcement]
+    i18n:
+      it: "Il sistema rientra in un caso d'uso ad alto rischio dell'Allegato III? Quale?"
+      en: "Does the system fall under an Annex III high-risk use case? Which one?"
+  - name: chapter_iii_obligations_met
+    type: bool
+    i18n:
+      it: "Per un uso ad alto rischio: gli obblighi del Capo III sono gia stati soddisfatti?"
+      en: "For a high-risk use: are the Chapter III obligations already met?"

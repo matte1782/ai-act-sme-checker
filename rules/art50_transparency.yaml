@@ -1,0 +1,91 @@
+# L2 rules - Article 50 transparency (base act aia-2024-1689-en).
+# Authored statute-first (ADR-011(1)) from corpus/raw/aia_32024R1689_en.pdf
+# Art. 50, cross-read with Art. 2 (scope) and the Omnibus legacy grace
+# (corpus/raw/st_9247_2026_init_en.pdf Art. 111(4)). Dates are anchored to
+# corpus/timeline.yaml via timeline_ref, never hand-typed (ADR-011(4)).
+#
+# Material scope (applicable_if) encodes Art. 2: an AI system, on the EU
+# market, not a purely personal non-professional use (Art. 2(10)). The
+# scope leaf inherits the rule's own citation (grammar has no per-leaf
+# scope cite); the Art. 2(10) basis is named in each rationale/opposite.
+#
+# v1 scope note (disclosed, not silent - ADR-011(5)): Art. 50(1)'s "unless
+# this is obvious" carve-out and the law-enforcement carve-outs of
+# Art. 50(1)/(4) are NOT modelled - the frozen vocabulary (ADR-009) has no
+# fact for them. Every omission is CONSERVATIVE (it can only turn a
+# COMPLIANT into a flag for review, never a false COMPLIANT).
+
+# opposite: [ART50_1] ruling an undisclosed interactive system COMPLIANT would nullify Art. 50(1)'s duty to inform persons they are interacting with an AI system.
+# opposite: [ART50_2] ruling unmarked synthetic output COMPLIANT would nullify Art. 50(2)'s duty to mark AI output as machine-readable and detectable.
+# opposite: [ART50_4] ruling an undisclosed deep fake COMPLIANT would nullify Art. 50(4)'s duty to disclose artificially generated or manipulated content.
+rules:
+  - id: ART50_1
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Art. 50(1)"
+      paragraph: "1"
+    applies_from: "2026-08-02"
+    timeline_ref: ["Art. 50(1),(3),(4) transparency"]
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 50(1): a system intended to interact with persons that does NOT
+    # inform them is the violation.
+    logic:
+      all:
+        - {fact: interacts_with_persons, op: eq, value: true}
+        - {fact: interaction_disclosed, op: eq, value: false}
+    verdict: NON_COMPLIANT
+    rationale_key: art50_1.interaction_not_disclosed
+
+  - id: ART50_2
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Art. 50(2)"
+      paragraph: "2"
+    # X3: new systems from 2026-08-02 (Art. 50(2)); systems already on the
+    # market before 2026-08-02 get the Omnibus legacy grace to 2026-12-02
+    # (Art. 111(4), corpus st-9247-26). Both dates anchored below.
+    applies_from:
+      - when: {fact: system_on_market_before_2026_08_02, op: eq, value: true}
+        date: "2026-12-02"
+      - default: "2026-08-02"
+    timeline_ref:
+      - "Art. 50(2) marking, new systems"
+      - "Art. 50(2) marking, legacy systems"
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 50(2): synthetic content whose output is NOT marked machine-readable
+    # is the violation.
+    logic:
+      all:
+        - {fact: generates_synthetic_content, op: eq, value: true}
+        - {fact: content_marked_machine_readable, op: eq, value: false}
+    verdict: NON_COMPLIANT
+    rationale_key: art50_2.synthetic_not_marked
+
+  - id: ART50_4
+    legal_source:
+      corpus_id: aia-2024-1689-en
+      article: "Art. 50(4)"
+      paragraph: "4"
+    applies_from: "2026-08-02"
+    timeline_ref: ["Art. 50(1),(3),(4) transparency"]
+    applicable_if:
+      all:
+        - {fact: is_ai_system, op: eq, value: true}
+        - {fact: in_eu_market, op: eq, value: true}
+        - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
+    # Art. 50(4): a published deep fake that is NOT disclosed as artificially
+    # generated or manipulated is the violation.
+    logic:
+      all:
+        - {fact: deepfake_published, op: eq, value: true}
+        - {fact: deepfake_disclosed, op: eq, value: false}
+    verdict: NON_COMPLIANT
+    rationale_key: art50_4.deepfake_not_disclosed
