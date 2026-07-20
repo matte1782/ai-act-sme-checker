@@ -26,6 +26,8 @@ No claude-mem.
   never in agent memory.
 - Rules: statute-first, opposite-comment, timeline-anchored
   dates, expressiveness STOPs (ADR-011).
+- Output paths per ADR-012: registered, disclaimer-structural,
+  no verdicts in exit codes, i18n load-strict.
 
 ## Project non-negotiables (the engine's ethics)
 - FAIL-CLOSED: when the rules do not decide, the verdict is

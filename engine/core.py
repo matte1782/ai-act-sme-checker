@@ -197,6 +197,10 @@ def evaluate(rules, facts, as_of_date, corpus_version):
                         "op": "applicability",
                         "value": "UNKNOWN",
                         "reason": reason,
+                        # C1 (Gate-5): the RESOLVED window date (X3 branch
+                        # already selected) as structured data - the deadlines
+                        # renderer reads this, never the reason string.
+                        "applies_from": resolved_from.isoformat(),
                         "citation": dict(cite_leaf),
                     }
                 ],

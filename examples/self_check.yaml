@@ -1,0 +1,59 @@
+# SELF-CLASSIFICATION dogfood (PROMPT 7 Phase E; closes CLAUDE.md
+# non-negotiable #4). Subject = THIS engine. Statute-first (ADR-011(1)):
+# every value is justified below; genuinely-uncertain facts are left null
+# -> UNKNOWN (a fail-closed self-assessment is the point, not a clean bill).
+
+# Art. 3(1) + Commission Guidelines C(2025) 5053: a machine-based system
+# that INFERS outputs (here: compliance verdicts) from input; logic- and
+# knowledge-based approaches are expressly included. This engine so
+# classifies itself.
+is_ai_system: true
+
+# Art. 2(1): developed and operated in the Union. Conservative in-scope
+# self-assessment; the R&D exclusions Art. 2(6)/(8) may apply to a v1
+# prototype, but we assume scope rather than assume it away.
+in_eu_market: true
+
+# Art. 2(10): a professional/educational engineering project, not a purely
+# personal non-professional activity.
+personal_nonprofessional_use: false
+
+# Art. 3: the developer provides the system.
+operator_role: provider
+
+# Art. 50(1): the CLI interacts directly with a natural person (Q&A + report).
+interacts_with_persons: true
+# The CLI declares the AI-based interaction (ADR-012(6), docs/self_classification.md).
+interaction_disclosed: true
+
+# Art. 50(2): GENUINELY UNCERTAIN - the engine emits a deterministic,
+# template-composed compliance report; whether that counts as "synthetic
+# text content" in the generative-AI sense of Art. 50(2) is unsettled.
+generates_synthetic_content: null
+content_marked_machine_readable: null
+
+# The engine was first built 2026-07-14; it is a new system, not one placed
+# on the market before 2026-08-02 (Omnibus Art. 111(4) legacy grace).
+system_on_market_before_2026_08_02: false
+
+# Art. 50(4): the engine neither generates nor disseminates deep fakes.
+deepfake_published: false
+deepfake_disclosed: false
+
+# Art. 5(1)(c): the engine does not score or classify people socially.
+practice_social_scoring: false
+
+# Art. 5(1)(f): the engine does not infer emotions; the medical/safety
+# exception is therefore not engaged.
+emotion_recognition_workplace: false
+emotion_medical_safety_exception: false
+
+# Art. 5(1)(ba)+5(1a): the engine cannot and is not intended to generate NCII.
+ncii_generation_capability: false
+ncii_intended_purpose: false
+ncii_safeguards_state_of_art: false
+
+# Art. 6(2)/Annex III: a compliance self-check tool is not itself one of the
+# Annex III high-risk use cases.
+annex_iii_use_case: none
+chapter_iii_obligations_met: null

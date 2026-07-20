@@ -200,3 +200,30 @@ entries. Dates are anchored, never re-typed from memory.
 the cited provision faithfully (an exception, a scope nuance),
 STOP with the article text quoted - never approximate silently.
 Deterministic gates: (3) and (4) sandbox-verified 2026-07-14.
+
+## ADR-011a: amends ADR-011 - pre-mortem generalized per gate
+Date: 2026-07-15. Status: ACCEPTED. HEAD: 2d46af3.
+ADR-011(2) named docs/gate4_premortem.md. Generalized: every
+gate session writes docs/gate<N>_premortem.md (>=3 causes,
+<=15 lines, no Impl: lines) BEFORE any code, and uses it as the
+review lens for the gate's build and hunt phases.
+
+## ADR-012: output-path contract (CLI first)
+Date: 2026-07-15. Status: ACCEPTED. HEAD: 2d46af3.
+Every user-facing output path MUST: (1) be registered in
+docs/architecture.md L5; (2) route verdict content EXCLUSIVELY
+through render_report (or a successor with the same structural
+disclaimer refusal) - no second print path for verdicts; (3)
+carry its own INV-4 test (full-run output contains the exact
+disclaimer block); (4) i18n via i18n/messages.yaml - a missing
+catalog key is a LOAD-TIME error, never a silent fallback to
+another language; (5) process exit codes carry NO compliance
+semantics: 0 = report produced (whatever the verdicts), 2 =
+input/usage error. Encoding verdicts in exit codes would let a
+CI pipeline treat this tool as a legal gate - the misuse the
+NOT-LEGAL-ADVICE constraint exists to prevent. (6) The CLI
+declares to the user that they are interacting with an AI-based
+system (the engine's own Art. 50(1)-style disclosure; see
+docs/self_classification.md). (7) The corpus refresh (OJ
+publication) is NEVER performed inside an output-path gate: it
+is a re-run of PROMPT 4 Phase C (manifest refresh_task).

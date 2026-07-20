@@ -66,7 +66,54 @@ def _render_node(node, depth):
     return lines
 
 
-def render_report(verdicts, as_of, corpus_version, disclaimer):
+def _iter_nodes(node):
+    yield node
+    for child in node.get("children", []):
+        yield from _iter_nodes(child)
+
+
+def _deadline_of(verdict):
+    """The upcoming deadline of an INACTIVE verdict (UNDETERMINED + an
+    op=='applicability' leaf), read from the C1 structured 'applies_from'
+    field - never parsed from a reason string (ADR-012, Gate-5 C2)."""
+    if verdict.status != "UNDETERMINED":
+        return None
+    for node in _iter_nodes(verdict.explanation):
+        if node.get("op") == "applicability" and "applies_from" in node:
+            return node["applies_from"], node.get("citation", {})
+    return None
+
+
+def _deadlines_section(verdicts, i18n):
+    # Known limitation (hunt F2, disclosed): because X4 precedence is
+    # temporal-before-scope, a rule that is out of material scope still shows
+    # a future deadline while temporally inactive (it over-warns, never
+    # under-warns). Fixing it would evaluate scope during the inactive window,
+    # changing the owner-fixed precedence - out of scope for Gate 5.
+    ui = i18n["ui"]
+    lines = ["", f"{ui['deadlines_header']}:"]
+    found = False
+    for verdict in verdicts:
+        deadline = _deadline_of(verdict)
+        if deadline is None:
+            continue
+        found = True
+        applies_from, cite = deadline
+        lines.append(
+            f"  - {_safe(verdict.rule_id)}: {_safe(applies_from)} "
+            f"[{_safe(cite.get('corpus_id', ''))} {_safe(cite.get('article', ''))}]"
+        )
+    if not found:
+        lines.append(f"  {ui['deadlines_none']}")
+    lines.append("")
+    return lines
+
+
+def render_report(verdicts, as_of, corpus_version, disclaimer, i18n=None):
+    """Render the report. i18n=None keeps the raw English shape (existing
+    callers unchanged); an i18n bundle localizes status labels, adds a
+    rationale line per verdict, and appends the deadlines section - all
+    verdict content stays inside this one function (ADR-012(2))."""
     if disclaimer != DISCLAIMER:
         raise MissingDisclaimerError(
             "refusing to render: output lacks the exact NOT-LEGAL-ADVICE block"
@@ -79,19 +126,30 @@ def render_report(verdicts, as_of, corpus_version, disclaimer):
             f"verdicts evaluated at a different as_of than the report stamp "
             f"{as_of.isoformat()}: {stale}"
         )
-    lines = [
-        DISCLAIMER,
-        "",
+    lines = [DISCLAIMER, ""]
+    # ADR-012(6): the engine's own Art. 50(1)-style AI-based-interaction
+    # disclosure, carried on the report artifact (both CLI modes).
+    if i18n and i18n["ui"].get("ai_disclosure"):
+        lines.append(i18n["ui"]["ai_disclosure"])
+        lines.append("")
+    lines += [
         f"as_of: {as_of.isoformat()}",
         f"corpus_version: {corpus_version}",
         "",
     ]
     for verdict in verdicts:
         cite = verdict.citation
+        status_label = (
+            i18n["status_labels"][verdict.status] if i18n else verdict.status
+        )
         lines.append(
-            f"[{verdict.status}] {_safe(verdict.rule_id)} "
+            f"[{_safe(status_label)}] {_safe(verdict.rule_id)} "
             f"({_safe(cite['corpus_id'])} {_safe(cite['article'])}({_safe(cite['paragraph'])}))"
         )
+        if i18n:
+            rationale = i18n["rationales"].get(verdict.rationale_key)
+            if rationale:
+                lines.append(f"  -> {_safe(rationale)}")
         if verdict.unknown_facts:
             lines.append(
                 "  unknown facts: "
@@ -99,4 +157,6 @@ def render_report(verdicts, as_of, corpus_version, disclaimer):
             )
         lines.extend(_render_node(verdict.explanation, depth=1))
         lines.append("")
+    if i18n:
+        lines.extend(_deadlines_section(verdicts, i18n))
     return "\n".join(lines)

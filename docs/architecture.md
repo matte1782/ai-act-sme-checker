@@ -41,16 +41,40 @@ per rule: (1) temporal window (X3 branch-date selection, fail
 closed on an unknown 'when') -> INACTIVE; (2) applicable_if ->
 NOT_APPLICABLE (FALSE, op=='scope' citation leaf) or UNDETERMINED
 (UNKNOWN, named); (3) logic. NOT_APPLICABLE never rests on an
-unknown scope fact (X5).
-Impl: [engine/core.py:L1-L282](engine/core.py)
+unknown scope fact (X5). Gate-5: the temporal-INACTIVE applicability
+leaf also carries the resolved "applies_from" ISO date (C1).
+Impl: [engine/core.py:L1-L286](engine/core.py)
 
 ## L5 Output paths
 CLI first. Renderer contract: refuses to emit any user-facing
 output lacking the NOT-LEGAL-ADVICE disclaimer block (INV-4).
 Every verdict rendered with: citation, as_of stamp, corpus
 version, explanation tree. Gate-4: a NOT_APPLICABLE verdict and
-its op=='scope' leaf render with the leaf's citation (X1).
-Impl: [engine/render.py:L1-L102](engine/render.py)
+its op=='scope' leaf render with the leaf's citation (X1). Gate-5:
+an optional i18n bundle localizes status labels + a rationale line
+and appends a deadlines section built from the resolved applies_from
+leaf field (never parsed from a reason string).
+Impl: [engine/render.py:L1-L162](engine/render.py)
+
+### L5 CLI (ADR-012 output-path contract)
+`python -m engine.cli`, two modes: non-interactive (`--answers
+<file.yaml> [--as-of YYYY-MM-DD] [--lang it|en]`) and interactive
+(schema-ordered questionnaire on stdin; '?' = UNKNOWN; an EOF or
+interrupt mid-questionnaire yields NO partial report and exits 2).
+All verdict content goes through render_report (ADR-012(2)); i18n via
+i18n/messages.yaml loaded strictly - a missing key is a load error,
+never a silent fallback (ADR-012(4)); exit codes are exactly {0,2}
+and carry no compliance semantics (ADR-012(5)); the banner and report
+declare the AI-based interaction (ADR-012(6),
+docs/self_classification.md).
+Impl: [engine/cli.py:L1-L210](engine/cli.py)
+
+### L5 i18n catalog
+`i18n/messages.yaml`: status_labels, rationales, ui - each with it
+AND en. Strict load + completeness (every rule rationale_key, all
+four statuses, all required ui.* keys) or the catalog refuses to
+load (ADR-012(4)).
+Impl: [engine/i18n.py:L1-L82](engine/i18n.py)
 
 ## L6 Oracle & tests
 `oracle/golden/*.yaml`: frozen SME scenarios, each with expected
