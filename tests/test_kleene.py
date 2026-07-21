@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Kleene K3 truth tables: all()=min, any()=max, not() swaps T/F and
 preserves UNKNOWN. Exhaustive over {TRUE, FALSE, UNKNOWN}.
 """

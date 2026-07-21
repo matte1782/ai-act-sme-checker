@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Pinning tests for the Gate-2 adversarial bypass hunt findings.
 
 Every test here encodes a confirmed attack from the post-GREEN hunt:

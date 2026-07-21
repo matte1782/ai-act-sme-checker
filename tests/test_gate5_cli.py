@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-5 CLI (engine/cli.py, PROMPT 7 Phase D): TDD RED first.
 
 Covers: INV-4 full-run both modes + both langs; answers-file ADR-008

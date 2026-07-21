@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """INV-1 fail-closed: no COMPLIANT verdict may depend on any UNKNOWN fact.
 
 Synthetic fixtures only (TEST-ACT-1). Covers >=6 all/any/not tree shapes

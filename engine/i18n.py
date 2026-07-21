@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L5 i18n catalog loader (ADR-012(4)).
 
 The catalog i18n/messages.yaml carries status_labels, rationales and ui
@@ -18,6 +20,10 @@ REQUIRED_UI = (
     "ai_disclosure", "intro", "hint_bool", "hint_enum", "invalid_answer",
     "unknown_forced", "interrupted", "deadlines_header", "deadlines_none",
     "token_yes", "token_no",
+    # web (ADR-013) chrome
+    "web_yes", "web_no", "web_unknown", "web_back", "web_restart", "web_print",
+    "web_question", "web_of", "web_explanation", "web_results_title",
+    "provisional_notice",
 )
 
 

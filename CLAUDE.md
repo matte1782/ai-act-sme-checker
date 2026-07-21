@@ -28,6 +28,8 @@ No claude-mem.
   dates, expressiveness STOPs (ADR-011).
 - Output paths per ADR-012: registered, disclaimer-structural,
   no verdicts in exit codes, i18n load-strict.
+- Web path per ADR-013: client-side only, CSP-enforced zero
+  exfiltration, no build step, bundle sha256-frozen.
 
 ## Project non-negotiables (the engine's ethics)
 - FAIL-CLOSED: when the rules do not decide, the verdict is

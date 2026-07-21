@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """R1 (Gate-2 residual): PyYAML duplicate-key last-wins.
 
 A rules file containing duplicate mapping keys must be REJECTED, not

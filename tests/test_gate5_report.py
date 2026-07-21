@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-5 report foundations (PROMPT 7 Phase C): TDD RED first.
 
 C1: the op=='applicability' leaf gains a RESOLVED "applies_from" ISO field

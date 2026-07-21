@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L3 facts schema: typed facts (bool/enum/date) with i18n keys; missing
 answers resolve to UNKNOWN (fail-closed); undeclared/wrong-typed reject.
 Synthetic facts only.

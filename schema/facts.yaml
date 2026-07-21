@@ -11,30 +11,30 @@ facts:
   - name: is_ai_system
     type: bool
     i18n:
-      it: "Il sistema e un sistema di IA (sono inclusi gli approcci logici e knowledge-based)?"
+      it: "Il sistema è un sistema di IA (sono inclusi gli approcci logici e knowledge-based)?"
       en: "Is the system an AI system (logic- and knowledge-based approaches are included)?"
   - name: in_eu_market
     type: bool
     i18n:
-      it: "Il sistema e immesso sul mercato UE, messo in servizio o utilizzato nell'Unione?"
+      it: "Il sistema è immesso sul mercato UE, messo in servizio o utilizzato nell'Unione?"
       en: "Is the system placed on the EU market, put into service, or used in the Union?"
   - name: personal_nonprofessional_use
     type: bool
     i18n:
-      it: "E usato da una persona fisica per un'attivita puramente personale e non professionale?"
+      it: "È usato da una persona fisica per un'attività puramente personale e non professionale?"
       en: "Is it used by a natural person in a purely personal, non-professional activity?"
   - name: operator_role
     type: enum
     values: [provider, deployer]
     i18n:
-      it: "Qual e il tuo ruolo: fornitore (provider) o deployer (utilizzatore professionale)?"
+      it: "Qual è il tuo ruolo: fornitore (provider) o deployer (utilizzatore professionale)?"
       en: "What is your role: provider or deployer?"
 
   # --- Art. 50 transparency ---
   - name: interacts_with_persons
     type: bool
     i18n:
-      it: "Il sistema e destinato a interagire direttamente con le persone fisiche?"
+      it: "Il sistema è destinato a interagire direttamente con le persone fisiche?"
       en: "Is the system intended to interact directly with natural persons?"
   - name: interaction_disclosed
     type: bool
@@ -52,7 +52,7 @@ facts:
   - name: deepfake_disclosed
     type: bool
     i18n:
-      it: "E dichiarato che il contenuto e stato generato o manipolato artificialmente?"
+      it: "È dichiarato che il contenuto è stato generato o manipolato artificialmente?"
       en: "Is it disclosed that the content was artificially generated or manipulated?"
   - name: generates_synthetic_content
     type: bool
@@ -67,7 +67,7 @@ facts:
   - name: system_on_market_before_2026_08_02
     type: bool
     i18n:
-      it: "Il sistema era gia immesso sul mercato prima del 2 agosto 2026?"
+      it: "Il sistema era già immesso sul mercato prima del 2 agosto 2026?"
       en: "Was the system already placed on the market before 2 August 2026?"
 
   # --- Art. 5 prohibited practices ---
@@ -84,12 +84,12 @@ facts:
   - name: emotion_medical_safety_exception
     type: bool
     i18n:
-      it: "Il riconoscimento delle emozioni e destinato a motivi medici o di sicurezza?"
+      it: "Il riconoscimento delle emozioni è destinato a motivi medici o di sicurezza?"
       en: "Is the emotion recognition intended for medical or safety reasons?"
   - name: ncii_generation_capability
     type: bool
     i18n:
-      it: "Il sistema puo generare immagini intime non consensuali (NCII)?"
+      it: "Il sistema può generare immagini intime non consensuali (NCII)?"
       en: "Can the system generate non-consensual intimate images (NCII)?"
   - name: ncii_safeguards_state_of_art
     type: bool
@@ -101,7 +101,7 @@ facts:
     # Art. 5(1a)(a)(i): if generating/manipulating NCII is the system's
     # intended purpose it is prohibited regardless of safeguards (hunt F3).
     i18n:
-      it: "Generare o manipolare NCII e lo scopo previsto del sistema?"
+      it: "Generare o manipolare NCII è lo scopo previsto del sistema?"
       en: "Is generating or manipulating NCII the system's intended purpose?"
 
   # --- Annex III high-risk (Chapter III) ---
@@ -116,5 +116,5 @@ facts:
   - name: chapter_iii_obligations_met
     type: bool
     i18n:
-      it: "Per un uso ad alto rischio: gli obblighi del Capo III sono gia stati soddisfatti?"
+      it: "Per un uso ad alto rischio: gli obblighi del Capo III sono già stati soddisfatti?"
       en: "For a high-risk use: are the Chapter III obligations already met?"

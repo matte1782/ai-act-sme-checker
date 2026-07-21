@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-4 blind perturbation hunt (ADR-007, PROMPT 6 Phase F).
 
 For EVERY frozen golden scenario, perturb each referenced fact - (i) omit

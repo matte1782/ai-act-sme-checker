@@ -26,13 +26,13 @@ rationales:
     it: "I deepfake vanno dichiarati come contenuti generati o manipolati artificialmente (Art. 50(4))."
     en: "Deep fakes must be disclosed as artificially generated or manipulated content (Art. 50(4))."
   art5.social_scoring_prohibited:
-    it: "Il punteggio sociale delle persone e una pratica vietata (Art. 5(1)(c))."
+    it: "Il punteggio sociale delle persone è una pratica vietata (Art. 5(1)(c))."
     en: "Social scoring of people is a prohibited practice (Art. 5(1)(c))."
   art5.emotion_workplace_no_exception:
-    it: "Dedurre le emozioni sul lavoro o a scuola e vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f))."
+    it: "Dedurre le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f))."
     en: "Inferring emotions at work or school is prohibited, save for medical or safety reasons (Art. 5(1)(f))."
   art5.ncii_prohibited:
-    it: "Generare immagini intime non consensuali (per scopo, o per capacita senza salvaguardie) e vietato (Art. 5, Omnibus)."
+    it: "Generare immagini intime non consensuali (per scopo, o per capacità senza salvaguardie) è vietato (Art. 5, Omnibus)."
     en: "Generating non-consensual intimate images (by purpose, or by capability without safeguards) is prohibited (Art. 5, Omnibus)."
   annex_iii.chapter_iii_obligations:
     it: "Per un uso ad alto rischio (Allegato III) vanno soddisfatti gli obblighi del Capo III entro la scadenza."
@@ -40,13 +40,13 @@ rationales:
 
 ui:
   ai_disclosure:
-    it: "Stai interagendo con un sistema basato su IA: questa e un'autovalutazione automatica, NON una consulenza legale."
+    it: "Stai interagendo con un sistema basato su IA: questa è un'autovalutazione automatica, NON una consulenza legale."
     en: "You are interacting with an AI-based system: this is an automated self-check, NOT legal advice."
   intro:
     it: "Rispondi alle domande seguenti."
     en: "Answer the following questions."
   hint_bool:
-    it: "[s = si, n = no, ? = non so]"
+    it: "[s = sì, n = no, ? = non so]"
     en: "[y = yes, n = no, ? = unknown]"
   hint_enum:
     it: "Digita il numero dell'opzione, oppure ? per non so."
@@ -72,3 +72,37 @@ ui:
   token_no:
     it: "n"
     en: "n"
+  # web wizard/results chrome (ADR-013 UI; load-strict like the rest)
+  web_yes:
+    it: "Sì"
+    en: "Yes"
+  web_no:
+    it: "No"
+    en: "No"
+  web_unknown:
+    it: "Non so"
+    en: "I don't know"
+  web_back:
+    it: "Indietro"
+    en: "Back"
+  web_restart:
+    it: "Ricomincia"
+    en: "Restart"
+  web_print:
+    it: "Stampa / Salva PDF"
+    en: "Print / Save PDF"
+  web_question:
+    it: "Domanda"
+    en: "Question"
+  web_of:
+    it: "di"
+    en: "of"
+  web_explanation:
+    it: "Mostra la spiegazione"
+    en: "Show the explanation"
+  web_results_title:
+    it: "Risultati"
+    en: "Results"
+  provisional_notice:
+    it: "basato sul testo provvisorio del Consiglio (9247/26); aggiornamento alla Gazzetta Ufficiale in arrivo"
+    en: "based on the provisional Council text (9247/26); update to the Official Journal forthcoming"

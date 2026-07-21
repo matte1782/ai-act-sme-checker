@@ -21,7 +21,7 @@ predicate (same grammar as logic, X2); `applies_from` may be a
 conditional branch list `[{when, date}..., {default}]` validated
 per ADR-008 (X3); `timeline_ref` anchors dates to
 corpus/timeline.yaml (ADR-011(4)). v1 rules: rules/*.yaml.
-Impl: [engine/loader.py:L1-L340](engine/loader.py)
+Impl: [engine/loader.py:L1-L342](engine/loader.py)
 
 ## L3 Facts schema
 `schema/facts.yaml`: typed facts (bool/enum/date) with i18n keys
@@ -30,7 +30,7 @@ used by the frozen golden set (ADR-009), Italian first-class. The
 questionnaire is generated FROM this schema; no free-text fact
 enters the engine (ADR-003). The synthetic schema moved to
 tests/fixtures/facts_synthetic.yaml.
-Impl: [engine/facts.py:L1-L119](engine/facts.py)
+Impl: [engine/facts.py:L1-L121](engine/facts.py)
 
 ## L4 Engine core
 Pure function: (facts, as_of_date, corpus_version) -> verdicts +
@@ -43,7 +43,7 @@ NOT_APPLICABLE (FALSE, op=='scope' citation leaf) or UNDETERMINED
 (UNKNOWN, named); (3) logic. NOT_APPLICABLE never rests on an
 unknown scope fact (X5). Gate-5: the temporal-INACTIVE applicability
 leaf also carries the resolved "applies_from" ISO date (C1).
-Impl: [engine/core.py:L1-L286](engine/core.py)
+Impl: [engine/core.py:L1-L288](engine/core.py)
 
 ## L5 Output paths
 CLI first. Renderer contract: refuses to emit any user-facing
@@ -54,7 +54,7 @@ its op=='scope' leaf render with the leaf's citation (X1). Gate-5:
 an optional i18n bundle localizes status labels + a rationale line
 and appends a deadlines section built from the resolved applies_from
 leaf field (never parsed from a reason string).
-Impl: [engine/render.py:L1-L162](engine/render.py)
+Impl: [engine/render.py:L1-L219](engine/render.py)
 
 ### L5 CLI (ADR-012 output-path contract)
 `python -m engine.cli`, two modes: non-interactive (`--answers
@@ -67,14 +67,31 @@ never a silent fallback (ADR-012(4)); exit codes are exactly {0,2}
 and carry no compliance semantics (ADR-012(5)); the banner and report
 declare the AI-based interaction (ADR-012(6),
 docs/self_classification.md).
-Impl: [engine/cli.py:L1-L210](engine/cli.py)
+Impl: [engine/cli.py:L1-L212](engine/cli.py)
 
 ### L5 i18n catalog
 `i18n/messages.yaml`: status_labels, rationales, ui - each with it
 AND en. Strict load + completeness (every rule rationale_key, all
 four statuses, all required ui.* keys) or the catalog refuses to
 load (ADR-012(4)).
-Impl: [engine/i18n.py:L1-L82](engine/i18n.py)
+Impl: [engine/i18n.py:L1-L88](engine/i18n.py)
+
+### L5 Web (ADR-013 client-side static, Pyodide)
+`web/`: a static SPA running the SAME engine in-browser via Pyodide
+(no build step; deployed files are the source). The wizard is
+generated from schema/facts.yaml and ALL verdict content comes from
+render_structured through engine/webapi.py (single source of truth;
+no rule/verdict logic in JS). Zero data leaves the device: enforced
+by CSP (`connect-src 'self'`, no external origins) and verified by
+the e2e network assertion (web/e2e/zero_exfil.spec.js). The report's
+disclaimer is always visible (also in print); a PROVISIONAL corpus
+shows a visible notice while preOJ. The engine bundle is deterministic
+and sha256-frozen (web/assets/BUNDLE.sha256), rebuilt by
+scripts/build_web.sh and verified in check.sh `== web`. WASM-absent
+browsers get an explicit fail-closed message, never a blank page.
+Impl: [web/app.js:L1-L231](web/app.js)
+Impl: [engine/webapi.py:L1-L113](engine/webapi.py)
+Impl: [scripts/build_web.sh:L1-L42](scripts/build_web.sh)
 
 ## L6 Oracle & tests
 `oracle/golden/*.yaml`: frozen SME scenarios, each with expected
@@ -85,17 +102,17 @@ gate). v1: S01-S14 frozen via oracle/FREEZE.sha256 (ADR-009,
 verified by check.sh); self-arming checker scripts/oracle_check.py
 (ORACLE_PENDING until Gate-4 rules land), its ADR-008 test
 enumeration in tests/test_oracle_check.py.
-Impl: [scripts/oracle_check.py:L1-L300](scripts/oracle_check.py)
+Impl: [scripts/oracle_check.py:L1-L302](scripts/oracle_check.py)
 
 ## Invariants (each becomes a property test)
 - INV-1 fail-closed: no COMPLIANT verdict may depend on any
-  UNKNOWN fact. Impl: [tests/test_inv1_fail_closed.py:L1-L87](tests/test_inv1_fail_closed.py)
+  UNKNOWN fact. Impl: [tests/test_inv1_fail_closed.py:L1-L89](tests/test_inv1_fail_closed.py)
 - INV-2 statute gate: loader rejects rules without citation or
-  validity dates. Impl: [tests/test_inv2_statute_gate.py:L1-L100](tests/test_inv2_statute_gate.py)
+  validity dates. Impl: [tests/test_inv2_statute_gate.py:L1-L102](tests/test_inv2_statute_gate.py)
 - INV-3 temporal: identical facts, different as_of_date across an
   applicability boundary => verdicts change accordingly.
-  Impl: [tests/test_inv3_temporal.py:L1-L92](tests/test_inv3_temporal.py)
+  Impl: [tests/test_inv3_temporal.py:L1-L94](tests/test_inv3_temporal.py)
 - INV-4 disclaimer: rendering without disclaimer raises.
-  Impl: [tests/test_inv4_disclaimer.py:L1-L65](tests/test_inv4_disclaimer.py)
+  Impl: [tests/test_inv4_disclaimer.py:L1-L67](tests/test_inv4_disclaimer.py)
 - INV-5 explanation: every verdict carries a non-empty dependency
-  tree whose leaves cite corpus ids. Impl: [tests/test_inv5_explanation.py:L1-L108](tests/test_inv5_explanation.py)
+  tree whose leaves cite corpus ids. Impl: [tests/test_inv5_explanation.py:L1-L110](tests/test_inv5_explanation.py)

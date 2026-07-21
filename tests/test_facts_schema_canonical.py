@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-4 canonical facts schema (schema/facts.yaml, ADR-009).
 
 The frozen golden set DEFINES the vocabulary: every fact name a scenario

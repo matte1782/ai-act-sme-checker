@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-4 perturbation-hunt pins (ADR-007, Phase F).
 
 Confirmed findings from the blind statute cross-read, pinned so they cannot

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-4 statute-anchor gates for the v1 rules (ADR-011).
 
 (a) every loaded rule declares timeline_ref, and every date in the rule

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-5 CLI-hunt pins (ADR-007, Phase F).
 
 Finding 1 (confirmed, real): load_i18n enumerated status_labels and (via

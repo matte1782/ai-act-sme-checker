@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """INV-4 disclaimer: rendering without the disclaimer block raises;
 output always contains it. The disclaimer is a structural argument.
 """

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-4 engine extensions X1-X5 (ADR-009 vocabulary; X1-X5 design).
 
 TDD RED first. Covers, per PROMPT 6 Phase C:

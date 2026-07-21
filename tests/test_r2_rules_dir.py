@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """R2 (Gate-2 residual): rule-id uniqueness was only per-file.
 
 load_rules_dir(path) loads ALL rules/*.yaml and rejects cross-file

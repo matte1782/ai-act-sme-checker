@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L6 oracle checker: the frozen golden set as a self-arming gate.
 
 The golden scenarios (oracle/golden/*.yaml) are the SPEC for Gate 4:

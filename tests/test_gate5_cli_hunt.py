@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Gate-5 CLI adversarial hunt (ADR-007, Phase F): mechanized attacker.
 
 Surfaces: disclaimer-strip, locale fallback (must fail load), answers-file

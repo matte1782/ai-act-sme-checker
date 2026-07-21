@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """R3 (Gate-2 residual): fromisoformat laxity.
 
 Python >= 3.11 date.fromisoformat() accepts non-canonical forms like

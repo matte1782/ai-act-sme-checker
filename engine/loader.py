@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L2 YAML rule loader with the INV-2 statute gate.
 
 A rule without a citation (corpus_id + article + paragraph) or without

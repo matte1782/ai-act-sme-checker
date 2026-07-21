@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L1 corpus tests - the SECOND anchor of the Gate-3a dual verification.
 
 The E3 applicability table from the gate prompt (researched off-line,

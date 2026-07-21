@@ -1,0 +1,4 @@
+pyodide 0.26.4
+source: https://cdn.jsdelivr.net/pyodide/v0.26.4/full/
+acquired: 2026-07-20
+files: runtime (mjs/asm.js/asm.wasm) + python_stdlib.zip + pyodide-lock.json + PyYAML-6.0.1 wheel

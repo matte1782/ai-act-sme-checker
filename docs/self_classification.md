@@ -18,7 +18,7 @@ only a qualified professional can assess. UNDETERMINED means:
 seek human/legal review.
 ============================================================
 
-Stai interagendo con un sistema basato su IA: questa e un'autovalutazione automatica, NON una consulenza legale.
+Stai interagendo con un sistema basato su IA: questa è un'autovalutazione automatica, NON una consulenza legale.
 
 as_of: 2026-07-15
 corpus_version: aia-omnibus-preOJ-9247-26
@@ -44,19 +44,19 @@ corpus_version: aia-omnibus-preOJ-9247-26
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
 
 [CONFORME] ART5_SOCIAL_SCORING (aia-2024-1689-en Art. 5(1)(c)(1))
-  -> Il punteggio sociale delle persone e una pratica vietata (Art. 5(1)(c)).
+  -> Il punteggio sociale delle persone è una pratica vietata (Art. 5(1)(c)).
   - rule -> FALSE
     - fact practice_social_scoring -> FALSE [aia-2024-1689-en Art. 5(1)(c)]
 
 [CONFORME] ART5_EMOTION_WORKPLACE (aia-2024-1689-en Art. 5(1)(f)(1))
-  -> Dedurre le emozioni sul lavoro o a scuola e vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f)).
+  -> Dedurre le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f)).
   - rule -> FALSE
     - all -> FALSE
       - fact emotion_recognition_workplace -> FALSE [aia-2024-1689-en Art. 5(1)(f)]
       - fact emotion_medical_safety_exception -> TRUE [aia-2024-1689-en Art. 5(1)(f)]
 
 [NON DETERMINABILE] ART5_NCII (omnibus-st-9247-26-en Art. 5(1)(ba) as amended (Omnibus)(1))
-  -> Generare immagini intime non consensuali (per scopo, o per capacita senza salvaguardie) e vietato (Art. 5, Omnibus).
+  -> Generare immagini intime non consensuali (per scopo, o per capacità senza salvaguardie) è vietato (Art. 5, Omnibus).
   - rule -> UNKNOWN (not yet applicable (applies_from 2026-12-02))
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-12-02))
 

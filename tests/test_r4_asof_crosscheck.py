@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """R4 (Gate-2 residual): renderer as_of cross-check.
 
 render_report(verdicts, as_of=..) must raise if any Verdict.as_of

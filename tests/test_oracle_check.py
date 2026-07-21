@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L6 oracle checker tests (scripts/oracle_check.py).
 
 ADR-008 classes enumerated on the golden-scenario validation surface:

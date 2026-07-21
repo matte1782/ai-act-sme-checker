@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """Deterministic Impl:-line trace checker (ADR-005/ADR-005a). Stdlib only.
 
 A marker is the substring from 'Impl:' to end-of-line, anywhere on a

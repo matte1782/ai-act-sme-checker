@@ -6,3 +6,8 @@
 *.yaml text eol=lf
 *.py text eol=lf
 *.sha256 text eol=lf
+# Integrity-frozen artifacts: keep exact bytes so recorded sha256 stays valid.
+LICENCE -text
+LICENCE.NOTE -text
+web/vendor/** -text
+web/assets/*.zip -text

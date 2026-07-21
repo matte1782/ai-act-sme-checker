@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L5 minimal text renderer.
 
 The disclaimer block is a STRUCTURAL argument (INV-4): the renderer
@@ -8,6 +10,7 @@ corpus version, and its explanation tree.
 R4: the as_of stamp is cross-checked against every Verdict.as_of; a
 report must never stamp a date its verdicts were not evaluated at.
 """
+import copy
 import datetime as dt
 
 DISCLAIMER = (
@@ -160,3 +163,57 @@ def render_report(verdicts, as_of, corpus_version, disclaimer, i18n=None):
     if i18n:
         lines.extend(_deadlines_section(verdicts, i18n))
     return "\n".join(lines)
+
+
+def _corpus_status(corpus_version):
+    """FINAL | PROVISIONAL. PROVISIONAL while on a preOJ corpus branch: the
+    manifest's omnibus source is PROVISIONAL until OJ publication bumps
+    corpus_version (dropping 'preOJ'). Derived from the version string so the
+    renderer stays pure (no manifest I/O), tracking the manifest by design."""
+    return "PROVISIONAL" if "preoj" in corpus_version.lower() else "FINAL"
+
+
+def render_structured(verdicts, as_of, corpus_version, disclaimer):
+    """ADR-012(2) successor to render_report with the SAME structural refusal:
+    identical exact-disclaimer and R4 as_of gates, but returns a plain-data
+    dict for the web path (all verdict content originates here, never in JS)."""
+    if disclaimer != DISCLAIMER:
+        raise MissingDisclaimerError(
+            "refusing to render: output lacks the exact NOT-LEGAL-ADVICE block"
+        )
+    if isinstance(as_of, dt.datetime) or not isinstance(as_of, dt.date):
+        raise AsOfMismatchError(f"as_of must be a datetime.date, got {as_of!r}")
+    stale = [verdict.rule_id for verdict in verdicts if verdict.as_of != as_of]
+    if stale:
+        raise AsOfMismatchError(
+            f"verdicts evaluated at a different as_of than the report stamp "
+            f"{as_of.isoformat()}: {stale}"
+        )
+    deadlines = []
+    for verdict in verdicts:
+        deadline = _deadline_of(verdict)
+        if deadline is not None:
+            applies_from, cite = deadline
+            deadlines.append({
+                "rule_id": verdict.rule_id,
+                "applies_from": applies_from,
+                "citation": copy.deepcopy(cite),
+            })
+    return {
+        "disclaimer": DISCLAIMER,
+        "as_of": as_of.isoformat(),
+        "corpus_version": corpus_version,
+        "corpus_status": _corpus_status(corpus_version),
+        "deadlines": deadlines,
+        "verdicts": [
+            {
+                "rule_id": verdict.rule_id,
+                "status": verdict.status,
+                "citation": dict(verdict.citation),
+                "rationale_key": verdict.rationale_key,
+                "unknown_facts": list(verdict.unknown_facts),
+                "explanation": copy.deepcopy(verdict.explanation),
+            }
+            for verdict in verdicts
+        ],
+    }

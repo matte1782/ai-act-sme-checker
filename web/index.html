@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- SPDX-License-Identifier: EUPL-1.2 -->
+<!-- SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors -->
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- ADR-013 E2: zero data leaves the device. The exfiltration guarantee is
+       connect-src 'self' (blocks ALL external fetch/XHR/WebSocket/beacon) plus
+       default-src 'self' (no external origins). 'unsafe-eval' is required by
+       Pyodide's Python<->JS FFI (new Function / ctypes) - it permits local
+       code generation only and does NOT permit any network exfiltration; the
+       zero-data-leaves promise rests on connect-src, not on script-src. No
+       inline script (app.js external). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval'; connect-src 'self'; style-src 'self'; img-src 'self' data:; worker-src 'self' blob:; base-uri 'self'; form-action 'none'; object-src 'none'">
+  <title>Auto-verifica AI Act per PMI</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="app">
+    <!-- E1 Boot screen: AI disclosure + full disclaimer + progress. -->
+    <section id="boot" class="screen">
+      <h1>Auto-verifica AI Act per PMI</h1>
+      <p id="ai-disclosure" class="ai-disclosure">
+        Stai interagendo con un sistema basato su IA: questa è un'autovalutazione
+        automatica, NON una consulenza legale. /
+        You are interacting with an AI-based system: this is an automated
+        self-check, NOT legal advice.
+      </p>
+      <pre id="boot-disclaimer" class="disclaimer">=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===
+This is an automated, informational self-check. It is NOT legal
+advice and creates no professional-client relationship. Verdicts
+may be incomplete or wrong; obligations depend on circumstances
+only a qualified professional can assess. UNDETERMINED means:
+seek human/legal review.
+============================================================</pre>
+      <p id="boot-status" class="boot-status" role="status" aria-live="polite">
+        Caricamento del motore in corso&hellip; / Loading the engine&hellip;
+      </p>
+      <div class="progress"><div id="boot-bar" class="progress-bar"></div></div>
+      <!-- E1 fail-closed: filled by app.js if WASM is unavailable or load fails;
+           NEVER left blank. -->
+      <div id="boot-error" class="fail-closed" hidden></div>
+    </section>
+
+    <!-- E3 wizard + E4 results: built by app.js, no verdict logic in JS. -->
+    <section id="wizard" class="screen" hidden></section>
+    <section id="results" class="screen" hidden></section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

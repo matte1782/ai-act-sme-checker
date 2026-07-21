@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """INV-2 statute gate: loader rejects rules without citation or validity dates.
 
 Synthetic fixtures only (TEST-ACT-1).

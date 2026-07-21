@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """INV-3 temporal: identical facts, different as_of_date across an
 applicability boundary => verdicts change accordingly.
 

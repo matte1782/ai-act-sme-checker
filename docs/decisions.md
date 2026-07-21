@@ -227,3 +227,54 @@ system (the engine's own Art. 50(1)-style disclosure; see
 docs/self_classification.md). (7) The corpus refresh (OJ
 publication) is NEVER performed inside an output-path gate: it
 is a re-run of PROMPT 4 Phase C (manifest refresh_task).
+
+## ADR-006: licence = EUPL-1.2
+Date: 2026-07-20. Status: ACCEPTED. HEAD: 555a603. EUPL-1.2, owner
+decision 2026-07-15. Rationale: the European Commission's own
+licence; legally binding in Italian and all EU languages; copyleft
+strong enough to prevent closed proprietary forks while remaining
+institution-friendly (public bodies can re-host and adapt). LICENCE
+file = official EN text (joinup.ec.europa.eu EUPL-1.2 EN, acquired
+2026-07-20), sha256
+6fc9e709ccbfe0d77fbffa2427a983282be2eb88e47b1cdb49f21a83b4d1e665.
+Every source file gains a 2-line SPDX header
+(SPDX-License-Identifier: EUPL-1.2) - header-only edits to existing
+files are AUTHORIZED by this ADR (no logic changes). Dependency
+check: Pyodide (MPL-2.0) and PyYAML (MIT) are compatible as
+dependencies of an EUPL-1.2 work.
+
+## ADR-013: web platform = client-side static (Pyodide); scope
+Date: 2026-07-20. Status: ACCEPTED. HEAD: 555a603. Options weighed
+(owner-arbitrated 2026-07-15, market analysis on record in chat):
+(A) ACCEPTED - static SPA, real engine in-browser via Pyodide.
+Single source of truth (same engine/rules/schema/renderer, same
+tests); user answers NEVER leave the device (decisive for
+professionals handling client data - the questionnaire includes
+facts about potentially unlawful practices); zero server, free
+static hosting, re-hostable verbatim by institutions (EUPL); release
+bundle sha256-frozen (deploy = auditable artifact). Accepted cost:
+first load ~6-15MB / 4-5s init (mitigated: loading screen doubles as
+the ADR-012(6) AI disclosure + disclaimer; assets cached after),
+WASM required (unsupported browsers get an explicit fail-closed
+message, never a blank page). (B) REJECTED - JS re-implementation of
+rule evaluation: dual source of truth, drift by construction, oracle
+would need to arbitrate two engines. Violates the project's core
+discipline. (C) DEFERRED - hosted Python API: makes us a data
+processor for sensitive answers, adds ops/uptime/attack surface and
+costs that scale with adoption. Revisit trigger: integrator demand
+for a server API (Gate 7+, its own ADR). UI is framework-free vanilla
+JS with NO build/bundling step: deployed files are the readable
+source (institutional auditability). Languages v1: it + en (already
+first-class); additional EU languages require a native-review gate;
+market focus: Italy. Zero-exfiltration is enforced by CSP (no
+external connect-src) and verified by e2e test, not merely promised.
+
+## ADR-014: internal planning docs, git-ignored; protocol pre-registration
+Date: 2026-07-20. Status: ACCEPTED. HEAD: 555a603.
+docs/internal/ holds owner-facing planning material (launch
+sequencing, user-research protocol, institutional outreach):
+git-ignored, local-only, never in public history. The user-test
+protocol is pre-registered - metrics and thresholds frozen
+before the first participant, append-only amendments - the same
+anti-confirmation-bias mechanism as the frozen oracle (ADR-009)
+applied to product research.

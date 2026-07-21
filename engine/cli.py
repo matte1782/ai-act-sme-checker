@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L5 CLI output path (ADR-012). Entry: ``python -m engine.cli``.
 
 Two modes: non-interactive (--answers <file.yaml>) and interactive (a

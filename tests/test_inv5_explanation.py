@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """INV-5 explanation: every verdict carries a non-empty dependency tree
 whose leaves cite corpus ids; UNDETERMINED explanations name the UNKNOWN
 facts responsible.

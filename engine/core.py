@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L4 engine core: pure trivalent evaluation (ADR-003).
 
 evaluate() is a pure function: no I/O, no clock reads - as_of_date and

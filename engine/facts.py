@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
 """L3 typed facts + Kleene K3 primitives (ADR-003).
 
 UNKNOWN is the third truth value AND the value of any unanswered fact.
