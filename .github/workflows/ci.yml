@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: EUPL-1.2
+# SPDX-FileCopyrightText: 2026 AI Act SME Compliance Engine contributors
+#
+# Gate-7 regression gate (ADR-015). Every push/PR: the full deterministic gate
+# (check.sh = tests + trace + oracle + web bundle) AND the Playwright e2e incl.
+# the zero-exfiltration network assertion and a mobile viewport. Playwright is
+# installed HERE ONLY (never locally); CI=1 forbids the local skip, so the
+# privacy guarantee is regression-protected, not point-in-time.
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps (Playwright in CI ONLY, pinned)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest pyyaml pytest-playwright==0.5.2
+          python -m playwright install --with-deps chromium
+      - name: Deterministic gate (check.sh)
+        run: bash scripts/check.sh
+      - name: e2e - zero-exfiltration + mobile (CI-enforced)
+        run: |
+          python scripts/serve_web.py 8000 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:8000/index.html >/dev/null && break
+            sleep 1
+          done
+          CI=1 BASE_URL=http://127.0.0.1:8000 python -m pytest -q tests_e2e/

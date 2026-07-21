@@ -91,7 +91,25 @@ scripts/build_web.sh and verified in check.sh `== web`. WASM-absent
 browsers get an explicit fail-closed message, never a blank page.
 Impl: [web/app.js:L1-L231](web/app.js)
 Impl: [engine/webapi.py:L1-L113](engine/webapi.py)
-Impl: [scripts/build_web.sh:L1-L42](scripts/build_web.sh)
+Impl: [scripts/build_web.sh:L1-L45](scripts/build_web.sh)
+
+### L5 Transparency note + release engineering (ADR-013 + ADR-015)
+`web/privacy.html`: bilingual transparency note (same CSP), linked from
+the persistent footer + boot screen; explains the CSP guarantee, the
+unsafe-eval honesty (Pyodide FFI; network rests on connect-src 'self'),
+and the PROVISIONAL corpus. Release engineering (ADR-015): CI
+(.github/workflows/ci.yml) runs check.sh + the Playwright e2e
+(zero-exfiltration network assertion + mobile viewport) on every push/PR,
+so the privacy guarantee is regression-protected, not point-in-time.
+Playwright is installed in CI ONLY; locally it is an explicit
+E2E_LOCAL_SKIP (CI=1 forbids the skip). Releases are prepared by
+scripts/release.sh (fail-closed: clean tree + GATE_PASS + reproducible
+bundle sha, then PRINTS the annotated-tag command; never tags/pushes).
+CI is unverifiable offline (CI_UNVERIFIED_UNTIL_PUSH).
+Impl: [web/privacy.html:L1-L91](web/privacy.html)
+Impl: [.github/workflows/ci.yml:L1-L36](.github/workflows/ci.yml)
+Impl: [tests_e2e/test_web_e2e.py:L1-L119](tests_e2e/test_web_e2e.py)
+Impl: [scripts/release.sh:L1-L64](scripts/release.sh)
 
 ## L6 Oracle & tests
 `oracle/golden/*.yaml`: frozen SME scenarios, each with expected

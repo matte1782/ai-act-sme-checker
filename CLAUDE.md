@@ -30,6 +30,8 @@ No claude-mem.
   no verdicts in exit codes, i18n load-strict.
 - Web path per ADR-013: client-side only, CSP-enforced zero
   exfiltration, no build step, bundle sha256-frozen.
+- Releases per ADR-015: CI green + tag with bundle sha; prompts
+  declare dependency preflight.
 
 ## Project non-negotiables (the engine's ethics)
 - FAIL-CLOSED: when the rules do not decide, the verdict is

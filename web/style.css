@@ -74,6 +74,9 @@ details.explain pre { white-space: pre-wrap; font-size: .82rem; background: #f2f
 .actions button.secondary { background: #fff; color: var(--accent); }
 footer.meta { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--line);
   font-size: .8rem; color: var(--muted); }
+/* mobile (hunt F2): long unbreakable tokens (bundle sha, corpus_version,
+   citations) must wrap, not force horizontal scroll on a 375px viewport. */
+footer.meta, .cite, .deadlines li, #print-meta { overflow-wrap: anywhere; }
 footer.meta a { color: var(--accent); }
 
 @media print {

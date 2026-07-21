@@ -5,7 +5,9 @@
 PY=$(command -v python3 || command -v python)
 status=0
 echo "== tests"
-"$PY" -m pytest -q
+# unit/property suite only; the Playwright e2e (tests_e2e/) is a SEPARATE CI
+# step with a running server (ADR-015) - never collected here.
+"$PY" -m pytest -q tests
 rc=$?
 # Sanctioned exception (ADR-005a): pytest exit 5 = zero tests collected,
 # allowed only so the runner works before the first test lands.

@@ -22,6 +22,12 @@
     <!-- E1 Boot screen: AI disclosure + full disclaimer + progress. -->
     <section id="boot" class="screen">
       <h1>Auto-verifica AI Act per PMI</h1>
+      <!-- F1: 3-line plain-language intro (what it does / what it is not / duration). -->
+      <p id="boot-intro" class="boot-intro">
+        <strong>Cosa fa:</strong> auto-verifica gratuita degli obblighi AI Act per la tua PMI. / A free AI Act obligations self-check for your SME.<br>
+        <strong>Cosa non &egrave;:</strong> non &egrave; una consulenza legale. / Not legal advice.<br>
+        <strong>Durata:</strong> ~10 minuti, 19 domande; puoi sempre rispondere &laquo;Non so&raquo;. / ~10 minutes, 19 questions; you can always answer &ldquo;I don't know&rdquo;.
+      </p>
       <p id="ai-disclosure" class="ai-disclosure">
         Stai interagendo con un sistema basato su IA: questa è un'autovalutazione
         automatica, NON una consulenza legale. /
@@ -47,6 +53,12 @@ seek human/legal review.
     <!-- E3 wizard + E4 results: built by app.js, no verdict logic in JS. -->
     <section id="wizard" class="screen" hidden></section>
     <section id="results" class="screen" hidden></section>
+    <!-- Persistent footer (boot + wizard + results): link to the transparency
+         note. ADR-015 Phase E: the ONLY authorized UI edit. -->
+    <footer class="meta">
+      <a href="./privacy.html">Nota di trasparenza · Transparency note</a> ·
+      Privacy: le risposte non lasciano il dispositivo · EUPL-1.2
+    </footer>
   </main>
   <script type="module" src="./app.js"></script>
 </body>

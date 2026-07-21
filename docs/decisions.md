@@ -278,3 +278,23 @@ protocol is pre-registered - metrics and thresholds frozen
 before the first participant, append-only amendments - the same
 anti-confirmation-bias mechanism as the frozen oracle (ADR-009)
 applied to product research.
+
+## ADR-015: release engineering - CI regression gate + release procedure
+Date: 2026-07-21. Status: ACCEPTED. HEAD: 58b317c.
+(1) CI (GitHub Actions) runs on every push/PR: full check.sh
+(tests+trace+oracle+web bundle) AND the Playwright e2e incl. the
+zero-exfiltration network assertion and a mobile viewport - the
+privacy guarantee becomes regression-protected, not point-in-time.
+Playwright is installed IN CI ONLY (pinned version); locally it
+remains optional (explicit E2E_LOCAL_SKIP, never silent). CI results
+are unverifiable offline: releases require CI green on GitHub,
+verified by the human. (2) Release = annotated tag vX.Y.Z whose
+notes carry BUNDLE.sha256 + corpus_version + VENDOR versions;
+prepared by scripts/release.sh which verifies clean tree + GATE_PASS
++ rebuilds the bundle, then PRINTS the exact tag command - it never
+tags or pushes itself (human step, fail-closed). (3) Dependency
+preflight is now a standing prompt-authoring rule: every gate prompt
+declares each required tool and its source, or a pre-authorized
+STOP. (4) Deploy target: GitHub Pages serving web/ verbatim; the
+live site's BUNDLE.sha256 must equal the tagged release's (human
+checklist item).
