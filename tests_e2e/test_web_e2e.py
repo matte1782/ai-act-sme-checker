@@ -79,7 +79,9 @@ def test_network_zero_exfiltration(page):
 def test_disclaimer_computed_visible(page):
     _boot(page)
     _answer_all(page)
-    disc = page.locator("#results .disclaimer")
+    # .first: the always-visible top disclaimer (a second copy lives inside the
+    # print-only #print-meta; both share the class, so scope to the first).
+    disc = page.locator("#results .disclaimer").first
     assert disc.is_visible()
     assert "NON COSTITUISCE CONSULENZA LEGALE" in disc.inner_text()
 
@@ -116,7 +118,7 @@ def test_mobile_flow_disclaimer_visible_no_hscroll(page):
     box = non_so.bounding_box()
     assert box and box["height"] >= 32 and box["width"] <= 375   # tap target, fits width
     _answer_all(page)
-    disc = page.locator("#results .disclaimer")
+    disc = page.locator("#results .disclaimer").first
     assert disc.is_visible()
     overflow = page.evaluate(
         "() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1"
