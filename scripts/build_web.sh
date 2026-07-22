@@ -30,6 +30,10 @@ with zipfile.ZipFile(out, "w", zipfile.ZIP_STORED) as zf:
     for rel in files:                       # deterministic: sorted, fixed meta
         info = zipfile.ZipInfo(rel, date_time=(1980, 1, 1, 0, 0, 0))
         info.external_attr = 0o644 << 16
+        # ZipInfo.create_system defaults to 0 on Windows and 3 on Unix, which
+        # would make the SAME inputs hash differently on Windows vs Linux/CI.
+        # Pin it so the frozen sha is truly platform-independent.
+        info.create_system = 3
         # normalize CRLF->LF so the sha is EOL-independent: a Windows (CRLF)
         # working tree and a Linux/CI (LF) checkout produce the SAME bundle.
         data = pathlib.Path(rel).read_bytes().replace(b"\r\n", b"\n")
