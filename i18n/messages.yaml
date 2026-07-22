@@ -18,25 +18,25 @@ status_labels:
 rationales:
   art50_1.interaction_not_disclosed:
     it: "Un sistema che interagisce con le persone deve dichiarare di essere un'IA (Art. 50(1))."
-    en: "A system that interacts with people must disclose that it is an AI (Art. 50(1))."
+    en: "A system that interacts with people must disclose that it is an AI system (Art. 50(1))."
   art50_2.synthetic_not_marked:
-    it: "I contenuti generati dall'IA vanno marcati come artificiali in formato leggibile dalla macchina (Art. 50(2))."
+    it: "I contenuti generati dall'IA vanno marcati come artificiali in formato leggibile meccanicamente (Art. 50(2))."
     en: "AI-generated content must be marked as artificial in a machine-readable format (Art. 50(2))."
   art50_4.deepfake_not_disclosed:
-    it: "I deepfake vanno dichiarati come contenuti generati o manipolati artificialmente (Art. 50(4))."
+    it: "I deep fake vanno dichiarati come contenuti generati o manipolati artificialmente (Art. 50(4))."
     en: "Deep fakes must be disclosed as artificially generated or manipulated content (Art. 50(4))."
   art5.social_scoring_prohibited:
     it: "Il punteggio sociale delle persone è una pratica vietata (Art. 5(1)(c))."
     en: "Social scoring of people is a prohibited practice (Art. 5(1)(c))."
   art5.emotion_workplace_no_exception:
-    it: "Dedurre le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f))."
-    en: "Inferring emotions at work or school is prohibited, save for medical or safety reasons (Art. 5(1)(f))."
+    it: "Inferire le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f))."
+    en: "Inferring emotions at work or school is prohibited, except for medical or safety reasons (Art. 5(1)(f))."
   art5.ncii_prohibited:
-    it: "Generare immagini intime non consensuali (per scopo, o per capacità senza salvaguardie) è vietato (Art. 5, Omnibus)."
-    en: "Generating non-consensual intimate images (by purpose, or by capability without safeguards) is prohibited (Art. 5, Omnibus)."
+    it: "Generare immagini intime non consensuali è vietato, sia quando è lo scopo del sistema sia quando il sistema ne ha la capacità senza adeguate salvaguardie (Art. 5, Omnibus)."
+    en: "Generating non-consensual intimate images (whether by intended purpose, or by capability without safeguards) is prohibited (Art. 5, Omnibus)."
   annex_iii.chapter_iii_obligations:
-    it: "Per un uso ad alto rischio (Allegato III) vanno soddisfatti gli obblighi del Capo III entro la scadenza."
-    en: "For a high-risk use (Annex III) the Chapter III obligations must be met by the deadline."
+    it: "Per un uso ad alto rischio (allegato III) vanno soddisfatti gli obblighi del capo III entro la scadenza."
+    en: "For a high-risk use (Annex III), the Chapter III obligations must be met by the deadline."
 
 ui:
   ai_disclosure:
@@ -49,13 +49,13 @@ ui:
     it: "[s = sì, n = no, ? = non so]"
     en: "[y = yes, n = no, ? = unknown]"
   hint_enum:
-    it: "Digita il numero dell'opzione, oppure ? per non so."
+    it: "Digita il numero dell'opzione, oppure ? per «non so»."
     en: "Type the option number, or ? for unknown."
   invalid_answer:
     it: "Risposta non valida. Riprova."
     en: "Invalid answer. Try again."
   unknown_forced:
-    it: "Nessuna risposta valida: registrato come NON SO (UNKNOWN)."
+    it: "Nessuna risposta valida: la risposta viene registrata come NON SO (UNKNOWN)."
     en: "No valid answer: recorded as UNKNOWN."
   interrupted:
     it: "Questionario interrotto: nessun report parziale prodotto (fail-closed)."
@@ -64,7 +64,7 @@ ui:
     it: "PROSSIME SCADENZE"
     en: "UPCOMING DEADLINES"
   deadlines_none:
-    it: "Nessuna scadenza imminente per le regole valutate."
+    it: "Nessuna scadenza futura per le regole valutate."
     en: "No upcoming deadlines for the evaluated rules."
   token_yes:
     it: "s"
@@ -90,7 +90,7 @@ ui:
     en: "Restart"
   web_print:
     it: "Stampa / Salva PDF"
-    en: "Print / Save PDF"
+    en: "Print / Save as PDF"
   web_question:
     it: "Domanda"
     en: "Question"
@@ -99,10 +99,10 @@ ui:
     en: "of"
   web_explanation:
     it: "Mostra la spiegazione"
-    en: "Show the explanation"
+    en: "Show explanation"
   web_results_title:
     it: "Risultati"
     en: "Results"
   provisional_notice:
-    it: "basato sul testo provvisorio del Consiglio (9247/26); aggiornamento alla Gazzetta Ufficiale in arrivo"
-    en: "based on the provisional Council text (9247/26); update to the Official Journal forthcoming"
+    it: "basato sul testo provvisorio del Consiglio (9247/26); aggiornamento alla Gazzetta ufficiale in arrivo"
+    en: "based on the provisional Council text (9247/26); to be updated once the text is published in the Official Journal"

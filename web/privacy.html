@@ -19,19 +19,19 @@
 
     <h2>Nessun dato lascia il dispositivo · No data leaves the device</h2>
     <p>
-      Nessun server, nessun cookie, nessun analytics, nessun beacon. Tutto il
+      Nessun server, nessun cookie, nessun sistema di analytics, nessun beacon. Tutto il
       calcolo avviene nel tuo browser. La garanzia è <strong>tecnica</strong>:
       la pagina impone una Content Security Policy con
       <code>connect-src 'self'</code>, che impedisce qualunque connessione verso
       origini esterne (fetch, XHR, WebSocket, beacon).
     </p>
     <p>
-      <em>No server, no cookies, no analytics, no beacons; everything runs in
+      <em>No servers, no cookies, no analytics, no beacons; everything runs in
       your browser. The guarantee is technical: the CSP <code>connect-src
       'self'</code> blocks every external connection.</em>
     </p>
     <p><strong>Come verificarlo · How to verify:</strong> apri gli strumenti
-      sviluppatore &rarr; scheda <em>Network</em> &rarr; completa il
+      per sviluppatori &rarr; scheda <em>Network</em> &rarr; completa il
       questionario: non parte alcuna richiesta verso origini esterne. In CI un
       test end-to-end lo verifica ad ogni push (asserzione di rete:
       zero richieste non-self, zero richieste dopo il caricamento).</p>
@@ -64,7 +64,7 @@
       <code>web/vendor/pyodide/VENDOR.sha256</code>.
     </p>
     <p>
-      <em>The same audited engine as the repo, packaged in a deterministic
+      <em>The same audited engine as in the repository, packaged in a deterministic
       sha256-frozen bundle; the bundle sha is shown in the results footer and in
       VERSION — compare it with the tagged release.</em>
     </p>
@@ -74,7 +74,7 @@
       Ogni risultato è marcato con la <code>corpus_version</code> e uno stato.
       <strong>PROVISIONAL</strong> significa che le regole si basano sul testo
       provvisorio del Consiglio (Digital Omnibus, doc 9247/26) e non ancora
-      sulla Gazzetta Ufficiale: l'app mostra un avviso finché è così, e le date
+      sulla Gazzetta ufficiale: l'app mostra un avviso finché è così, e le date
       potrebbero cambiare con la pubblicazione. <strong>FINAL</strong> significa
       corpus allineato al testo pubblicato.
     </p>

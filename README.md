@@ -1,7 +1,6 @@
 # Auto-verifica AI Act per PMI · AI Act self-check for SMEs
 
-<!-- CI badge placeholder: sostituisci OWNER/REPO dopo il push -->
-![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/matte1782/ai-act-sme-checker/actions/workflows/ci.yml/badge.svg)
 
 Strumento gratuito e open source (EUPL-1.2) di **auto-verifica** dell'AI
 Act per piccole e medie imprese. Gira interamente nel browser: **le risposte
@@ -17,38 +16,38 @@ never leave your device.**
 
 ## Cosa fa · What it does
 
-- Triage di conformità AI Act per PMI: rispondi a 19 domande, ottieni verdetti
+- Triage di conformità all'AI Act per PMI: rispondi a 19 domande, ottieni verdetti
   con la **citazione dell'articolo** e le **scadenze personalizzate**.
 - **Fail-closed**: quando le informazioni non bastano, la risposta è
   *"non determinabile — serve revisione umana/legale"*, mai un falso "conforme".
   Cento onesti *non determinabile* valgono più di un falso *conforme*.
 - Tre stati oltre a conforme/non conforme: *non determinabile* (mancano dati),
-  *non applicabile* (fuori ambito, Art. 2), *inattivo* (obbligo non ancora in
+  *non applicabile* (fuori ambito, Art. 2), *inattivo* (mostrato come *non determinabile*: obbligo non ancora in
   vigore — con la data di decorrenza).
 - *English:* an AI Act triage self-check: 19 questions → verdicts with the
-  **exact article citation** and **personalized deadlines**; fail-closed by
+  **exact article citation** and **personalised deadlines**; fail-closed by
   design ("undetermined" is an honest answer, never a false "compliant").
 
 ## Cosa NON fa · What it does NOT do
 
 - **NON è consulenza legale** (il disclaimer è riprodotto su ogni output).
-- **Non copre ancora tutti gli obblighi high-risk** del Capo III: v1 è un
-  triage (vedi `docs/decisions.md`, ADR-002); l'uso Allegato III è trattato in
+- **Non copre ancora tutti gli obblighi del Capo III per i sistemi ad alto rischio**: v1 è un
+  triage (vedi `docs/decisions.md`, ADR-002); il caso d'uso dell'Allegato III è trattato in
   modo *verdict-safe* (non deriva mai un "non conforme" dal solo caso d'uso).
 - I risultati si basano sul **corpus indicato in pagina**, che resta in stato
   **PROVISIONAL** finché il Digital Omnibus non è pubblicato in Gazzetta
-  Ufficiale (l'app mostra un avviso finché è così).
+  ufficiale (l'app mostra un avviso finché è così).
 - *English:* not legal advice; not full high-risk coverage yet (v1 triage);
-  results depend on the corpus shown in-page (PROVISIONAL until the OJ text).
+  results depend on the corpus shown on the page (PROVISIONAL until publication in the Official Journal).
 
 ## Privacy
 
 - **Le risposte non lasciano MAI il dispositivo.** Nessun server, nessun
-  cookie, nessun analytics, nessun beacon.
+  cookie, nessun sistema di analytics, nessun beacon.
 - Garanzia **tecnica**, non solo dichiarata: la pagina impone una Content
   Security Policy con `connect-src 'self'` (nessuna connessione esterna
   possibile). Vedi la [nota di trasparenza](web/privacy.html).
-- **Come verificarlo da solo:** apri gli strumenti sviluppatore del browser →
+- **Come verificarlo da solo:** apri gli strumenti per sviluppatori del browser →
   scheda *Network* → completa il questionario: non parte alcuna richiesta verso
   origini esterne. In CI questo è verificato da un test e2e ad ogni push.
 - *English:* your answers never leave the device — enforced by CSP
@@ -57,7 +56,7 @@ never leave your device.**
 
 ## Per le istituzioni · Re-hosting
 
-Chiunque può ri-ospitare l'app verbatim (la EUPL-1.2 lo permette, incluso
+Chiunque può ri-ospitare l'app verbatim (l'EUPL-1.2 lo permette, incluso
 l'adattamento). Non serve alcuna infrastruttura: nessun CDN, nessun server,
 nessun trattamento di dati.
 
@@ -88,6 +87,6 @@ cd web/assets && sha256sum -c BUNDLE.sha256
 ## Licenza · Licence
 
 **EUPL-1.2** (European Union Public Licence). Testo ufficiale in `LICENCE`
-(valida in italiano e in tutte le lingue UE, vedi `LICENCE.NOTE`). Ogni file
+(la licenza è valida in italiano e in tutte le lingue UE, vedi `LICENCE.NOTE`). Ogni file
 sorgente porta l'header `SPDX-License-Identifier: EUPL-1.2`. Le dipendenze
 vendorizzate mantengono la propria licenza (Pyodide MPL-2.0, PyYAML MIT).

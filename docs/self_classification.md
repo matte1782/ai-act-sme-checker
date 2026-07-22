@@ -24,7 +24,7 @@ as_of: 2026-07-15
 corpus_version: aia-omnibus-preOJ-9247-26
 
 [NON DETERMINABILE] HR_ANNEX_III (aia-2024-1689-en Chapter III (Art. 6(2), Annex III)(6(2)))
-  -> Per un uso ad alto rischio (Allegato III) vanno soddisfatti gli obblighi del Capo III entro la scadenza.
+  -> Per un uso ad alto rischio (allegato III) vanno soddisfatti gli obblighi del capo III entro la scadenza.
   - rule -> UNKNOWN (not yet applicable (applies_from 2027-12-02))
     - applicability -> UNKNOWN (not yet applicable (applies_from 2027-12-02))
 
@@ -34,12 +34,12 @@ corpus_version: aia-omnibus-preOJ-9247-26
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
 
 [NON DETERMINABILE] ART50_2 (aia-2024-1689-en Art. 50(2)(2))
-  -> I contenuti generati dall'IA vanno marcati come artificiali in formato leggibile dalla macchina (Art. 50(2)).
+  -> I contenuti generati dall'IA vanno marcati come artificiali in formato leggibile meccanicamente (Art. 50(2)).
   - rule -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
 
 [NON DETERMINABILE] ART50_4 (aia-2024-1689-en Art. 50(4)(4))
-  -> I deepfake vanno dichiarati come contenuti generati o manipolati artificialmente (Art. 50(4)).
+  -> I deep fake vanno dichiarati come contenuti generati o manipolati artificialmente (Art. 50(4)).
   - rule -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-08-02))
 
@@ -49,14 +49,14 @@ corpus_version: aia-omnibus-preOJ-9247-26
     - fact practice_social_scoring -> FALSE [aia-2024-1689-en Art. 5(1)(c)]
 
 [CONFORME] ART5_EMOTION_WORKPLACE (aia-2024-1689-en Art. 5(1)(f)(1))
-  -> Dedurre le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f)).
+  -> Inferire le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f)).
   - rule -> FALSE
     - all -> FALSE
       - fact emotion_recognition_workplace -> FALSE [aia-2024-1689-en Art. 5(1)(f)]
       - fact emotion_medical_safety_exception -> TRUE [aia-2024-1689-en Art. 5(1)(f)]
 
 [NON DETERMINABILE] ART5_NCII (omnibus-st-9247-26-en Art. 5(1)(ba) as amended (Omnibus)(1))
-  -> Generare immagini intime non consensuali (per scopo, o per capacità senza salvaguardie) è vietato (Art. 5, Omnibus).
+  -> Generare immagini intime non consensuali è vietato, sia quando è lo scopo del sistema sia quando il sistema ne ha la capacità senza adeguate salvaguardie (Art. 5, Omnibus).
   - rule -> UNKNOWN (not yet applicable (applies_from 2026-12-02))
     - applicability -> UNKNOWN (not yet applicable (applies_from 2026-12-02))
 

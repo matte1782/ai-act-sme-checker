@@ -11,8 +11,8 @@ facts:
   - name: is_ai_system
     type: bool
     i18n:
-      it: "Il sistema è un sistema di IA (sono inclusi gli approcci logici e knowledge-based)?"
-      en: "Is the system an AI system (logic- and knowledge-based approaches are included)?"
+      it: "Il sistema è un sistema di IA (sono inclusi gli approcci basati sulla logica e sulla conoscenza)?"
+      en: "Is the system an AI system (including logic- and knowledge-based approaches)?"
   - name: in_eu_market
     type: bool
     i18n:
@@ -40,20 +40,20 @@ facts:
     type: bool
     i18n:
       it: "Le persone sono informate che stanno interagendo con un sistema di IA?"
-      en: "Are the persons informed that they are interacting with an AI system?"
+      en: "Are the persons concerned informed that they are interacting with an AI system?"
   - name: deepfake_published
     type: bool
     # Art. 50(4) triggers on a deployer's system that GENERATES or manipulates
     # deep-fake content, not on publication alone - the question captures that
     # (hunt F2). 'false' means the system does not produce deep fakes at all.
     i18n:
-      it: "Il sistema genera, pubblica o diffonde deepfake (immagini, audio o video artificiali)?"
-      en: "Does the system generate, publish or disseminate deep fakes (artificial image, audio or video)?"
+      it: "Il sistema genera o manipola deepfake (immagini, audio o video artificiali)?"
+      en: "Does the system generate or manipulate deep fakes (artificial image, audio or video)?"
   - name: deepfake_disclosed
     type: bool
     i18n:
-      it: "È dichiarato che il contenuto è stato generato o manipolato artificialmente?"
-      en: "Is it disclosed that the content was artificially generated or manipulated?"
+      it: "Viene dichiarato che il contenuto è stato generato o manipolato artificialmente?"
+      en: "Is it disclosed that the content has been artificially generated or manipulated?"
   - name: generates_synthetic_content
     type: bool
     i18n:
@@ -62,46 +62,46 @@ facts:
   - name: content_marked_machine_readable
     type: bool
     i18n:
-      it: "I contenuti sintetici sono marcati in un formato leggibile dalla macchina?"
-      en: "Is the synthetic output marked in a machine-readable format?"
+      it: "I contenuti sintetici sono marcati in un formato leggibile meccanicamente?"
+      en: "Is the synthetic output marked in a machine-readable format and detectable as artificially generated or manipulated?"
   - name: system_on_market_before_2026_08_02
     type: bool
     i18n:
-      it: "Il sistema era già immesso sul mercato prima del 2 agosto 2026?"
+      it: "Il sistema era già stato immesso sul mercato prima del 2 agosto 2026?"
       en: "Was the system already placed on the market before 2 August 2026?"
 
   # --- Art. 5 prohibited practices ---
   - name: practice_social_scoring
     type: bool
     i18n:
-      it: "Il sistema valuta o classifica le persone in base al comportamento sociale (punteggio sociale)?"
-      en: "Does the system evaluate or classify people based on social behaviour (social scoring)?"
+      it: "Il sistema valuta o classifica le persone in base al comportamento sociale o a caratteristiche personali, con un punteggio che porta a un trattamento sfavorevole in contesti non collegati o a un trattamento ingiustificato o sproporzionato (punteggio sociale)?"
+      en: "Does the system evaluate or classify people based on social behaviour or personal characteristics, with the score leading to unfavourable treatment in unrelated contexts or to disproportionate treatment (social scoring)?"
   - name: emotion_recognition_workplace
     type: bool
     i18n:
-      it: "Il sistema deduce le emozioni delle persone sul luogo di lavoro o negli istituti di istruzione?"
-      en: "Does the system infer people's emotions in the workplace or in education settings?"
+      it: "Il sistema inferisce (deduce) le emozioni delle persone sul luogo di lavoro o negli istituti di istruzione?"
+      en: "Does the system infer people's emotions in the workplace or in education institutions?"
   - name: emotion_medical_safety_exception
     type: bool
     i18n:
-      it: "Il riconoscimento delle emozioni è destinato a motivi medici o di sicurezza?"
+      it: "Il riconoscimento delle emozioni è previsto per motivi medici o di sicurezza?"
       en: "Is the emotion recognition intended for medical or safety reasons?"
   - name: ncii_generation_capability
     type: bool
     i18n:
-      it: "Il sistema può generare immagini intime non consensuali (NCII)?"
-      en: "Can the system generate non-consensual intimate images (NCII)?"
+      it: "Il sistema può generare o manipolare materiale intimo non consensuale (immagini, video o audio - NCII)?"
+      en: "Can the system generate or manipulate non-consensual intimate material (images, video or audio - NCII)?"
   - name: ncii_safeguards_state_of_art
     type: bool
     i18n:
       it: "Sono presenti salvaguardie tecniche allo stato dell'arte contro tale utilizzo?"
-      en: "Are state-of-the-art safeguards against that use in place?"
+      en: "Are state-of-the-art technical safeguards in place against such use?"
   - name: ncii_intended_purpose
     type: bool
     # Art. 5(1a)(a)(i): if generating/manipulating NCII is the system's
     # intended purpose it is prohibited regardless of safeguards (hunt F3).
     i18n:
-      it: "Generare o manipolare NCII è lo scopo previsto del sistema?"
+      it: "Generare o manipolare NCII è la finalità prevista del sistema?"
       en: "Is generating or manipulating NCII the system's intended purpose?"
 
   # --- Annex III high-risk (Chapter III) ---
@@ -111,10 +111,10 @@ facts:
       [none, employment_recruitment, education, critical_infrastructure,
        credit_scoring, law_enforcement]
     i18n:
-      it: "Il sistema rientra in un caso d'uso ad alto rischio dell'Allegato III? Quale?"
+      it: "Il sistema rientra in un caso d'uso ad alto rischio dell'allegato III? Quale?"
       en: "Does the system fall under an Annex III high-risk use case? Which one?"
   - name: chapter_iii_obligations_met
     type: bool
     i18n:
-      it: "Per un uso ad alto rischio: gli obblighi del Capo III sono già stati soddisfatti?"
-      en: "For a high-risk use: are the Chapter III obligations already met?"
+      it: "Per un uso ad alto rischio: gli obblighi del capo III sono già stati soddisfatti?"
+      en: "For a high-risk use: have the Chapter III obligations already been met?"
