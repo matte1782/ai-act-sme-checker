@@ -10,7 +10,7 @@ genuinely-uncertain facts were left UNKNOWN (a fail-closed self-assessment,
 not a clean bill).
 
 ```
-=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===
+=== NON COSTITUISCE CONSULENZA LEGALE / NOT LEGAL ADVICE ===
 Questa è un'autovalutazione automatica e informativa. NON è
 una consulenza legale e non crea alcun rapporto professionale.
 I verdetti possono essere incompleti o errati; gli obblighi

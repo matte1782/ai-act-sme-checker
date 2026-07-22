@@ -141,8 +141,12 @@ function renderResults() {
   const root = $("results"); root.hidden = false; $("wizard").hidden = true; clear(root);
   root.appendChild(toolbar(renderResults));
 
-  // (1) disclaimer ALWAYS visible at top, not collapsible
-  root.appendChild(el("pre", { text: s.disclaimer, cls: "disclaimer" }));
+  // (1) disclaimer ALWAYS visible at top, not collapsible. Shown in the
+  // selected language (bilingual header + that language's body): a display
+  // SELECTION of the structural INV-4 block, never a rewrite - the full
+  // canonical block stays in the payload and in the print view (#print-meta),
+  // and any parsing surprise falls back to the full block (fail-safe).
+  root.appendChild(el("pre", { text: localizedDisclaimer(s.disclaimer, state.lang), cls: "disclaimer" }));
 
   // (4) provisional-corpus notice
   if (s.corpus_status === "PROVISIONAL") {
@@ -220,6 +224,18 @@ function treeText(node, depth) {
   const lines = [head];
   for (const c of node.children || []) lines.push(...treeText(c, depth + 1));
   return lines;
+}
+
+// The canonical block is: bilingual header line, Italian body, blank line,
+// English body, footer line. Return header + selected-language body + footer;
+// on any unexpected shape return the FULL block (fail-safe, never less).
+function localizedDisclaimer(full, lang) {
+  const lines = full.split("\n");
+  const blank = lines.indexOf("");
+  if (lines.length < 5 || blank <= 1 || blank >= lines.length - 2) return full;
+  const header = lines[0], footer = lines[lines.length - 1];
+  const body = lang === "en" ? lines.slice(blank + 1, lines.length - 1) : lines.slice(1, blank);
+  return [header, ...body, footer].join("\n");
 }
 
 function restart() { state.answers = {}; state.index = 0; renderWizard(); }

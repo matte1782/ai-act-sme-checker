@@ -74,7 +74,8 @@ def test_boot_data_has_all_facts_and_langs():
     boot = json.loads(webapi.boot_data())
     assert len(boot["facts"]) == 19
     assert set(boot["i18n"]) == {"it", "en"}
-    assert boot["disclaimer"].startswith("=== NOT LEGAL ADVICE")
+    # header reordered Italian-first (owner-directed copy change, 2026-07-22)
+    assert boot["disclaimer"].startswith("=== NON COSTITUISCE CONSULENZA LEGALE")
 
 
 # --- (b) oracle parity 14/14 through webapi --------------------------------

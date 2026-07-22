@@ -92,7 +92,9 @@ def test_app_feature_checks_wasm_and_fails_closed():
 def test_boot_disclaimer_matches_engine():
     from engine.render import DISCLAIMER
     # the distinctive lines must be present verbatim (no drift from the source)
-    assert "=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===" in INDEX
+    # header reordered Italian-first (owner-directed copy change, 2026-07-22:
+    # Italian-first tool leads with the Italian legal notice)
+    assert "=== NON COSTITUISCE CONSULENZA LEGALE / NOT LEGAL ADVICE ===" in INDEX
     assert "seek human/legal review." in INDEX
     for line in DISCLAIMER.splitlines():
         assert line in INDEX, f"boot disclaimer drifted from engine: {line!r}"

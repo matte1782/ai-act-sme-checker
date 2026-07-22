@@ -14,7 +14,7 @@ import copy
 import datetime as dt
 
 DISCLAIMER = (
-    "=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===\n"
+    "=== NON COSTITUISCE CONSULENZA LEGALE / NOT LEGAL ADVICE ===\n"
     "Questa è un'autovalutazione automatica e informativa. NON è\n"
     "una consulenza legale e non crea alcun rapporto professionale.\n"
     "I verdetti possono essere incompleti o errati; gli obblighi\n"
