@@ -11,6 +11,13 @@ not a clean bill).
 
 ```
 === NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===
+Questa è un'autovalutazione automatica e informativa. NON è
+una consulenza legale e non crea alcun rapporto professionale.
+I verdetti possono essere incompleti o errati; gli obblighi
+dipendono da circostanze che solo un professionista
+qualificato può valutare. NON DETERMINABILE significa: è
+necessaria una revisione umana/legale.
+
 This is an automated, informational self-check. It is NOT legal
 advice and creates no professional-client relationship. Verdicts
 may be incomplete or wrong; obligations depend on circumstances

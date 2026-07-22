@@ -15,6 +15,13 @@ import datetime as dt
 
 DISCLAIMER = (
     "=== NOT LEGAL ADVICE / NON COSTITUISCE CONSULENZA LEGALE ===\n"
+    "Questa è un'autovalutazione automatica e informativa. NON è\n"
+    "una consulenza legale e non crea alcun rapporto professionale.\n"
+    "I verdetti possono essere incompleti o errati; gli obblighi\n"
+    "dipendono da circostanze che solo un professionista\n"
+    "qualificato può valutare. NON DETERMINABILE significa: è\n"
+    "necessaria una revisione umana/legale.\n"
+    "\n"
     "This is an automated, informational self-check. It is NOT legal\n"
     "advice and creates no professional-client relationship. Verdicts\n"
     "may be incomplete or wrong; obligations depend on circumstances\n"
