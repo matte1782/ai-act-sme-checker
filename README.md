@@ -34,11 +34,17 @@ never leave your device.**
 - **Non copre ancora tutti gli obblighi del Capo III per i sistemi ad alto rischio**: v1 è un
   triage (vedi `docs/decisions.md`, ADR-002); il caso d'uso dell'Allegato III è trattato in
   modo *verdict-safe* (non deriva mai un "non conforme" dal solo caso d'uso).
-- I risultati si basano sul **corpus indicato in pagina**, che resta in stato
-  **PROVISIONAL** finché il Digital Omnibus non è pubblicato in Gazzetta
-  ufficiale (l'app mostra un avviso finché è così).
-- *English:* not legal advice; not full high-risk coverage yet (v1 triage);
-  results depend on the corpus shown on the page (PROVISIONAL until publication in the Official Journal).
+- I risultati si basano sul **corpus indicato in pagina**. Dal 28 luglio 2026
+  il corpus è **FINAL**: allineato al Digital Omnibus come pubblicato in
+  Gazzetta ufficiale (Regolamento (UE) 2026/1744, GU 24.7.2026, in vigore
+  dal 27.7.2026). Se in futuro il corpus tornasse provvisorio, l'app lo
+  segnala con un avviso in pagina.
+- Sugli obblighi del **Capo III** (alto rischio) il tool non entra nel merito:
+  indica la scadenza applicabile e chiede se gli obblighi sono stati
+  soddisfatti; non verifica i singoli requisiti.
+- *English:* not legal advice; Chapter III high-risk obligations are not
+  substantively assessed (deadline + self-declaration only); results depend on
+  the corpus shown on the page (FINAL since the OJ publication).
 
 ## Privacy
 
