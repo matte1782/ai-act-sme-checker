@@ -102,10 +102,13 @@ def test_print_contains_disclaimer(page):
     assert "corpus_version" in meta.inner_text()
 
 
-def test_provisional_notice_shown(page):
+def test_no_provisional_notice_after_oj_refresh(page):
+    # ADR-016: corpus flipped PROVISIONAL -> FINAL on the OJ refresh, so the
+    # provisional banner must retire by itself. (Before the refresh this test
+    # asserted the notice WAS shown; the notice is driven by corpus_status.)
     _boot(page)
     _answer_all(page)
-    assert "testo provvisorio del Consiglio" in page.locator("#results .provisional").inner_text()
+    assert page.locator("#results .provisional").count() == 0
 
 
 def test_mobile_flow_disclaimer_visible_no_hscroll(page):

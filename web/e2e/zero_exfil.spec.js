@@ -67,8 +67,8 @@ test("language toggle switches question text", async ({ page }) => {
   expect(en).not.toEqual(it);
 });
 
-test("provisional corpus shows the notice", async ({ page }) => {
+test("no provisional notice once the corpus is final (ADR-016)", async ({ page }) => {
   await boot(page);
   await answerAll(page);
-  await expect(page.locator("#results .provisional")).toContainText("testo provvisorio del Consiglio");
+  await expect(page.locator("#results .provisional")).toHaveCount(0);
 });

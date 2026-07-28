@@ -59,7 +59,7 @@ E3_TIMELINE = {
     "National sandboxes deadline": ("2027-08-02", None),
 }
 
-EXPECTED_CORPUS_VERSION = "aia-omnibus-preOJ-9247-26"
+EXPECTED_CORPUS_VERSION = "aia-omnibus-oj-2026-1744"
 
 
 @pytest.fixture(scope="module")
@@ -79,15 +79,36 @@ def _dated(value, label):
     dt.date.fromisoformat(value)
 
 
-def test_corpus_version_pins_the_e2_branch(manifest):
-    # Branch (b): omnibus not yet in the OJ at ingestion time.
+def test_corpus_version_pins_the_published_act(manifest):
+    # Post-OJ refresh (ADR-016): the preOJ branch was discharged against
+    # Regulation (EU) 2026/1744. The version must NOT carry the preOJ
+    # marker any more - that marker is what drives corpus_status.
     assert manifest["corpus_version"] == EXPECTED_CORPUS_VERSION
+    assert "preoj" not in manifest["corpus_version"].lower()
 
 
-def test_refresh_task_is_mandatory_under_branch_b(manifest):
+def test_corpus_status_is_final_after_the_refresh(manifest):
+    # The user-visible PROVISIONAL notice is derived from the version
+    # string; after the refresh the app must present the corpus as FINAL.
+    from engine.render import _corpus_status
+    assert _corpus_status(manifest["corpus_version"]) == "FINAL"
+
+
+def test_refresh_task_is_discharged_and_traceable(manifest):
+    # ADR-016: the mandatory refresh is done, and the record still says
+    # what had to happen (audit trail), plus when and with what result.
     task = manifest["refresh_task"]
-    assert task["mandatory"] is True
+    assert task["mandatory"] is False
     assert "corpus_version" in task["action"]
+    assert task["completed"] == "2026-07-28"
+    assert "ZERO divergences" in task["result"]
+
+
+def test_published_act_is_a_final_source(manifest):
+    src = next(s for s in manifest["sources"] if s["id"] == "oj-2026-1744-en")
+    assert src["status"] == "FINAL"
+    assert "32026R1744" in src["celex_or_eli"]
+    assert src["version_date"] == "2026-07-24"
 
 
 def test_every_source_entry_is_complete(manifest):

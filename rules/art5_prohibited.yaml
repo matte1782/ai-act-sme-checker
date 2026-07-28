@@ -1,8 +1,8 @@
 # L2 rules - Article 5 prohibited practices.
 # Statute-first (ADR-011(1)): social scoring and workplace emotion from the
 # base act (corpus/raw/aia_32024R1689_en.pdf Art. 5(1)(c),(f)); the NCII
-# prohibition from the Omnibus (corpus/raw/st_9247_2026_init_en.pdf, new
-# Art. 5(1)(ba) + Art. 5(1a)). Dates anchored to corpus/timeline.yaml.
+# prohibition from the PUBLISHED omnibus (corpus/raw/oj_32026R1744_en.pdf,
+# Regulation (EU) 2026/1744, new Art. 5(1)(ba) + Art. 5(1a)). Dates anchored to corpus/timeline.yaml.
 #
 # v1 scope note (disclosed - ADR-011(5)): the law-enforcement / lawful-use
 # carve-outs of Art. 5 and the detailed Art. 5(1a) consent/foreseeability
@@ -59,8 +59,8 @@ rules:
 
   - id: ART5_NCII
     legal_source:
-      corpus_id: omnibus-st-9247-26-en
-      article: "Art. 5(1)(ba) as amended (Omnibus)"
+      corpus_id: oj-2026-1744-en
+      article: "Art. 5(1)(ba) as amended (Reg. (EU) 2026/1744)"
       paragraph: "1"
     applies_from: "2026-12-02"
     timeline_ref: ["Art. 5 NCII/CSAM (new, Omnibus)"]

@@ -298,3 +298,39 @@ declares each required tool and its source, or a pre-authorized
 STOP. (4) Deploy target: GitHub Pages serving web/ verbatim; the
 live site's BUNDLE.sha256 must equal the tagged release's (human
 checklist item).
+
+## ADR-016: corpus refresh to the published act (Reg. (EU) 2026/1744)
+Date: 2026-07-28. Status: ACCEPTED. HEAD: 9f0b8d3.
+The Digital Omnibus on AI was published as Regulation (EU) 2026/1744
+in OJ L of 24 July 2026 and entered into force on 27 July 2026 (third
+day after publication, Art. 4 of that act). This discharges the
+mandatory refresh_task registered in corpus/manifest.yaml at Gate 3a
+(branch (b): pre-OJ ingestion).
+Method (Gate-3a discipline, ADR-007): the official text was acquired
+from EUR-Lex (CELEX 32026R1744, sha256 recorded in the manifest;
+stored as corpus/raw/oj_32026R1744_en.pdf) and every timeline row was
+re-verified against it by BLIND agent extraction (extractors saw only
+the OJ text and one question each, never the expected values) plus
+adversarial refutation of each extraction, and independently by a
+mechanical read of the operative amendments.
+Result: ZERO divergences. All ten E3 rows reproduce from the published
+act - amended Art. 113 third paragraph point (a) (Chapters I-II from
+2025-02-02, new Art. 5(1)(ba),(bb) and 5(1a),(1b) from 2026-12-02),
+point (c)(i)/(ii) (Annex III 2027-12-02, Annex I 2028-08-02), new
+point (d) (Arts. 102-110 from entry into force), new Art. 111(4)
+(Art. 50(2) by 2026-12-02 for systems placed on the market before
+2026-08-02), and Art. 57(1) sandboxes 2027-08-02. Therefore the frozen
+oracle is UNCHANGED and the E3 fixture in tests/test_corpus_manifest.py
+is UNCHANGED: no ADR-009x amendment is required. That the anchor test
+still passes untouched IS the evidence that publication moved no date.
+Consequences: (1) corpus_version bumped preOJ-9247-26 ->
+aia-omnibus-oj-2026-1744; since corpus_status is derived from the
+preOJ marker, the user-visible PROVISIONAL notice retires by itself
+and every output now stamps a FINAL corpus. (2) The timeline rows and
+the ART5_NCII rule now cite oj-2026-1744-en (the published act);
+omnibus-st-9247-26-en is retained as the pre-publication audit trail,
+never deleted. (3) Three assertions were updated as the DESIGNED
+post-OJ transition, not as a weakening: the corpus_version pin, the
+refresh_task state (now discharged + traceable), and the two e2e
+tests that asserted the provisional banner (they now assert its
+absence). Rule logic, engine and oracle were not touched.
