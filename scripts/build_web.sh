@@ -45,5 +45,8 @@ SHA=$(sha256sum "$OUT/engine_bundle.zip" | awk '{print $1}')
 printf '%s  engine_bundle.zip\n' "$SHA" > "$OUT/BUNDLE.sha256"
 GITSHA=$(git rev-parse --short HEAD 2>/dev/null || echo unknown)
 CORPUS=$("$PY" -c "import yaml;print(yaml.safe_load(open('corpus/manifest.yaml'))['corpus_version'])")
-printf 'bundle_git_sha %s\ncorpus_version %s\nbundle_sha256 %s\n' "$GITSHA" "$CORPUS" "$SHA" > "$OUT/VERSION"
+# built_from_git_sha is HEAD **at build time**, i.e. the PARENT of the commit
+# that ships this bundle (build, then commit). The artifact's authoritative
+# identity is bundle_sha256, reproducible from source (see AUDIT.md §2).
+printf 'built_from_git_sha %s\ncorpus_version %s\nbundle_sha256 %s\n' "$GITSHA" "$CORPUS" "$SHA" > "$OUT/VERSION"
 echo "WEB_BUNDLE_OK $SHA"
