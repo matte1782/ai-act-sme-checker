@@ -36,6 +36,31 @@
       test end-to-end lo verifica ad ogni push (asserzione di rete:
       zero richieste non-self, zero richieste dopo il caricamento).</p>
 
+    <h2>Chi ospita il sito · Hosting chain</h2>
+    <p>
+      Le risposte al questionario non lasciano il browser. Il <strong>sito</strong>,
+      però, viene servito da un host: <strong>GitHub Pages</strong> (con CDN
+      Fastly davanti), che come qualsiasi hosting registra nei propri log
+      l'indirizzo IP e lo user-agent di chi visita. Quei log sono di GitHub e
+      non sono accessibili all'autore. Se ri-ospiti l'app altrove, questa
+      catena cambia di conseguenza.
+    </p>
+    <p>
+      <em>Your questionnaire answers never leave the browser. The site itself is
+      served by GitHub Pages (fronted by Fastly), which — like any host — logs
+      visitor IP addresses and user agents. Those logs belong to GitHub and are
+      not accessible to the author.</em>
+    </p>
+    <p>
+      <strong>Titolare e contatto · Controller and contact:</strong> il progetto
+      è pubblicato da un autore individuale; per qualsiasi richiesta relativa a
+      questa pagina o al trattamento descritto sopra, il canale è
+      <a href="https://github.com/matte1782/ai-act-sme-checker/issues">GitHub
+      Issues</a> del repository. Questa nota descrive il funzionamento tecnico
+      dello strumento e non sostituisce un'informativa completa ai sensi
+      dell'art. 13 GDPR.
+    </p>
+
     <h2>Onestà tecnica · Technical honesty</h2>
     <p>
       La CSP include <code>'unsafe-eval'</code> perché il ponte Python&harr;JS di
@@ -50,6 +75,22 @@
       Python&harr;JS FFI requires it. It permits local code execution only and
       does not permit any network access — the zero-exfiltration guarantee rests
       on <code>connect-src 'self'</code>.</em>
+    </p>
+    <p>
+      Due limiti del meccanismo, dichiarati: (1) la CSP è veicolata solo dal tag
+      <code>&lt;meta&gt;</code>, perché GitHub Pages non permette header HTTP
+      personalizzati — quindi le direttive che funzionano solo come header
+      (<code>frame-ancestors</code>, <code>report-to</code>) non hanno effetto;
+      (2) nessuna CSP può impedire una <em>navigazione</em> di primo livello:
+      la CSP blocca fetch, XHR, WebSocket e beacon, non un click che porta
+      altrove. La garanzia riguarda ciò che questa applicazione fa con le tue
+      risposte: non le invia da nessuna parte, e il test end-to-end lo verifica.
+    </p>
+    <p>
+      <em>Two disclosed limits: the CSP is meta-only (GitHub Pages cannot set
+      response headers), so header-only directives such as frame-ancestors are
+      ignored; and no CSP can prevent a top-level navigation — it blocks
+      fetch/XHR/WebSocket/beacon, which is what carries data.</em>
     </p>
 
     <h2>Cosa gira nel browser · What runs in the browser</h2>

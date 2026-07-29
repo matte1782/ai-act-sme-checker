@@ -8,7 +8,7 @@
 import { loadPyodide } from "./vendor/pyodide/pyodide.mjs";
 
 const $ = (id) => document.getElementById(id);
-const REPO = "https://github.com/"; // placeholder; institutions re-host verbatim
+const REPO = "https://github.com/matte1782/ai-act-sme-checker";
 
 // --- DOM-safe element builder (E5) ---------------------------------------
 function el(tag, opts = {}, children = []) {
@@ -172,7 +172,7 @@ function renderResults() {
     const head = el("div", { cls: "card-head" }, [
       el("span", { text: statusLabel(v.status), cls: "badge " + v.status }),
       el("strong", { text: v.rule_id }),
-      el("span", { text: `${v.citation.corpus_id} ${v.citation.article}(${v.citation.paragraph})`, cls: "cite" }),
+      el("span", { text: citeText(v.citation), cls: "cite" }),
     ]);
     card.appendChild(head);
     const r = rationale(v.rationale_key);
@@ -210,12 +210,32 @@ function renderResults() {
   window.scrollTo(0, 0);
 }
 
+// "Art. 50(1)" + paragraph "1" must not render as "Art. 50(1)(1)": our rules
+// already carry the paragraph inside the article string. Append it only when
+// it adds information.
+function citeText(c) {
+  const art = c.article || "";
+  const par = (c.paragraph || "").trim();
+  const shown = !par || art.includes("(" + par + ")") || art.includes(par) ? art : `${art}(${par})`;
+  return `${c.corpus_id} ${shown}`;
+}
+
+// A fact leaf is a CONDITION (fact op value), not a bare fact.
+function condText(node) {
+  const t = node.test || {};
+  const op = t.op === "in" ? "∈" : "=";
+  const val = Array.isArray(t.value) ? `[${t.value.join(", ")}]` : String(t.value);
+  return `${node.fact} ${op} ${val}`;
+}
+
 // explanation tree -> indented plain text (presentation only, DOM-safe)
 function treeText(node, depth) {
   const pad = "  ".repeat(depth);
   let head;
   if (node.op === "fact") {
-    head = `${pad}- fact ${node.fact} -> ${node.value} [${node.citation.corpus_id} ${node.citation.article}]`;
+    // Show the CONDITION, not just the fact name: printing the test's truth
+    // value under the fact's label read as if the fact itself were true.
+    head = `${pad}- ${condText(node)} -> ${node.value} [${node.citation.corpus_id} ${node.citation.article}]`;
   } else if (node.op === "scope" || node.op === "applicability") {
     head = `${pad}- ${node.op} -> ${node.value}${node.reason ? " (" + node.reason + ")" : ""}`;
   } else {

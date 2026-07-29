@@ -83,7 +83,7 @@ generated from schema/facts.yaml and ALL verdict content comes from
 render_structured through engine/webapi.py (single source of truth;
 no rule/verdict logic in JS). Zero data leaves the device: enforced
 by CSP (`connect-src 'self'`, no external origins) and verified by
-the e2e network assertion (web/e2e/zero_exfil.spec.js). The report's
+the e2e network assertion (tests_e2e/test_web_e2e.py, CI-enforced). The report's
 disclaimer is always visible (also in print); a PROVISIONAL corpus
 shows a visible notice while preOJ. The engine bundle is deterministic
 and sha256-frozen (web/assets/BUNDLE.sha256), rebuilt by

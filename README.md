@@ -63,12 +63,20 @@ never leave your device.**
 ## Per le istituzioni · Re-hosting
 
 Chiunque può ri-ospitare l'app verbatim (l'EUPL-1.2 lo permette, incluso
-l'adattamento). Non serve alcuna infrastruttura: nessun CDN, nessun server,
-nessun trattamento di dati.
+l'adattamento). Non serve back-end: **l'applicazione** non ha server proprio,
+non chiama CDN a runtime (Pyodide è vendorizzato) e non tratta le risposte
+fuori dal browser. L'**hosting**, però, resta un server: qualunque host —
+GitHub Pages incluso — vede gli indirizzi IP dei visitatori nei propri log.
+Le risposte al questionario no.
 
 1. Copia la cartella `web/` su qualunque hosting statico (es. GitHub Pages).
-2. Verifica l'integrità degli artefatti (vedi sotto).
-3. La `BUNDLE.sha256` del sito pubblicato deve coincidere con quella del rilascio taggato.
+2. **Requisito obbligatorio**: l'host deve servire `.mjs` come
+   `text/javascript` e `.wasm` come `application/wasm`. Se sbaglia i MIME
+   (o se apri i file via `file://`) l'app resta bloccata su «Caricamento del
+   motore…» senza messaggio d'errore. In locale usa `python scripts/serve_web.py`,
+   che imposta i MIME corretti.
+3. Verifica l'integrità degli artefatti (vedi sotto) e confronta la
+   `BUNDLE.sha256` del sito pubblicato con quella del repository/release.
 
 ## Verifica del bundle · Bundle verification
 
@@ -77,7 +85,14 @@ nessun trattamento di dati.
 cd web/vendor/pyodide && sha256sum -c VENDOR.sha256
 # motore + regole + schema + i18n + corpus (bundle deterministico e congelato)
 cd web/assets && sha256sum -c BUNDLE.sha256
+# la verifica che conta davvero: il bundle si RICOSTRUISCE dai sorgenti
+# (un checksum accanto al file non prova nulla contro una manomissione)
+bash scripts/build_web.sh /tmp/verify && sha256sum /tmp/verify/engine_bundle.zip
+# e il sito live serve esattamente quel bundle:
+curl -s https://matte1782.github.io/ai-act-sme-checker/assets/engine_bundle.zip | sha256sum
 ```
+
+Guida completa alla verifica indipendente: [AUDIT.md](AUDIT.md).
 
 ## Sviluppo · Development
 

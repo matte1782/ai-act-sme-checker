@@ -49,8 +49,18 @@ def _safe(text):
 def _render_node(node, depth):
     pad = "  " * depth
     if node.get("op") == "fact":
+        # Render the CONDITION (fact op value), not the bare fact name: the
+        # leaf's value is the truth of the TEST, so "interaction_disclosed ->
+        # TRUE" read as if the fact were true when the user had answered No.
+        test = node.get("test") or {}
+        op = "in" if test.get("op") == "in" else "="
+        expected = test.get("value")
+        expected = (
+            "[" + ", ".join(str(v) for v in expected) + "]"
+            if isinstance(expected, list) else str(expected)
+        )
         return [
-            f"{pad}- fact {_safe(node['fact'])} -> {node['value']} "
+            f"{pad}- {_safe(node['fact'])} {op} {_safe(expected)} -> {node['value']} "
             f"[{_safe(node['citation']['corpus_id'])} {_safe(node['citation']['article'])}]"
         ]
     if node.get("op") == "scope":
@@ -74,6 +84,17 @@ def _render_node(node, depth):
     for child in node.get("children", []):
         lines.extend(_render_node(child, depth + 1))
     return lines
+
+
+def _cite_text(cite):
+    """"Art. 50(1)" + paragraph "1" must not render as "Art. 50(1)(1)": our
+    rules already carry the paragraph inside the article string. Append the
+    paragraph only when it adds information."""
+    article = str(cite.get("article", ""))
+    paragraph = str(cite.get("paragraph", "")).strip()
+    if not paragraph or paragraph in article:
+        return f"{cite.get('corpus_id', '')} {article}"
+    return f"{cite.get('corpus_id', '')} {article}({paragraph})"
 
 
 def _iter_nodes(node):
@@ -154,7 +175,7 @@ def render_report(verdicts, as_of, corpus_version, disclaimer, i18n=None):
         )
         lines.append(
             f"[{_safe(status_label)}] {_safe(verdict.rule_id)} "
-            f"({_safe(cite['corpus_id'])} {_safe(cite['article'])}({_safe(cite['paragraph'])}))"
+            f"({_safe(_cite_text(cite))})"
         )
         if i18n:
             rationale = i18n["rationales"].get(verdict.rationale_key)

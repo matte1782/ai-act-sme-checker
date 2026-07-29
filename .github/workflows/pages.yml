@@ -6,7 +6,12 @@
 # equal the repo's frozen value (human checklist / post-deploy verification).
 name: pages
 on:
-  push:
+  # Gated on CI: a push whose zero-exfiltration e2e FAILS must never reach the
+  # live site (audit finding 2026-07-29 - the two workflows used to run
+  # independently, so a red gate could still deploy).
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
     branches: [master]
   workflow_dispatch:
 
@@ -21,6 +26,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
