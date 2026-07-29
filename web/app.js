@@ -206,6 +206,8 @@ function renderResults() {
   footer.appendChild(el("div", { text: (state.version || "").replace(/\n/g, "  ·  ") }));
   footer.appendChild(el("div", { text: `as_of ${s.as_of} · ${s.corpus_version} · licence EUPL-1.2` }));
   footer.appendChild(el("a", { text: "source repository", attrs: { href: REPO, rel: "noopener" } }));
+  footer.appendChild(el("span", { text: " · " }));
+  footer.appendChild(el("a", { text: "how to verify (AUDIT)", attrs: { href: REPO + "/blob/master/AUDIT.md", rel: "noopener" } }));
   root.appendChild(footer);
   window.scrollTo(0, 0);
 }
