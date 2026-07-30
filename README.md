@@ -92,7 +92,7 @@ bash scripts/build_web.sh /tmp/verify && sha256sum /tmp/verify/engine_bundle.zip
 curl -s https://matte1782.github.io/ai-act-sme-checker/assets/engine_bundle.zip | sha256sum
 ```
 
-Guida completa alla verifica indipendente: [AUDIT.md](AUDIT.md).
+Guida completa alla verifica indipendente: **[AUDIT.it.md](AUDIT.it.md)** (italiano) · [AUDIT.md](AUDIT.md) (English).
 
 ## Sviluppo · Development
 

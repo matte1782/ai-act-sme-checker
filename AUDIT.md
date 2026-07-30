@@ -3,6 +3,8 @@
 
 # Verify this tool yourself · Verifica indipendente
 
+🇮🇹 *Versione italiana: [AUDIT.it.md](AUDIT.it.md)*
+
 This project asks you to trust nothing. Every public claim below can be
 checked by you, from scratch, with commands that are known to work. Five
 independent auditors (a lawyer, a security auditor, a DPO, an institutional
