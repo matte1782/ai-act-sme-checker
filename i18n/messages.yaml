@@ -196,5 +196,29 @@ ui:
     it: "NON APPLICABILE: questa regola non riguarda il tuo caso."
     en: "NOT APPLICABLE: this rule does not apply to your case."
   web_missing_info:
-    it: "Risposte mancanti:"
-    en: "Missing answers:"
+    it: "Risposte mancanti (rispondendo si può determinare l'esito):"
+    en: "Missing answers (answering them can determine the outcome):"
+  web_rule_help_label:
+    it: "Cosa vuol dire in pratica?"
+    en: "What does this mean in practice?"
+  rule_help_HR_ANNEX_III:
+    it: "Per un uso ad alto rischio la legge chiede, tra l'altro: gestione dei rischi, dati di qualità, documentazione tecnica, registrazione automatica degli eventi, istruzioni chiare a chi lo usa, sorveglianza umana, accuratezza e sicurezza informatica (artt. 8-15). Se questi obblighi non ti dicono niente, è il caso di parlarne con un consulente: la scadenza indicata sopra dice entro quando vanno soddisfatti."
+    en: "For a high-risk use the law requires, among other things: risk management, data quality, technical documentation, automatic event logging, clear instructions for users, human oversight, accuracy and cybersecurity (Arts. 8-15). If these obligations mean nothing to you, talk to a professional: the deadline shown above says by when they must be met."
+  rule_help_ART50_1:
+    it: "Chi interagisce con il tuo sistema (per esempio un chatbot sul sito) deve poter capire che sta parlando con un'IA: va detto in modo chiaro, al più tardi alla prima interazione (art. 50(1))."
+    en: "People interacting with your system (for example a website chatbot) must be able to tell they are talking to an AI: say it clearly, at the latest at the first interaction (Art. 50(1))."
+  rule_help_ART50_2:
+    it: "I contenuti generati dall'IA (testo, audio, immagini, video) vanno marcati come artificiali in un formato leggibile dalle macchine, per esempio nei metadati del file (art. 50(2))."
+    en: "AI-generated content (text, audio, images, video) must be marked as artificial in a machine-readable format, for example in the file's metadata (Art. 50(2))."
+  rule_help_ART50_4:
+    it: "Se pubblichi un deep fake (immagini, audio o video realistici generati o manipolati dall'IA), devi dichiarare che il contenuto è artificiale (art. 50(4))."
+    en: "If you publish a deep fake (realistic AI-generated or manipulated images, audio or video), you must disclose that the content is artificial (Art. 50(4))."
+  rule_help_ART5_SOCIAL_SCORING:
+    it: "Usare l'IA per dare un punteggio alle persone in base a comportamento o caratteristiche, con effetti sfavorevoli in contesti che non c'entrano, è una pratica vietata del tutto: non c'è modo di renderla conforme (art. 5(1)(c))."
+    en: "Using AI to score people based on behaviour or characteristics, with unfavourable effects in unrelated contexts, is an outright prohibited practice: there is no way to make it compliant (Art. 5(1)(c))."
+  rule_help_ART5_EMOTION_WORKPLACE:
+    it: "Usare l'IA per riconoscere le emozioni di dipendenti o studenti è vietato, con la sola eccezione di scopi medici o di sicurezza (art. 5(1)(f))."
+    en: "Using AI to infer the emotions of employees or students is prohibited, with the sole exception of medical or safety purposes (Art. 5(1)(f))."
+  rule_help_ART5_NCII:
+    it: "I sistemi che generano immagini intime di persone reali senza il loro consenso sono vietati: sia quando è lo scopo del sistema, sia quando il sistema ne ha la capacità senza salvaguardie adeguate (art. 5, Omnibus)."
+    en: "Systems that generate intimate images of real people without their consent are prohibited: both when that is the system's purpose and when the system has that capability without adequate safeguards (Art. 5, Omnibus)."

@@ -195,7 +195,12 @@ function renderResults() {
     if (line) legend.appendChild(el("p", { text: line, cls: "help-text" }));
   }
   root.appendChild(legend);
-  for (const v of s.verdicts) {
+  // Screen-only ordering by urgency (UX round 3): what needs action first.
+  // The engine's canonical order is untouched (print_text keeps it); this
+  // is presentation, not verdict logic.
+  const URGENCY = { NON_COMPLIANT: 0, UNDETERMINED: 1, COMPLIANT: 2, NOT_APPLICABLE: 3 };
+  const ordered = [...s.verdicts].sort((a, b) => (URGENCY[a.status] ?? 9) - (URGENCY[b.status] ?? 9));
+  for (const v of ordered) {
     const card = el("div", { cls: "card" });
     // Human title first (the deadline_<id> catalog label doubles as the
     // rule's plain name); the rule id stays visible for traceability.
@@ -208,8 +213,27 @@ function renderResults() {
     card.appendChild(head);
     const r = rationale(v.rationale_key);
     if (r) card.appendChild(el("p", { text: r, cls: "rationale" }));
+    // UX round 3: per-rule practical helper - WHAT the obligation is and
+    // what to do about it, in plain words (statute reference inside).
+    const rh = ui("rule_help_" + v.rule_id);
+    if (rh) {
+      const rdet = el("details", { cls: "explain q-help" });
+      rdet.appendChild(el("summary", { text: ui("web_rule_help_label") }));
+      rdet.appendChild(el("p", { text: rh, cls: "help-text" }));
+      card.appendChild(rdet);
+    }
     if (v.unknown_facts.length) {
-      card.appendChild(el("p", { text: ui("web_missing_info") + " " + v.unknown_facts.join(", "), cls: "unknowns" }));
+      // Show the QUESTIONS still unanswered, not internal fact names: the
+      // reader learns exactly what to go back and answer.
+      const box = el("div", { cls: "unknowns" });
+      box.appendChild(el("p", { text: ui("web_missing_info") }));
+      const ul = el("ul", {});
+      for (const name of v.unknown_facts) {
+        const f = state.facts.find((x) => x.name === name);
+        ul.appendChild(el("li", { text: f ? f.prompt[state.lang] : name }));
+      }
+      box.appendChild(ul);
+      card.appendChild(box);
     }
     const det = el("details", { cls: "explain" });
     det.appendChild(el("summary", { text: ui("web_explanation") }));
