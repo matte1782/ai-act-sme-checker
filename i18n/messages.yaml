@@ -106,3 +106,74 @@ ui:
   provisional_notice:
     it: "basato sul testo provvisorio del Consiglio (9247/26); aggiornamento alla Gazzetta ufficiale in arrivo"
     en: "based on the provisional Council text (9247/26); to be updated once the text is published in the Official Journal"
+  # --- UX pass post-pilota (2026-08-27; findings P-pilota-async + A1) -------
+  # Helper in linguaggio piano per le domande gergali, etichette umane per le
+  # opzioni enum, etichette umane per le scadenze, nota sul salvataggio PDF.
+  # Chiavi AGGIUNTIVE rispetto a REQUIRED_UI: il loader le valida (it+en non
+  # vuoti) ma l'engine non le richiede; il web le usa se presenti.
+  web_help_label:
+    it: "Cosa significa questa domanda?"
+    en: "What does this question mean?"
+  help_is_ai_system:
+    it: "Per la legge (art. 3, punto 1) un sistema di IA è un software che, dai dati che riceve, deduce come produrre risultati: previsioni, contenuti, raccomandazioni o decisioni. Esempi: un chatbot sul sito, un generatore di testi o immagini, un software che seleziona CV o valuta clienti. Un foglio di calcolo, o un programma fatto solo di regole fisse scritte a mano, in genere no. Se non sei sicuro, «Non so» è una risposta legittima."
+    en: "Under the law (Art. 3, point 1) an AI system is software that infers, from the input it receives, how to produce outputs: predictions, content, recommendations or decisions. Examples: a website chatbot, a text or image generator, software that screens CVs or scores customers. A spreadsheet, or a program made only of fixed hand-written rules, generally is not. If unsure, 'I don't know' is a legitimate answer."
+  help_in_eu_market:
+    it: "«Immesso sul mercato UE» significa che il sistema è reso disponibile o usato nell'Unione europea (art. 3, punti 9-11). Vale anche se lo usi solo all'interno di un'azienda che opera nella UE, o se i tuoi clienti sono nella UE."
+    en: "'Placed on the EU market' means the system is made available or used in the European Union (Art. 3, points 9-11). This includes purely internal use inside an EU-based company, or serving EU customers."
+  help_operator_role:
+    it: "«Fornitore»: sviluppi il sistema (o lo fai sviluppare) e lo metti sul mercato con il tuo nome. «Utilizzatore»: usi nella tua attività un sistema fornito da altri. La maggior parte delle PMI che usa strumenti acquistati o in abbonamento è un utilizzatore."
+    en: "'Provider': you develop the system (or have it developed) and place it on the market under your own name. 'Deployer': you use a system supplied by others in your business. Most SMEs using purchased or subscription tools are deployers."
+  help_annex_iii_use_case:
+    it: "L'allegato III è l'elenco, scritto nella legge, degli usi considerati ad alto rischio: per esempio la selezione del personale o l'accesso al credito. Scegli l'ambito in cui il sistema viene usato; se nessuno corrisponde, scegli «Nessuno di questi»."
+    en: "Annex III is the list, written in the law, of the uses treated as high-risk: for example recruitment or access to credit. Pick the area the system is used in; if none matches, pick 'None of these'."
+  help_chapter_iii_obligations_met:
+    it: "Il capo III è la parte della legge con gli obblighi per i sistemi ad alto rischio: gestione dei rischi, qualità dei dati, documentazione tecnica, registrazione degli eventi, trasparenza, sorveglianza umana, accuratezza e sicurezza (artt. 8-15). Se non sai se sono stati soddisfatti, la risposta onesta è «Non so»."
+    en: "Chapter III is the part of the law with the obligations for high-risk systems: risk management, data quality, technical documentation, logging, transparency, human oversight, accuracy and security (Arts. 8-15). If you don't know whether they are met, the honest answer is 'I don't know'."
+  opt_operator_role_provider:
+    it: "Fornitore (sviluppo o vendo il sistema)"
+    en: "Provider (I develop or sell the system)"
+  opt_operator_role_deployer:
+    it: "Utilizzatore (uso un sistema fornito da altri)"
+    en: "Deployer (I use a system supplied by others)"
+  opt_annex_iii_use_case_none:
+    it: "Nessuno di questi"
+    en: "None of these"
+  opt_annex_iii_use_case_employment_recruitment:
+    it: "Lavoro e selezione del personale"
+    en: "Employment and recruitment"
+  opt_annex_iii_use_case_education:
+    it: "Istruzione e formazione"
+    en: "Education and training"
+  opt_annex_iii_use_case_critical_infrastructure:
+    it: "Infrastrutture critiche"
+    en: "Critical infrastructure"
+  opt_annex_iii_use_case_credit_scoring:
+    it: "Accesso al credito (credit scoring)"
+    en: "Access to credit (credit scoring)"
+  opt_annex_iii_use_case_law_enforcement:
+    it: "Attività di contrasto (forze dell'ordine)"
+    en: "Law enforcement"
+  deadline_HR_ANNEX_III:
+    it: "Obblighi per i sistemi ad alto rischio (allegato III)"
+    en: "Obligations for high-risk systems (Annex III)"
+  deadline_ART50_1:
+    it: "Dire alle persone che stanno interagendo con un'IA (es. chatbot)"
+    en: "Telling people they are interacting with an AI (e.g. chatbot)"
+  deadline_ART50_2:
+    it: "Marcare i contenuti generati dall'IA come artificiali"
+    en: "Marking AI-generated content as artificial"
+  deadline_ART50_4:
+    it: "Dichiarare i deep fake come contenuti artificiali"
+    en: "Disclosing deep fakes as artificial content"
+  deadline_ART5_SOCIAL_SCORING:
+    it: "Divieto di punteggio sociale delle persone"
+    en: "Ban on social scoring of people"
+  deadline_ART5_EMOTION_WORKPLACE:
+    it: "Divieto di riconoscimento delle emozioni sul lavoro"
+    en: "Ban on emotion recognition at work"
+  deadline_ART5_NCII:
+    it: "Divieto di immagini intime non consensuali"
+    en: "Ban on non-consensual intimate images"
+  web_print_hint:
+    it: "Si apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Su alcuni browser mobili la stampa non è disponibile; in quel caso usa un computer."
+    en: "Your browser's print dialog opens: choose 'Save as PDF' there. Some mobile browsers do not support printing; use a desktop browser in that case."

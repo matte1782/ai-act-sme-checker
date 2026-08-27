@@ -63,8 +63,11 @@ async function boot() {
     state.facts = state.boot.facts;
     try { state.version = await (await fetch("./assets/VERSION")).text(); } catch (e) { state.version = ""; }
     setProgress(100, "Pronto / Ready");
-    $("boot").hidden = true;
-    renderWizard();
+    // F-P1 (pilot): do NOT auto-advance - the intro stays until the user
+    // clicks Start. The engine is ready; the click only reveals the wizard.
+    const start = $("boot-start");
+    start.hidden = false;
+    start.addEventListener("click", () => { $("boot").hidden = true; renderWizard(); });
   } catch (err) {
     failClosed(String(err && err.message ? err.message : err));
   }
@@ -99,6 +102,18 @@ function renderWizard() {
   root.appendChild(prog);
   root.appendChild(el("p", { text: fact.prompt[state.lang], cls: "q-prompt" }));
 
+  // Plain-language helper (UX pass 2026-08-27, findings F-P2/F-P3/F-P4):
+  // rendered ONLY when the catalog carries help_<fact> (both languages,
+  // enforced by the strict i18n loader). Collapsed by default; statute
+  // references live in the help text itself.
+  const help = ui("help_" + fact.name);
+  if (help) {
+    const det = el("details", { cls: "explain q-help" });
+    det.appendChild(el("summary", { text: ui("web_help_label") }));
+    det.appendChild(el("p", { text: help, cls: "help-text" }));
+    root.appendChild(det);
+  }
+
   const answers = el("div", { cls: "answers" });
   const choose = (value) => { state.answers[fact.name] = value; advance(); };
   const cur = state.answers[fact.name];
@@ -109,7 +124,9 @@ function renderWizard() {
     answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: () => choose(null) } }));
   } else if (fact.type === "enum") {
     for (const v of fact.values) {
-      answers.appendChild(el("button", { text: v, cls: "ans" + sel(cur === v), on: { click: () => choose(v) } }));
+      // Human label when the catalog has one (opt_<fact>_<value>); the RAW
+      // enum value stays the submitted answer - labels are presentation only.
+      answers.appendChild(el("button", { text: ui("opt_" + fact.name + "_" + v) || v, cls: "ans" + sel(cur === v), on: { click: () => choose(v) } }));
     }
     answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: () => choose(null) } }));
   } else {
@@ -160,7 +177,9 @@ function renderResults() {
   } else {
     const ul = el("ul", { cls: "deadlines" });
     for (const d of s.deadlines) {
-      ul.appendChild(el("li", { text: `${d.rule_id}: ${d.applies_from} [${d.citation.corpus_id} ${d.citation.article}]` }));
+      // Human label first (F-P6), rule id + citation kept for traceability.
+      const lbl = ui("deadline_" + d.rule_id);
+      ul.appendChild(el("li", { text: `${lbl ? lbl + " · " : ""}${d.rule_id}: ${d.applies_from} [${d.citation.corpus_id} ${d.citation.article}]` }));
     }
     root.appendChild(ul);
   }
@@ -201,6 +220,10 @@ function renderResults() {
     el("button", { text: ui("web_restart"), cls: "secondary", on: { click: restart } }),
   ]);
   root.appendChild(actions);
+  // F-P5 (pilot): say what the print button actually does, and that some
+  // mobile browsers cannot print. Screen-only (hidden in @media print).
+  const hint = ui("web_print_hint");
+  if (hint) root.appendChild(el("p", { text: hint, cls: "cite print-hint" }));
 
   const footer = el("footer", { cls: "meta" });
   footer.appendChild(el("div", { text: (state.version || "").replace(/\n/g, "  ·  ") }));

@@ -41,6 +41,11 @@ BOOT_TIMEOUT = 90_000  # Pyodide first load + WASM compile can be slow on CI
 
 def _boot(page):
     page.goto(f"{BASE}/index.html")
+    # UX pass 2026-08-27 (pilot F-P1): the boot screen no longer auto-advances;
+    # the wizard appears only after the user clicks Start. The e2e drives the
+    # same path a human takes.
+    page.wait_for_selector("#boot-start:not([hidden])", timeout=BOOT_TIMEOUT)
+    page.locator("#boot-start").click()
     page.wait_for_selector("#wizard .q-prompt", timeout=BOOT_TIMEOUT)
 
 

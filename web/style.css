@@ -79,8 +79,20 @@ footer.meta { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--l
 footer.meta, .cite, .deadlines li, #print-meta { overflow-wrap: anywhere; }
 footer.meta a { color: var(--accent); }
 
+
+/* UX pass 2026-08-27 (pilot findings): Start button, question helpers,
+   print hint. Same visual family as the existing chrome. */
+.boot-start { padding: .7rem 1.6rem; border: 1px solid var(--accent);
+  background: var(--accent); color: #fff; border-radius: 6px; cursor: pointer;
+  font-size: 1.05rem; margin-top: .9rem; }
+.boot-start:hover { filter: brightness(1.08); }
+details.q-help { margin: -0.3rem 0 .8rem; }
+details.q-help summary { cursor: pointer; color: var(--accent); font-size: .88rem; }
+details.q-help .help-text { font-size: .9rem; background: #f2f2ef;
+  border-left: 3px solid var(--accent); padding: .55rem .7rem; margin: .4rem 0 0; }
+
 @media print {
-  .toolbar, .lang-toggle, .actions, .nav, details.explain summary { display: none !important; }
+  .toolbar, .lang-toggle, .actions, .nav, details.explain summary, .print-hint, .boot-start { display: none !important; }
   #results .disclaimer { position: static; }
   details.explain[open] pre { display: block; }
   .card { break-inside: avoid; }

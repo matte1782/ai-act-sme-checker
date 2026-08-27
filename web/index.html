@@ -25,6 +25,7 @@
       <!-- F1: 3-line plain-language intro (what it does / what it is not / duration). -->
       <p id="boot-intro" class="boot-intro">
         <strong>Cosa fa:</strong> auto-verifica gratuita degli obblighi dell'AI Act per la tua PMI. / A free self-check of AI Act obligations for your SME.<br>
+        <strong>Come funziona:</strong> &egrave; un questionario guidato, non una scansione automatica: rispondi tu, il verdetto &egrave; calcolato sul testo di legge, con le citazioni. / A guided questionnaire, not an automatic scan: you answer, the verdict is computed from the law, with citations.<br>
         <strong>Cosa non &egrave;:</strong> non &egrave; una consulenza legale. / Not legal advice.<br>
         <strong>Durata:</strong> ~10 minuti, 19 domande; puoi sempre rispondere &laquo;Non so&raquo;. / ~10 minutes, 19 questions; you can always answer &ldquo;I don't know&rdquo;.
       </p>
@@ -52,6 +53,11 @@ seek human/legal review.
         Caricamento del motore in corso&hellip; / Loading the engine&hellip;
       </p>
       <div class="progress"><div id="boot-bar" class="progress-bar"></div></div>
+      <!-- UX pass 2026-08-27 (pilot finding F-P1 "spiegazione va via veloce"):
+           the boot screen no longer auto-advances into the wizard; the intro
+           stays on screen until the user clicks Start. Unhidden by app.js
+           only when the engine is ready. -->
+      <button id="boot-start" class="boot-start" hidden>Inizia / Start</button>
       <!-- E1 fail-closed: filled by app.js if WASM is unavailable or load fails;
            NEVER left blank. -->
       <div id="boot-error" class="fail-closed" hidden></div>
