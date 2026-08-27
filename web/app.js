@@ -186,18 +186,30 @@ function renderResults() {
 
   // (3) verdict cards
   root.appendChild(el("h2", { text: ui("web_results_title") }));
+  // Plain-language legend (UX round 2, 2026-08-27): what each status means
+  // for a non-technical reader. Collapsible, shown once above the cards.
+  const legend = el("details", { cls: "explain legend", attrs: { open: "" } });
+  legend.appendChild(el("summary", { text: ui("web_legend_title") }));
+  for (const st of ["COMPLIANT", "NON_COMPLIANT", "UNDETERMINED", "NOT_APPLICABLE"]) {
+    const line = ui("legend_" + st);
+    if (line) legend.appendChild(el("p", { text: line, cls: "help-text" }));
+  }
+  root.appendChild(legend);
   for (const v of s.verdicts) {
     const card = el("div", { cls: "card" });
+    // Human title first (the deadline_<id> catalog label doubles as the
+    // rule's plain name); the rule id stays visible for traceability.
+    const rl = ui("deadline_" + v.rule_id);
     const head = el("div", { cls: "card-head" }, [
       el("span", { text: statusLabel(v.status), cls: "badge " + v.status }),
-      el("strong", { text: v.rule_id }),
-      el("span", { text: citeText(v.citation), cls: "cite" }),
+      el("strong", { text: rl || v.rule_id }),
+      el("span", { text: (rl ? v.rule_id + " · " : "") + citeText(v.citation), cls: "cite" }),
     ]);
     card.appendChild(head);
     const r = rationale(v.rationale_key);
     if (r) card.appendChild(el("p", { text: r, cls: "rationale" }));
     if (v.unknown_facts.length) {
-      card.appendChild(el("p", { text: "? " + v.unknown_facts.join(", "), cls: "unknowns" }));
+      card.appendChild(el("p", { text: ui("web_missing_info") + " " + v.unknown_facts.join(", "), cls: "unknowns" }));
     }
     const det = el("details", { cls: "explain" });
     det.appendChild(el("summary", { text: ui("web_explanation") }));
@@ -217,11 +229,14 @@ function renderResults() {
 
   const actions = el("div", { cls: "actions" }, [
     el("button", { text: ui("web_print"), on: { click: () => window.print() } }),
+    // UX round 2: a REAL save that works where window.print does not
+    // (mobile). Downloads the engine's print_text as a local .txt via a
+    // blob: URL - no network, CSP-compatible, same content as the print.
+    el("button", { text: ui("web_download"), on: { click: () => downloadReport(out.print_text) } }),
     el("button", { text: ui("web_restart"), cls: "secondary", on: { click: restart } }),
   ]);
   root.appendChild(actions);
-  // F-P5 (pilot): say what the print button actually does, and that some
-  // mobile browsers cannot print. Screen-only (hidden in @media print).
+  // F-P5 (pilot): say what each button actually does. Screen-only.
   const hint = ui("web_print_hint");
   if (hint) root.appendChild(el("p", { text: hint, cls: "cite print-hint" }));
 
@@ -281,6 +296,19 @@ function localizedDisclaimer(full, lang) {
   const header = lines[0], footer = lines[lines.length - 1];
   const body = lang === "en" ? lines.slice(blank + 1, lines.length - 1) : lines.slice(1, blank);
   return [header, ...body, footer].join("\n");
+}
+
+// Save the engine's plain-text report as a local file. Blob + a[download]:
+// entirely client-side (object URL, no request), so the zero-exfiltration
+// guarantee is untouched. Filename carries the as_of date for traceability.
+function downloadReport(text) {
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = el("a", { attrs: { href: url, download: `ai-act-self-check_${localISODate()}.txt` } });
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 function restart() { state.answers = {}; state.index = 0; renderWizard(); }

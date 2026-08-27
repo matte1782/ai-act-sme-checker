@@ -52,8 +52,8 @@ h2 { font-size: 1.12rem; margin: 1.6rem 0 .6rem; }
 /* results */
 .provisional { background: #fff8e6; border: 1px solid var(--warn); border-left: 5px solid var(--warn);
   border-radius: 5px; padding: .7rem .9rem; margin: 1rem 0; color: var(--warn); font-weight: 600; }
-.deadlines { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: .3rem .9rem; }
-.deadlines li { margin: .35rem 0; }
+.deadlines { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: .3rem .9rem .3rem 1.6rem; max-width: 100%; box-sizing: border-box; overflow-x: hidden; }
+.deadlines li { margin: .35rem 0; overflow-wrap: anywhere; word-break: break-word; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 7px;
   padding: .9rem 1rem; margin: .8rem 0; }
 .card-head { display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap; }
@@ -87,6 +87,9 @@ footer.meta a { color: var(--accent); }
   font-size: 1.05rem; margin-top: .9rem; }
 .boot-start:hover { filter: brightness(1.08); }
 details.q-help { margin: -0.3rem 0 .8rem; }
+details.legend { margin: .2rem 0 1rem; }
+details.legend summary { cursor: pointer; color: var(--accent); font-size: .9rem; }
+details.legend .help-text { font-size: .88rem; background: #f2f2ef; border-left: 3px solid var(--line); padding: .45rem .7rem; margin: .35rem 0 0; }
 details.q-help summary { cursor: pointer; color: var(--accent); font-size: .88rem; }
 details.q-help .help-text { font-size: .9rem; background: #f2f2ef;
   border-left: 3px solid var(--accent); padding: .55rem .7rem; margin: .4rem 0 0; }

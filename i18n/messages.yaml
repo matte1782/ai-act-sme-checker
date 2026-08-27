@@ -175,5 +175,26 @@ ui:
     it: "Divieto di immagini intime non consensuali"
     en: "Ban on non-consensual intimate images"
   web_print_hint:
-    it: "Si apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Su alcuni browser mobili la stampa non è disponibile; in quel caso usa un computer."
-    en: "Your browser's print dialog opens: choose 'Save as PDF' there. Some mobile browsers do not support printing; use a desktop browser in that case."
+    it: "«Stampa / Salva PDF» apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Se sul tuo dispositivo non funziona, usa «Scarica il report»: salva un file di testo con lo stesso contenuto."
+    en: "'Print / Save as PDF' opens your browser's print dialog: choose 'Save as PDF' there. If that does not work on your device, use 'Download the report': it saves a text file with the same content."
+  web_download:
+    it: "Scarica il report (testo)"
+    en: "Download the report (text)"
+  web_legend_title:
+    it: "Cosa significano i risultati?"
+    en: "What do the results mean?"
+  legend_COMPLIANT:
+    it: "CONFORME: con le risposte date, gli obblighi di questa regola risultano rispettati."
+    en: "COMPLIANT: given your answers, the obligations of this rule appear to be met."
+  legend_NON_COMPLIANT:
+    it: "NON CONFORME: con le risposte date manca qualcosa che la legge richiede; la scheda dice cosa."
+    en: "NON-COMPLIANT: given your answers, something the law requires is missing; the card says what."
+  legend_UNDETERMINED:
+    it: "NON DETERMINABILE: mancano informazioni e lo strumento non indovina mai. Completa le risposte indicate, oppure serve una verifica umana o legale."
+    en: "UNDETERMINED: information is missing and the tool never guesses. Complete the listed answers, or seek human/legal review."
+  legend_NOT_APPLICABLE:
+    it: "NON APPLICABILE: questa regola non riguarda il tuo caso."
+    en: "NOT APPLICABLE: this rule does not apply to your case."
+  web_missing_info:
+    it: "Risposte mancanti:"
+    en: "Missing answers:"
