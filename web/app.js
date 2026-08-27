@@ -78,7 +78,7 @@ function setProgress(pct, msg) { $("boot-bar").style.width = pct + "%"; $("boot-
 function toolbar(onLang) {
   const mk = (code, label) => el("button", {
     text: label, attrs: { "aria-pressed": String(state.lang === code) },
-    on: { click: () => { if (state.lang !== code) { state.lang = code; onLang(); } } },
+    on: { click: () => { if (state.lang !== code) { state.lang = code; document.documentElement.lang = code; onLang(); } } },
   });
   return el("div", { cls: "toolbar" }, [
     el("span", { text: state.lang === "it" ? "Lingua" : "Language", cls: "cite" }),
@@ -95,12 +95,19 @@ function renderWizard() {
   root.appendChild(el("p", {
     text: ui("web_question") + " " + (state.index + 1) + " " + ui("web_of") + " " + total, cls: "cite",
   }));
-  const prog = el("div", { cls: "progress" });
+  const prog = el("div", { cls: "progress", attrs: {
+    role: "progressbar", "aria-valuemin": "1", "aria-valuemax": String(total),
+    "aria-valuenow": String(state.index + 1),
+  } });
   const bar = el("div", { cls: "progress-bar" });
   bar.style.width = `${((state.index + 1) / total) * 100}%`;   // CSSOM, not a style attr (CSP)
   prog.appendChild(bar);
   root.appendChild(prog);
-  root.appendChild(el("p", { text: fact.prompt[state.lang], cls: "q-prompt" }));
+  // tabindex=-1 + focus(): keyboard and screen-reader users land on the new
+  // question at every step instead of staying where the old button was.
+  const promptEl = el("p", { text: fact.prompt[state.lang], cls: "q-prompt", attrs: { tabindex: "-1" } });
+  root.appendChild(promptEl);
+  promptEl.focus();
 
   // Plain-language helper (UX pass 2026-08-27, findings F-P2/F-P3/F-P4):
   // rendered ONLY when the catalog carries help_<fact> (both languages,
@@ -229,8 +236,18 @@ function renderResults() {
       box.appendChild(el("p", { text: ui("web_missing_info") }));
       const ul = el("ul", {});
       for (const name of v.unknown_facts) {
-        const f = state.facts.find((x) => x.name === name);
-        ul.appendChild(el("li", { text: f ? f.prompt[state.lang] : name }));
+        const idx = state.facts.findIndex((x) => x.name === name);
+        const f = idx >= 0 ? state.facts[idx] : null;
+        if (f) {
+          // UX round 4: the unanswered question is a LINK back to itself -
+          // UNDETERMINED becomes a path (answer -> outcome), not a dead end.
+          ul.appendChild(el("li", {}, [el("button", {
+            text: f.prompt[state.lang], cls: "jump",
+            on: { click: () => { state.index = idx; renderWizard(); } },
+          })]));
+        } else {
+          ul.appendChild(el("li", { text: name }));
+        }
       }
       box.appendChild(ul);
       card.appendChild(box);

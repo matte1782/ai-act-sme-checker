@@ -94,6 +94,10 @@ details.q-help summary { cursor: pointer; color: var(--accent); font-size: .88re
 details.q-help .help-text { font-size: .9rem; background: #f2f2ef;
   border-left: 3px solid var(--accent); padding: .55rem .7rem; margin: .4rem 0 0; }
 
+.unknowns button.jump { background: none; border: none; color: var(--accent);
+  text-decoration: underline; cursor: pointer; padding: 0; font: inherit; text-align: left; }
+.q-prompt:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
+
 @media print {
   .toolbar, .lang-toggle, .actions, .nav, details.explain summary, .print-hint, .boot-start { display: none !important; }
   #results .disclaimer { position: static; }
