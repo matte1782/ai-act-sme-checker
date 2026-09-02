@@ -15,6 +15,7 @@
 # opposite: [ART5_NCII] ruling an unsafeguarded NCII-capable system COMPLIANT would deny the Art. 5(1)(ba)/(1a) prohibition on systems that foreseeably produce such material without safeguards.
 rules:
   - id: ART5_SOCIAL_SCORING
+    kind: prohibition   # Art. 5 practice: no remedy by compliance steps (Tier B2)
     legal_source:
       corpus_id: aia-2024-1689-en
       article: "Art. 5(1)(c)"
@@ -33,6 +34,7 @@ rules:
     rationale_key: art5.social_scoring_prohibited
 
   - id: ART5_EMOTION_WORKPLACE
+    kind: prohibition   # Art. 5 practice: no remedy by compliance steps (Tier B2)
     legal_source:
       corpus_id: aia-2024-1689-en
       article: "Art. 5(1)(f)"
@@ -58,6 +60,7 @@ rules:
     rationale_key: art5.emotion_workplace_no_exception
 
   - id: ART5_NCII
+    kind: prohibition   # Art. 5 practice: no remedy by compliance steps (Tier B2)
     legal_source:
       corpus_id: oj-2026-1744-en
       article: "Art. 5(1)(ba) as amended (Reg. (EU) 2026/1744)"

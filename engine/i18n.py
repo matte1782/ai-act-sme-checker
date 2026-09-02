@@ -28,6 +28,11 @@ REQUIRED_UI = (
     # fallback, so they MUST fail at load like the rest (review finding).
     "web_help_label", "web_legend_title", "web_rule_help_label",
     "web_missing_info", "web_download", "web_back_results",
+    # Tier A/B web layer (2026-09-02 persona test), dereferenced unguarded.
+    "web_summary_title", "web_count_NON_COMPLIANT", "web_count_UNDETERMINED",
+    "web_count_INACTIVE", "web_count_COMPLIANT", "web_count_NOT_APPLICABLE",
+    "web_status_INACTIVE", "web_from", "web_deadlines_title", "web_deadlines_note",
+    "web_prohibition_banner",
 )
 
 

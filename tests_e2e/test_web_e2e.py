@@ -49,7 +49,10 @@ def _boot(page):
     page.wait_for_selector("#wizard .q-prompt", timeout=BOOT_TIMEOUT)
 
 
-def _answer_all(page, unknown_at=5):
+def _answer_all(page, unknown_at=5, yes_at=(0, 1, 4)):
+    # Question indices follow schema/facts.yaml order: 0 is_ai_system,
+    # 1 in_eu_market, 4 interacts_with_persons, 5 interaction_disclosed,
+    # 11 practice_social_scoring (enum steps take the first option).
     for i in range(30):
         if not page.locator("#results").is_hidden():
             break
@@ -59,7 +62,7 @@ def _answer_all(page, unknown_at=5):
         # steps there is no "No" button -> fall back to the first option.
         if i == unknown_at:
             label = r"^Non so$"
-        elif i in (0, 1, 4):
+        elif i in yes_at:
             label = r"^Sì$"
         else:
             label = r"^No$"
@@ -129,10 +132,37 @@ def test_question_helper_and_results_legend(page):
     _answer_all(page)
     assert page.locator("#results details.legend").count() == 1
     assert page.locator("#results .card details.q-help").count() >= 1
+    # persona test (Tier A/B): summary block, INACTIVE badge for the rules not
+    # yet in force, deadlines section AFTER the cards (never before).
+    assert page.locator("#results .summary .summary-counts").count() == 1
+    # date-bound pin: the last rule to enter into force is HR_ANNEX_III
+    # (2027-12-02); until then at least one card is INACTIVE on this path.
+    as_of = re.search(r"as_of: (\d{4}-\d{2}-\d{2})", page.locator("#print-meta").inner_text()).group(1)
+    if as_of < "2027-12-02":
+        assert page.locator("#results .badge.INACTIVE").count() >= 1
+    order = page.evaluate(
+        "() => { const h = [...document.querySelectorAll('#results h2')].map(e => e.textContent);"
+        " const r = h.findIndex(t => /Risultati|Results/.test(t));"
+        " const d = h.findIndex(t => /applicano|start to apply/.test(t));"
+        " return r >= 0 && d > r; }"
+    )
+    assert order, "deadlines section must come after the verdict cards"
     # the missing-answer list shows QUESTIONS, never internal fact names
     unknowns = page.locator("#results .unknowns li")
     if unknowns.count():
         assert "_" not in unknowns.first.inner_text()
+
+
+def test_prohibition_banner_on_article_5_violation(page):
+    # Tier B2 (persona test): a NON_COMPLIANT Art. 5 rule carries the
+    # "prohibited practice" banner; the kind comes from the engine (rule_kinds),
+    # never from JS. Path: social scoring = Sì (question 11).
+    _boot(page)
+    _answer_all(page, yes_at=(0, 1, 4, 11))
+    banner = page.locator("#results .card .prohibition")
+    assert banner.count() == 1
+    assert "VIETATA" in banner.inner_text()
+    assert page.locator("#results .badge.NON_COMPLIANT").count() == 1
 
 
 def test_jump_back_returns_to_results(page):

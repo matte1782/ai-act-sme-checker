@@ -20,9 +20,11 @@ from typing import Optional
 import yaml
 
 VERDICTS = ("COMPLIANT", "NON_COMPLIANT")
+RULE_KINDS = ("obligation", "prohibition")
 CITATION_FIELDS = ("corpus_id", "article", "paragraph")
 _RULE_KEYS = {
     "id",
+    "kind",
     "legal_source",
     "applies_from",
     "applies_until",
@@ -78,6 +80,10 @@ class Rule:
     # X2 (optional) scope predicate; X3 anti-drift date anchors (ADR-011(4)).
     applicable_if: Optional[dict] = None
     timeline_ref: Optional[list] = None
+    # Tier B2 (2026-09-02): 'prohibition' for Art. 5 practices (no remedy by
+    # compliance steps), 'obligation' otherwise. Presentation-only metadata:
+    # the engine never branches on it; the web shows a banner.
+    kind: str = "obligation"
 
 
 def _req_str(value, rule_id, field):
@@ -268,8 +274,12 @@ def parse_rule(data):
     if verdict not in VERDICTS:
         raise RuleValidationError(f"rule {rule_id}: verdict must be one of {VERDICTS}")
     rationale_key = _req_str(data.get("rationale_key"), rule_id, "rationale_key")
+    kind = data.get("kind", "obligation")
+    if kind not in RULE_KINDS:
+        raise RuleValidationError(f"rule {rule_id}: kind must be one of {RULE_KINDS}, got {kind!r}")
     return Rule(
         id=rule_id,
+        kind=kind,
         legal_source=dict(source),
         applies_from=applies_from,
         applies_until=applies_until,

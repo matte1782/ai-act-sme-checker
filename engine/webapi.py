@@ -110,4 +110,6 @@ def evaluate_answers(answers, as_of, lang):
     return json.dumps({
         "structured": render_structured(verdicts, when, version, DISCLAIMER),
         "print_text": render_report(verdicts, when, version, DISCLAIMER, i18n=localized),
+        # Tier B2: presentation metadata (prohibition banner); no verdict logic.
+        "rule_kinds": {rule.id: rule.kind for rule in rules},
     })

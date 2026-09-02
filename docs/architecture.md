@@ -15,13 +15,15 @@ Impl: [corpus/manifest.yaml:L1-L178](corpus/manifest.yaml)
 `rules/*.yaml`: rule = {id, legal_source{corpus_id, article,
 paragraph}, applies_from, applies_until?, applicable_if?,
 timeline_ref?, logic (typed predicate tree over facts), verdict,
-rationale_key}. Loader REJECTS a rule missing legal_source or
+rationale_key, kind?}. `kind` in {obligation, prohibition} (default
+obligation) is presentation-only: core and render never read it
+(ADR-017). Loader REJECTS a rule missing legal_source or
 applies_from (INV-2). Gate-4 grammar: `applicable_if` is a scope
 predicate (same grammar as logic, X2); `applies_from` may be a
 conditional branch list `[{when, date}..., {default}]` validated
 per ADR-008 (X3); `timeline_ref` anchors dates to
 corpus/timeline.yaml (ADR-011(4)). v1 rules: rules/*.yaml.
-Impl: [engine/loader.py:L1-L342](engine/loader.py)
+Impl: [engine/loader.py:L1-L352](engine/loader.py)
 
 ## L3 Facts schema
 `schema/facts.yaml`: typed facts (bool/enum/date) with i18n keys
@@ -54,7 +56,7 @@ its op=='scope' leaf render with the leaf's citation (X1). Gate-5:
 an optional i18n bundle localizes status labels + a rationale line
 and appends a deadlines section built from the resolved applies_from
 leaf field (never parsed from a reason string).
-Impl: [engine/render.py:L1-L247](engine/render.py)
+Impl: [engine/render.py:L1-L261](engine/render.py)
 
 ### L5 CLI (ADR-012 output-path contract)
 `python -m engine.cli`, two modes: non-interactive (`--answers
@@ -74,14 +76,18 @@ Impl: [engine/cli.py:L1-L212](engine/cli.py)
 AND en. Strict load + completeness (every rule rationale_key, all
 four statuses, all required ui.* keys) or the catalog refuses to
 load (ADR-012(4)).
-Impl: [engine/i18n.py:L1-L92](engine/i18n.py)
+Impl: [engine/i18n.py:L1-L97](engine/i18n.py)
 
 ### L5 Web (ADR-013 client-side static, Pyodide)
 `web/`: a static SPA running the SAME engine in-browser via Pyodide
 (no build step; deployed files are the source). The wizard is
 generated from schema/facts.yaml and ALL verdict content comes from
 render_structured through engine/webapi.py (single source of truth;
-no rule/verdict logic in JS). Zero data leaves the device: enforced
+no rule/verdict logic in JS). render_structured also exposes the
+temporally INACTIVE sub-state per verdict (`inactive`, `applies_from`,
+read from the applicability leaf when its date is after as_of, never
+from a reason string) and webapi adds `rule_kinds` for the prohibition
+banner (ADR-017); the status itself is untouched. Zero data leaves the device: enforced
 by CSP (`connect-src 'self'`, no external origins) and verified by
 the e2e network assertion (tests_e2e/test_web_e2e.py, CI-enforced). The report's
 disclaimer is always visible (also in print); a PROVISIONAL corpus
@@ -89,8 +95,8 @@ shows a visible notice while preOJ. The engine bundle is deterministic
 and sha256-frozen (web/assets/BUNDLE.sha256), rebuilt by
 scripts/build_web.sh and verified in check.sh `== web`. WASM-absent
 browsers get an explicit fail-closed message, never a blank page.
-Impl: [web/app.js:L1-L408](web/app.js)
-Impl: [engine/webapi.py:L1-L113](engine/webapi.py)
+Impl: [web/app.js:L1-L469](web/app.js)
+Impl: [engine/webapi.py:L1-L115](engine/webapi.py)
 Impl: [scripts/build_web.sh:L1-L52](scripts/build_web.sh)
 
 ### L5 Transparency note + release engineering (ADR-013 + ADR-015)
@@ -108,7 +114,7 @@ bundle sha, then PRINTS the annotated-tag command; never tags/pushes).
 CI is unverifiable offline (CI_UNVERIFIED_UNTIL_PUSH).
 Impl: [web/privacy.html:L1-L141](web/privacy.html)
 Impl: [.github/workflows/ci.yml:L1-L36](.github/workflows/ci.yml)
-Impl: [tests_e2e/test_web_e2e.py:L1-L178](tests_e2e/test_web_e2e.py)
+Impl: [tests_e2e/test_web_e2e.py:L1-L212](tests_e2e/test_web_e2e.py)
 Impl: [scripts/release.sh:L1-L64](scripts/release.sh)
 
 ## L6 Oracle & tests

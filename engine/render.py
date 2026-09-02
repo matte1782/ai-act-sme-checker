@@ -106,11 +106,16 @@ def _iter_nodes(node):
 def _deadline_of(verdict):
     """The upcoming deadline of an INACTIVE verdict (UNDETERMINED + an
     op=='applicability' leaf), read from the C1 structured 'applies_from'
-    field - never parsed from a reason string (ADR-012, Gate-5 C2)."""
+    field - never parsed from a reason string (ADR-012, Gate-5 C2).
+    Only a FUTURE window counts (verdict.as_of < applies_from): core emits
+    the same leaf for a rule past its applies_until, which is expired, not
+    upcoming (verify 2026-09-02 B1; ADR-017)."""
     if verdict.status != "UNDETERMINED":
         return None
     for node in _iter_nodes(verdict.explanation):
         if node.get("op") == "applicability" and "applies_from" in node:
+            if dt.date.fromisoformat(node["applies_from"]) <= verdict.as_of:
+                return None
             return node["applies_from"], node.get("citation", {})
     return None
 
@@ -233,15 +238,24 @@ def render_structured(verdicts, as_of, corpus_version, disclaimer):
         "corpus_version": corpus_version,
         "corpus_status": _corpus_status(corpus_version),
         "deadlines": deadlines,
-        "verdicts": [
-            {
-                "rule_id": verdict.rule_id,
-                "status": verdict.status,
-                "citation": dict(verdict.citation),
-                "rationale_key": verdict.rationale_key,
-                "unknown_facts": list(verdict.unknown_facts),
-                "explanation": copy.deepcopy(verdict.explanation),
-            }
-            for verdict in verdicts
-        ],
+        "verdicts": [_structured_verdict(verdict) for verdict in verdicts],
+    }
+
+
+def _structured_verdict(verdict):
+    # Tier B1 (2026-09-02): expose the temporally-INACTIVE sub-state as
+    # structured fields (read from the applicability leaf via _deadline_of,
+    # never from a reason string - ADR-012 C2) so the web can label
+    # "not yet applicable (from <date>)" instead of a generic UNDETERMINED.
+    # The status itself is untouched (oracle frozen).
+    deadline = _deadline_of(verdict)
+    return {
+        "rule_id": verdict.rule_id,
+        "status": verdict.status,
+        "inactive": deadline is not None,
+        "applies_from": deadline[0] if deadline is not None else None,
+        "citation": dict(verdict.citation),
+        "rationale_key": verdict.rationale_key,
+        "unknown_facts": list(verdict.unknown_facts),
+        "explanation": copy.deepcopy(verdict.explanation),
     }

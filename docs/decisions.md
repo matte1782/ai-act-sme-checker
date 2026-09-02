@@ -334,3 +334,21 @@ post-OJ transition, not as a weakening: the corpus_version pin, the
 refresh_task state (now discharged + traceable), and the two e2e
 tests that asserted the provisional banner (they now assert its
 absence). Rule logic, engine and oracle were not touched.
+
+## ADR-017: presentation-only rule `kind` and structured INACTIVE sub-state
+Date: 2026-09-02. Status: ACCEPTED. HEAD: 6f7733b.
+Context: the persona usefulness test (internal, ADR-014) showed that on
+the web a temporally inactive rule (UNDETERMINED with an applicability
+leaf) and an Art. 5 prohibition were indistinguishable from "missing
+answers" and from an ordinary obligation. Decision: (1) a rule may carry
+`kind` in {obligation, prohibition} (default obligation), validated per
+ADR-008; it is PRESENTATION-ONLY: core and render never read it (pinned
+by test), webapi exposes it as `rule_kinds`, the web shows a banner on a
+NON_COMPLIANT prohibition. (2) render_structured exposes `inactive` and
+`applies_from` per verdict, read from the structured applicability leaf
+only when its date is after as_of (never from a reason string, ADR-012);
+a window past its applies_until is expired, not upcoming, and reports
+neither. The status, X4 precedence and the frozen oracle (ADR-009) are
+untouched; the CLI text report is unchanged. Rejected: a new INACTIVE
+status (would change the oracle and every output path for a display
+concern).

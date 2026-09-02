@@ -101,8 +101,8 @@ ui:
     it: "di"
     en: "of"
   web_explanation:
-    it: "Mostra la spiegazione"
-    en: "Show explanation"
+    it: "Dettaglio tecnico (ragionamento del motore, con citazioni)"
+    en: "Technical detail (engine reasoning, with citations)"
   web_results_title:
     it: "Risultati"
     en: "Results"
@@ -124,8 +124,8 @@ ui:
     it: "«Immesso sul mercato» significa reso disponibile nell'Unione europea (art. 3, punti 9-11); l'ambito della legge copre anche la messa in servizio e l'uso da parte di chi opera nella UE (art. 2). In pratica: se l'azienda opera nella UE o serve clienti nella UE, rispondi «Sì»; se il caso è dubbio, «Non so» è la risposta onesta."
     en: "'Placed on the market' means made available in the European Union (Art. 3, points 9-11); the law's scope also covers putting into service and use by operators in the EU (Art. 2). In practice: if the company operates in the EU or serves EU customers, answer 'Yes'; if the case is unclear, 'I don't know' is the honest answer."
   help_operator_role:
-    it: "«Fornitore»: sviluppi il sistema (o lo fai sviluppare) e lo metti sul mercato con il tuo nome. «Utilizzatore»: usi nella tua attività un sistema fornito da altri. La maggior parte delle PMI che usa strumenti acquistati o in abbonamento è un utilizzatore."
-    en: "'Provider': you develop the system (or have it developed) and place it on the market under your own name. 'Deployer': you use a system supplied by others in your business. Most SMEs using purchased or subscription tools are deployers."
+    it: "«Fornitore»: sviluppi il sistema (o lo fai sviluppare) e lo metti sul mercato con il tuo nome. «Utilizzatore»: usi nella tua attività un sistema fornito da altri. La maggior parte delle PMI che usa strumenti acquistati o in abbonamento è un utilizzatore. Attenzione: se sviluppi il sistema, o lo fai sviluppare, e lo metti sul mercato con il tuo nome o marchio, sei un fornitore (art. 3, punto 3); se metti il tuo nome o marchio su un sistema ad alto rischio già sul mercato, la legge ti tratta come fornitore (art. 25, paragrafo 1, lettera a)."
+    en: "'Provider': you develop the system (or have it developed) and place it on the market under your own name. 'Deployer': you use a system supplied by others in your business. Most SMEs using purchased or subscription tools are deployers. Note: if you develop the system, or have it developed, and place it on the market under your own name or trademark, you are a provider (Art. 3, point 3); if you put your name or trademark on a high-risk system already on the market, the law treats you as a provider (Art. 25(1)(a))."
   help_annex_iii_use_case:
     it: "L'allegato III è l'elenco, scritto nella legge, degli usi considerati ad alto rischio: per esempio la selezione del personale o l'accesso al credito. Qui ne trovi cinque; l'allegato ne elenca altri (per esempio identificazione biometrica, migrazione e frontiere, giustizia). Scegli l'ambito in cui il sistema viene usato. Se il tuo uso rientra in un ambito ad alto rischio che non è in elenco, o non sei sicuro, rispondi «Non so»: «Nessuno di questi» va scelto solo se il sistema non è usato in nessun ambito dell'allegato III."
     en: "Annex III is the list, written in the law, of the uses treated as high-risk: for example recruitment or access to credit. Five of them are listed here; the Annex has more (for example biometric identification, migration and borders, justice). Pick the area the system is used in. If your use falls under a high-risk area that is not listed, or you are unsure, answer 'I don't know': 'None of these' is only for a system used in none of the Annex III areas."
@@ -178,8 +178,8 @@ ui:
     it: "Divieto di immagini intime non consensuali"
     en: "Ban on non-consensual intimate images"
   web_print_hint:
-    it: "«Stampa / Salva PDF» apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Se sul tuo dispositivo non funziona, usa «Scarica il report»: salva un file di testo con gli stessi verdetti e citazioni, nell'ordine standard del report, con gli identificativi delle regole al posto dei titoli e senza legenda e testi di aiuto."
-    en: "'Print / Save as PDF' opens your browser's print dialog: choose 'Save as PDF' there. If that does not work on your device, use 'Download the report': it saves a text file with the same verdicts and citations, in the report's standard order, with rule identifiers instead of titles and without the legend and help texts."
+    it: "«Stampa / Salva PDF» apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Se sul tuo dispositivo non funziona, usa «Scarica il report»: salva un file di testo con gli stessi verdetti e citazioni, nell'ordine standard del report, con gli identificativi delle regole al posto dei titoli e senza legenda e testi di aiuto; le regole «non ancora applicabili» vi compaiono come «NON DETERMINABILE», con la data nella sezione finale."
+    en: "'Print / Save as PDF' opens your browser's print dialog: choose 'Save as PDF' there. If that does not work on your device, use 'Download the report': it saves a text file with the same verdicts and citations, in the report's standard order, with rule identifiers instead of titles and without the legend and help texts; rules 'not yet applicable' appear there as 'UNDETERMINED', with the date in the final section."
   web_download:
     it: "Scarica il report (testo)"
     en: "Download the report (text)"
@@ -222,6 +222,79 @@ ui:
   rule_help_ART5_EMOTION_WORKPLACE:
     it: "Usare l'IA per riconoscere le emozioni di dipendenti o studenti è vietato, con la sola eccezione di scopi medici o di sicurezza (art. 5(1)(f))."
     en: "Using AI to infer the emotions of employees or students is prohibited, with the sole exception of medical or safety purposes (Art. 5(1)(f))."
+  # --- Tier A/B after the persona test (2026-09-02) ----------------------
+  # Helpers for the dependent questions (the "gate = No -> Non so ->
+  # UNDETERMINED" chain), summary block, INACTIVE legend row, deadlines
+  # section retitled and moved below the cards, prohibition banner.
+  help_interacts_with_persons:
+    it: "La legge parla di sistemi «destinati a interagire direttamente con le persone fisiche» (art. 50, paragrafo 1) senza definire l'espressione. Di regola vi rientra un sistema con cui una persona parla o scrive e da cui riceve risposte: un chatbot, un assistente vocale, un avatar. Un sistema che lavora solo dietro le quinte (per esempio un filtro antispam o un'analisi di dati) di regola no. Se il tuo caso è dubbio, «Non so»."
+    en: "The law speaks of systems 'intended to interact directly with natural persons' (Art. 50(1)) without defining the phrase. As a rule it covers a system a person talks or writes to and gets replies from: a chatbot, a voice assistant, an avatar. A system that only works behind the scenes (for example a spam filter or a data analysis) normally does not. If your case is unclear, 'I don't know'."
+  help_deepfake_published:
+    it: "Un deep fake è un'immagine, un audio o un video generato o manipolato dall'IA che somiglia a persone, oggetti, luoghi, entità o eventi esistenti e apparirebbe falsamente autentico o veritiero (art. 3, punto 60): contano quindi anche prodotti, marchi, aziende o documenti reali, non solo i volti. Anche un ritocco realistico di un volto reale può rientrare nella definizione. Se il sistema non produce nulla del genere, rispondi No; se non sei sicuro, «Non so»."
+    en: "A deep fake is AI-generated or manipulated image, audio or video content that resembles existing persons, objects, places, entities or events and would falsely appear authentic or truthful (Art. 3, point 60): real products, brands, companies or documents count too, not only faces. A realistic retouch of a real face may fall under the definition. If the system produces nothing of the kind, answer No; if unsure, 'I don't know'."
+  help_deepfake_disclosed:
+    it: "Questa domanda ha senso solo se alla precedente (sui deep fake) hai risposto Sì. Se il sistema non genera né manipola deep fake, rispondi No: per questa regola non c'è nulla da dichiarare e il risultato sarà corretto. Attenzione: l'art. 50, paragrafo 4, secondo comma, prevede un obbligo distinto per i testi generati dall'IA e pubblicati per informare il pubblico su questioni di interesse pubblico; questa verifica non lo copre."
+    en: "This question only matters if you answered Yes to the previous one (on deep fakes). If the system neither generates nor manipulates deep fakes, answer No: for this rule there is nothing to disclose and the result will be correct. Note: Art. 50(4), second subparagraph, sets a separate duty for AI-generated text published to inform the public on matters of public interest; this check does not cover it."
+  help_generates_synthetic_content:
+    it: "Conta il contenuto sintetico di tipo audio, immagine, video o testo prodotto dal sistema (art. 50, paragrafo 2): anche il testo, per esempio le risposte scritte di un chatbot. Se il sistema non produce contenuti (per esempio classifica o calcola soltanto), rispondi No. La legge esclude i sistemi che svolgono solo una funzione assistiva di editing standard o non modificano in modo sostanziale i dati di ingresso (per esempio un correttore ortografico): questa verifica non valuta l'esclusione, quindi in quel caso rispondi «Non so»."
+    en: "What counts is synthetic audio, image, video or text content produced by the system (Art. 50(2)): text included, for example a chatbot's written replies. If the system produces no content (for example it only classifies or computes), answer No. The law exempts systems that only perform an assistive function for standard editing or do not substantially alter the input (for example a spell checker): this check does not assess that exemption, so in that case answer 'I don't know'."
+  help_content_marked_machine_readable:
+    it: "Significa che il contenuto porta un contrassegno tecnico (per esempio nei metadati o in filigrana) che permette a un software di riconoscerlo come artificiale (art. 50, paragrafo 2). Questo obbligo è del fornitore del sistema: se usi uno strumento altrui, non devi saperlo tu. Chiedi al fornitore per iscritto e, finché non risponde, scegli «Non so»."
+    en: "It means the content carries a technical mark (for example in metadata or a watermark) that lets software recognise it as artificial (Art. 50(2)). This duty belongs to the system's provider: if you use someone else's tool, you are not expected to know. Ask the provider in writing and, until they answer, choose 'I don't know'."
+  help_practice_social_scoring:
+    it: "Il punteggio sociale è valutare le persone, per un certo periodo di tempo, in base al loro comportamento sociale o alle loro caratteristiche personali, e usare quel punteggio per trattarle peggio in un contesto che non c'entra, o in modo sproporzionato (art. 5, paragrafo 1, lettera c). Secondo le linee guida della Commissione (C(2025) 5052, punti 175-177), un punteggio di credito basato su dati finanziari pertinenti, o vantaggi proporzionati a chi ha uno storico di acquisti affidabile, normalmente non lo sono. Se non sei sicuro, «Non so»."
+    en: "Social scoring means evaluating people, over a certain period of time, on their social behaviour or personal characteristics and using that score to treat them worse in an unrelated context, or disproportionately (Art. 5(1)(c)). Under the Commission's guidelines (C(2025) 5052, paras 175-177), a credit score based on relevant financial data, or proportionate advantages for customers with a reliable purchase history, normally are not. If unsure, 'I don't know'."
+  help_emotion_recognition_workplace:
+    it: "Conta un sistema che, da dati biometrici (per esempio il volto dalla webcam o la voce), identifica o deduce emozioni o intenzioni di dipendenti, candidati o studenti, per esempio stress, noia o interesse (art. 5, paragrafo 1, lettera f; art. 3, punto 39). Secondo le linee guida della Commissione (C(2025) 5052, punti 254-255), vale anche in fase di selezione del personale, e dedurre interesse e attenzione degli studenti è vietato. Non contano il rilevamento di stati fisici (stanchezza, dolore), il semplice riconoscimento di un'espressione evidente (considerando 18) né, per esempio, un tracciamento dello sguardo che non deduce emozioni. Se un fornitore te lo propone e non l'hai ancora attivato, rispondi pensando all'uso previsto."
+    en: "What counts is a system that, from biometric data (for example the face on a webcam or the voice), identifies or infers emotions or intentions of employees, candidates or students, for example stress, boredom or interest (Art. 5(1)(f); Art. 3, point 39). Under the Commission's guidelines (C(2025) 5052, paras 254-255), this also applies during recruitment, and inferring students' interest and attention is prohibited. Detecting physical states (fatigue, pain), merely recognising an obvious expression (Recital 18) or, for example, gaze tracking that infers no emotion does not count. If a vendor is proposing such a system and you have not switched it on yet, answer for the intended use."
+  help_emotion_medical_safety_exception:
+    it: "Questa domanda ha senso solo se alla precedente (sul riconoscimento delle emozioni) hai risposto Sì. L'eccezione è stretta (art. 5, paragrafo 1, lettera f; linee guida della Commissione C(2025) 5052, punti 256-263): «medico» significa dispositivi medici con marcatura CE a scopo terapeutico; «sicurezza» significa solo protezione della vita e della salute, per esempio rilevare stress o cali di concentrazione in chi usa macchinari o sostanze pericolose. Non rientrano il monitoraggio del benessere, dello stress o del burnout, né la valutazione delle prestazioni. Nota: rilevare la stanchezza (per esempio il colpo di sonno di un autista) non è riconoscimento delle emozioni, quindi non è vietato in partenza (considerando 18). Se non sei sicuro che il tuo caso rientri nell'eccezione, rispondi No o «Non so». Se alla domanda precedente hai risposto No, rispondi No anche qui."
+    en: "This question only matters if you answered Yes to the previous one (on emotion recognition). The exception is narrow (Art. 5(1)(f); Commission guidelines C(2025) 5052, paras 256-263): 'medical' means CE-marked medical devices for therapeutic use; 'safety' means only the protection of life and health, for example detecting stress or loss of concentration in people operating dangerous machines or chemicals. Monitoring wellbeing, stress or burnout, or assessing performance, is not covered. Note: detecting fatigue (for example a driver falling asleep) is not emotion recognition, so it is not prohibited in the first place (Recital 18). If unsure that your case falls under the exception, answer No or 'I don't know'. If you answered No to the previous question, answer No here too."
+  help_ncii_safeguards_state_of_art:
+    it: "Questa domanda ha senso solo se alla precedente (sulla capacità di produrre quel materiale) hai risposto Sì. La legge (art. 5, paragrafo 1 bis, lettera a, punto ii, introdotto dal Reg. (UE) 2026/1744) chiede misure tecniche di sicurezza e altre salvaguardie ragionevoli e adeguate che impediscano in modo affidabile quella produzione, tenendo conto degli usi impropri prevedibili, e che correggano gli abusi osservati o segnalati: per esempio filtri sui prompt e sulle immagini più una procedura di segnalazione. Le conosce il fornitore: chiediglielo per iscritto e, finché non risponde, «Non so». Questa verifica semplifica il test di legge in «salvaguardie allo stato dell'arte: sì/no» e non distingue il caso dell'utilizzatore, per cui la legge vieta l'uso solo se è fatto a quello scopo (lettera b). Se il sistema non può produrre quel materiale, rispondi No: non c'è nulla da salvaguardare e il risultato sarà corretto."
+    en: "This question only matters if you answered Yes to the previous one (on the capability to produce such material). The law (Art. 5(1a)(a)(ii), inserted by Reg. (EU) 2026/1744) requires reasonable and adequate technical safety measures and other safeguards that reliably prevent that generation, taking reasonably foreseeable misuse into account, and that correct observed or reported misuse: for example prompt and image filters plus a reporting procedure. The provider knows them: ask in writing and, until they answer, 'I don't know'. This check simplifies the legal test into 'state-of-the-art safeguards: yes/no' and does not distinguish the deployer's case, where the law prohibits use only if done for that purpose (point (b)). If the system cannot produce such material, answer No: there is nothing to safeguard and the result will be correct."
+  help_ncii_intended_purpose:
+    it: "Questa domanda ha senso solo se il sistema può produrre quel materiale. «Finalità prevista» è lo scopo per cui il sistema è progettato o usato (art. 5, paragrafo 1 bis, lettera a, punto i, e lettera b, introdotti dal Reg. (UE) 2026/1744). Se hai risposto No due domande fa (sulla capacità), rispondi No anche qui."
+    en: "This question only matters if the system can produce such material. 'Intended purpose' is what the system is designed or used for (Art. 5(1a)(a)(i) and (b), inserted by Reg. (EU) 2026/1744). If you answered No two questions ago (on the capability), answer No here too."
+  web_summary_title:
+    it: "In sintesi"
+    en: "In short"
+  web_count_NON_COMPLIANT:
+    it: "Da sistemare"
+    en: "To fix"
+  web_count_UNDETERMINED:
+    it: "Da chiarire (risposte mancanti)"
+    en: "To clarify (missing answers)"
+  web_count_INACTIVE:
+    it: "Non ancora applicabili"
+    en: "Not yet applicable"
+  web_count_COMPLIANT:
+    it: "A posto"
+    en: "Fine"
+  web_count_NOT_APPLICABLE:
+    it: "Non pertinenti per te"
+    en: "Not relevant to you"
+  web_next_steps:
+    it: "Cosa fare adesso: 1) parti dalle schede con l'etichetta rossa «NON CONFORME»: dicono cosa manca e cosa fare; 2) per le schede con l'etichetta gialla e «Risposte mancanti», rispondi (se lo sa il tuo fornitore, chiediglielo per iscritto); 3) le regole «non ancora applicabili» entrano in vigore alla data indicata: se ti riguardano, usa il tempo per prepararti. Questo riepilogo non sostituisce un parere professionale."
+    en: "What to do now: 1) start from the cards with the red 'NON-COMPLIANT' label: they say what is missing and what to do; 2) for cards with the yellow label and 'Missing answers', answer them (if your provider knows, ask in writing); 3) rules 'not yet applicable' start on the date shown: if they concern you, use the time to prepare. This summary is not a substitute for professional advice."
+  legend_INACTIVE:
+    it: "NON ANCORA APPLICABILE: la regola entra in vigore alla data indicata. Non mancano informazioni: oggi non è ancora in vigore; se il tuo caso la riguarda, preparati per quella data."
+    en: "NOT YET APPLICABLE: the rule starts to apply on the date shown. No information is missing: it is simply not in force yet; if it concerns you, prepare for that date."
+  web_status_INACTIVE:
+    it: "NON ANCORA APPLICABILE"
+    en: "NOT YET APPLICABLE"
+  web_from:
+    it: "dal"
+    en: "from"
+  web_deadlines_title:
+    it: "Da quando si applicano le regole (non sono scadenze tue)"
+    en: "When the rules start to apply (these are not your deadlines)"
+  web_deadlines_note:
+    it: "In ordine di data. Una regola compare qui anche se il tuo caso non la riguarda: fa fede la sua scheda qui sopra."
+    en: "In date order. A rule appears here even if it does not concern your case: its card above is what counts."
+  web_prohibition_banner:
+    it: "Attenzione: questa è una pratica VIETATA dall'AI Act. Non si sana con adempimenti o avvisi: va interrotta."
+    en: "Warning: this is a practice PROHIBITED by the AI Act. It cannot be fixed with paperwork or notices: it must stop."
   rule_help_ART5_NCII:
     it: "I sistemi che generano o manipolano materiale intimo (immagini, video o audio) di persone reali senza il loro consenso sono vietati: sia quando è lo scopo del sistema, sia quando il sistema ne ha la capacità senza salvaguardie adeguate (art. 5(1)(ba), introdotto dal Reg. (UE) 2026/1744)."
     en: "Systems that generate or manipulate intimate material (images, video or audio) of real people without their consent are prohibited: both when that is the system's purpose and when the system has that capability without adequate safeguards (Art. 5(1)(ba), introduced by Reg. (EU) 2026/1744)."

@@ -11,8 +11,8 @@ facts:
   - name: is_ai_system
     type: bool
     i18n:
-      it: "Il sistema è un sistema di IA (sono inclusi gli approcci basati sulla logica e sulla conoscenza)?"
-      en: "Is the system an AI system (including logic- and knowledge-based approaches)?"
+      it: "Lo strumento che stai valutando è un sistema di intelligenza artificiale? (Contano anche i sistemi basati su regole o conoscenza codificata che ne deducono un risultato, non i semplici automatismi a regole fisse.)"
+      en: "Is the tool you are checking an artificial intelligence system? (Rule-based and knowledge-based systems that infer a result count too, not simple fixed-rule automation.)"
   - name: in_eu_market
     type: bool
     i18n:
@@ -27,8 +27,8 @@ facts:
     type: enum
     values: [provider, deployer]
     i18n:
-      it: "Qual è il tuo ruolo: fornitore (provider) o deployer (utilizzatore professionale)?"
-      en: "What is your role: provider or deployer?"
+      it: "Che ruolo hai rispetto a questo strumento: fornitore (lo sviluppi o lo metti sul mercato a tuo nome) o utilizzatore (lo usi nella tua attività)?"
+      en: "What is your role for this tool: provider (you develop it or place it on the market under your name) or deployer (you use it in your business)?"
 
   # --- Art. 50 transparency ---
   - name: interacts_with_persons

@@ -213,19 +213,22 @@ function renderResults(focusRoot = true) {
     root.appendChild(el("div", { text: "⚠ " + ui("provisional_notice"), cls: "provisional" }));
   }
 
-  // (2) Prossime scadenze FIRST
-  root.appendChild(el("h2", { text: ui("deadlines_header") }));
-  if (s.deadlines.length === 0) {
-    root.appendChild(el("p", { text: ui("deadlines_none"), cls: "cite" }));
-  } else {
-    const ul = el("ul", { cls: "deadlines" });
-    for (const d of s.deadlines) {
-      // Human label first (F-P6), rule id + citation kept for traceability.
-      const lbl = ui("deadline_" + d.rule_id);
-      ul.appendChild(el("li", { text: `${lbl ? lbl + " · " : ""}${d.rule_id}: ${d.applies_from} [${d.citation.corpus_id} ${d.citation.article}]` }));
-    }
-    root.appendChild(ul);
-  }
+  // (2) Summary block (persona test, Tier A2): counts by outcome + generic
+  // next steps. Pure presentation over the engine's statuses; the INACTIVE
+  // split comes from the structured 'inactive' field (engine, Tier B1).
+  const kindOf = (v) => (v.inactive ? "INACTIVE" : v.status);
+  const counts = {};
+  for (const v of s.verdicts) counts[kindOf(v)] = (counts[kindOf(v)] || 0) + 1;
+  const sum = el("div", { cls: "summary" });
+  sum.appendChild(el("h2", { text: ui("web_summary_title") }));
+  // label-then-count: number-neutral in Italian ("Da sistemare: 1"), the
+  // catalog keeps no singular/plural pair (verify 2026-09-02).
+  const parts = ["NON_COMPLIANT", "UNDETERMINED", "INACTIVE", "COMPLIANT", "NOT_APPLICABLE"]
+    .filter((k) => counts[k]).map((k) => `${ui("web_count_" + k)}: ${counts[k]}`);
+  sum.appendChild(el("p", { text: parts.join(" · "), cls: "summary-counts" }));
+  const steps = ui("web_next_steps");
+  if (steps) sum.appendChild(el("p", { text: steps, cls: "help-text" }));
+  root.appendChild(sum);
 
   // (3) verdict cards
   root.appendChild(el("h2", { text: ui("web_results_title") }));
@@ -234,7 +237,7 @@ function renderResults(focusRoot = true) {
   const legend = el("details", { cls: "explain legend", attrs: state.legendOpen ? { open: "" } : {} });
   legend.addEventListener("toggle", () => { state.legendOpen = legend.open; });
   legend.appendChild(el("summary", { text: ui("web_legend_title") }));
-  for (const st of ["COMPLIANT", "NON_COMPLIANT", "UNDETERMINED", "NOT_APPLICABLE"]) {
+  for (const st of ["NON_COMPLIANT", "UNDETERMINED", "INACTIVE", "COMPLIANT", "NOT_APPLICABLE"]) {
     const line = ui("legend_" + st);
     if (line) legend.appendChild(el("p", { text: line, cls: "help-text" }));
   }
@@ -242,21 +245,33 @@ function renderResults(focusRoot = true) {
   // Screen-only ordering by urgency (UX round 3): what needs action first.
   // The engine's canonical order is untouched (print_text keeps it); this
   // is presentation, not verdict logic.
-  const URGENCY = { NON_COMPLIANT: 0, UNDETERMINED: 1, COMPLIANT: 2, NOT_APPLICABLE: 3 };
-  const ordered = [...s.verdicts].sort((a, b) => (URGENCY[a.status] ?? 9) - (URGENCY[b.status] ?? 9));
+  const URGENCY = { NON_COMPLIANT: 0, UNDETERMINED: 1, INACTIVE: 2, COMPLIANT: 3, NOT_APPLICABLE: 4 };
+  const ordered = [...s.verdicts].sort((a, b) => (URGENCY[kindOf(a)] ?? 9) - (URGENCY[kindOf(b)] ?? 9));
   for (const v of ordered) {
     const card = el("div", { cls: "card" });
     // Human title first (the deadline_<id> catalog label doubles as the
     // rule's plain name); the rule id stays visible for traceability.
     const rl = ui("deadline_" + v.rule_id);
+    // Tier B1: a temporally INACTIVE verdict is shown as "not yet applicable
+    // (from <date>)" - the engine's status stays UNDETERMINED (oracle frozen);
+    // the sub-state comes from structured fields, never from reason strings.
+    const badgeText = v.inactive
+      ? `${ui("web_status_INACTIVE")} (${ui("web_from")} ${v.applies_from})`
+      : statusLabel(v.status);
     const head = el("div", { cls: "card-head" }, [
-      el("span", { text: statusLabel(v.status), cls: "badge " + v.status }),
+      el("span", { text: badgeText, cls: "badge " + (v.inactive ? "INACTIVE" : v.status) }),
       el("strong", { text: rl || v.rule_id }),
       el("span", { text: (rl ? v.rule_id + " · " : "") + citeText(v.citation), cls: "cite" }),
     ]);
     card.appendChild(head);
+    // Tier B2: prohibitions cannot be remedied by paperwork - say so.
+    if (v.status === "NON_COMPLIANT" && out.rule_kinds && out.rule_kinds[v.rule_id] === "prohibition") {
+      card.appendChild(el("p", { text: ui("web_prohibition_banner"), cls: "prohibition" }));
+    }
+    // Tier A5: the violation sentence reads as an accusation on non-violating
+    // cards; show it only where it is the verdict.
     const r = rationale(v.rationale_key);
-    if (r) card.appendChild(el("p", { text: r, cls: "rationale" }));
+    if (r && v.status === "NON_COMPLIANT") card.appendChild(el("p", { text: r, cls: "rationale" }));
     // UX round 3: per-rule practical helper - WHAT the obligation is and
     // what to do about it, in plain words (statute reference inside).
     const rh = ui("rule_help_" + v.rule_id);
@@ -294,6 +309,26 @@ function renderResults(focusRoot = true) {
     det.appendChild(el("pre", { text: treeText(v.explanation, 0).join("\n") }));
     card.appendChild(det);
     root.appendChild(card);
+  }
+
+  // (4b) When the rules start to apply - AFTER the cards (persona test:
+  // read first, it was taken for the user's own deadlines), retitled,
+  // sorted by date; corpus id demoted to a tooltip.
+  root.appendChild(el("h2", { text: ui("web_deadlines_title") }));
+  if (s.deadlines.length === 0) {
+    root.appendChild(el("p", { text: ui("deadlines_none"), cls: "cite" }));
+  } else {
+    root.appendChild(el("p", { text: ui("web_deadlines_note"), cls: "cite" }));
+    const ul = el("ul", { cls: "deadlines" });
+    const byDate = [...s.deadlines].sort((a, b) => String(a.applies_from).localeCompare(String(b.applies_from)));
+    for (const d of byDate) {
+      const lbl = ui("deadline_" + d.rule_id);
+      ul.appendChild(el("li", {
+        text: `${d.applies_from} · ${lbl || d.rule_id} (${d.rule_id}, ${d.citation.article})`,
+        attrs: { title: d.citation.corpus_id },
+      }));
+    }
+    root.appendChild(ul);
   }
 
   // (5) print meta + (6) footer
