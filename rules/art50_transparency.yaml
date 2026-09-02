@@ -81,8 +81,10 @@ rules:
         - {fact: is_ai_system, op: eq, value: true}
         - {fact: in_eu_market, op: eq, value: true}
         - {fact: personal_nonprofessional_use, op: eq, value: false}   # Art. 2(10)
-    # Art. 50(4): a published deep fake that is NOT disclosed as artificially
-    # generated or manipulated is the violation.
+    # Art. 50(4): a system that GENERATES or manipulates deep fakes whose
+    # output is NOT disclosed as artificially generated or manipulated is the
+    # violation (trigger = generation, not publication alone - hunt F2; the
+    # fact name deepfake_published is historical, see schema/facts.yaml).
     logic:
       all:
         - {fact: deepfake_published, op: eq, value: true}

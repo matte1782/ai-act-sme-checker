@@ -16,7 +16,9 @@ import yaml
 from engine import cli
 from engine.i18n import I18nError, load_i18n
 
-REQUIRED_UI = ("ai_disclosure", "intro", "hint_bool", "hint_enum",
+REQUIRED_UI = ("web_help_label", "web_legend_title", "web_rule_help_label",
+               "web_missing_info", "web_download", "web_back_results",  # web UX layer (review F5)
+               "ai_disclosure", "intro", "hint_bool", "hint_enum",
                "invalid_answer", "unknown_forced", "interrupted",
                "deadlines_header", "deadlines_none", "token_yes", "token_no")
 

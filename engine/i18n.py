@@ -24,6 +24,10 @@ REQUIRED_UI = (
     "web_yes", "web_no", "web_unknown", "web_back", "web_restart", "web_print",
     "web_question", "web_of", "web_explanation", "web_results_title",
     "provisional_notice",
+    # web UX layer (2026-08-27 rounds): dereferenced by app.js without a
+    # fallback, so they MUST fail at load like the rest (review finding).
+    "web_help_label", "web_legend_title", "web_rule_help_label",
+    "web_missing_info", "web_download", "web_back_results",
 )
 
 

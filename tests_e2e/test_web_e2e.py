@@ -116,6 +116,54 @@ def test_no_provisional_notice_after_oj_refresh(page):
     assert page.locator("#results .provisional").count() == 0
 
 
+def test_question_helper_and_results_legend(page):
+    # UX rounds 2026-08-27: Q1 carries a plain-language helper (closed by
+    # default, opens on click); results carry the legend and per-rule help.
+    _boot(page)
+    bar = page.locator("#wizard [role='progressbar']")
+    assert bar.get_attribute("aria-valuemin") == "0" and bar.get_attribute("aria-label")
+    helper = page.locator("#wizard details.q-help")
+    assert helper.count() == 1
+    helper.locator("summary").click()
+    assert "art. 3" in helper.locator(".help-text").inner_text()
+    _answer_all(page)
+    assert page.locator("#results details.legend").count() == 1
+    assert page.locator("#results .card details.q-help").count() >= 1
+    # the missing-answer list shows QUESTIONS, never internal fact names
+    unknowns = page.locator("#results .unknowns li")
+    if unknowns.count():
+        assert "_" not in unknowns.first.inner_text()
+
+
+def test_jump_back_returns_to_results(page):
+    # Review F7: answering a question reached from a results card returns to
+    # the results directly, not to the next question.
+    _boot(page)
+    _answer_all(page)
+    jump = page.locator("#results .unknowns button.jump").first
+    if not jump.count():
+        pytest.skip("no UNDETERMINED card with missing answers on this path")
+    jump.click()
+    page.wait_for_selector("#wizard .q-prompt")
+    back = page.locator("#wizard .nav button")
+    assert back.is_enabled() and "risultati" in back.inner_text()
+    page.locator("#wizard .answers button", has_text=re.compile(r"^Sì$")).first.click()
+    page.wait_for_selector("#results .card")
+    assert not page.locator("#results").is_hidden()
+
+
+def test_download_report_is_a_file_named_by_as_of(page):
+    # Review: the downloaded report is a real file whose name carries the
+    # report's as_of date (render time), delivered without leaving the page.
+    _boot(page)
+    _answer_all(page)
+    as_of = re.search(r"as_of: (\d{4}-\d{2}-\d{2})", page.locator("#print-meta").inner_text()).group(1)
+    with page.expect_download() as dl:
+        page.locator("#results .actions button", has_text="Scarica").click()
+    assert dl.value.suggested_filename == f"ai-act-self-check_{as_of}.txt"
+    assert not page.locator("#results").is_hidden(), "download must not navigate away"
+
+
 def test_mobile_flow_disclaimer_visible_no_hscroll(page):
     # NEW mobile scenario (viewport 375x812): full flow, disclaimer visible
     # without horizontal scroll, 'Non so' tappable.

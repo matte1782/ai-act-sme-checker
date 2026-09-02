@@ -32,8 +32,8 @@ rationales:
     it: "Inferire le emozioni sul lavoro o a scuola è vietato, salvo motivi medici o di sicurezza (Art. 5(1)(f))."
     en: "Inferring emotions at work or school is prohibited, except for medical or safety reasons (Art. 5(1)(f))."
   art5.ncii_prohibited:
-    it: "Generare immagini intime non consensuali è vietato, sia quando è lo scopo del sistema sia quando il sistema ne ha la capacità senza adeguate salvaguardie (Art. 5, Omnibus)."
-    en: "Generating non-consensual intimate images (whether by intended purpose, or by capability without safeguards) is prohibited (Art. 5, Omnibus)."
+    it: "Generare o manipolare materiale intimo non consensuale (immagini, video o audio) è vietato, sia quando è lo scopo del sistema sia quando il sistema ne ha la capacità senza adeguate salvaguardie (Art. 5(1)(ba), Omnibus)."
+    en: "Generating or manipulating non-consensual intimate material (images, video or audio), whether by intended purpose or by capability without safeguards, is prohibited (Art. 5(1)(ba), Omnibus)."
   annex_iii.chapter_iii_obligations:
     it: "Per un uso ad alto rischio (allegato III) vanno soddisfatti gli obblighi del capo III entro la scadenza."
     en: "For a high-risk use (Annex III), the Chapter III obligations must be met by the deadline."
@@ -88,6 +88,9 @@ ui:
   web_restart:
     it: "Ricomincia"
     en: "Restart"
+  web_back_results:
+    it: "Torna ai risultati"
+    en: "Back to results"
   web_print:
     it: "Stampa / Salva PDF"
     en: "Print / Save as PDF"
@@ -115,8 +118,8 @@ ui:
     it: "Cosa significa questa domanda?"
     en: "What does this question mean?"
   help_is_ai_system:
-    it: "Per la legge (art. 3, punto 1) un sistema di IA è un software che, dai dati che riceve, deduce come produrre risultati: previsioni, contenuti, raccomandazioni o decisioni. Esempi: un chatbot sul sito, un generatore di testi o immagini, un software che seleziona CV o valuta clienti. Un foglio di calcolo, o un programma fatto solo di regole fisse scritte a mano, in genere no. Se non sei sicuro, «Non so» è una risposta legittima."
-    en: "Under the law (Art. 3, point 1) an AI system is software that infers, from the input it receives, how to produce outputs: predictions, content, recommendations or decisions. Examples: a website chatbot, a text or image generator, software that screens CVs or scores customers. A spreadsheet, or a program made only of fixed hand-written rules, generally is not. If unsure, 'I don't know' is a legitimate answer."
+    it: "Per la legge (art. 3, punto 1) un sistema di IA è un software che, dai dati che riceve, deduce come produrre risultati: previsioni, contenuti, raccomandazioni o decisioni. Esempi: un chatbot sul sito, un generatore di testi o immagini, un software che seleziona CV o valuta clienti. Contano anche i sistemi basati su regole o su conoscenza codificata che da quelle deducono un risultato, non solo quelli che apprendono dai dati: la definizione li comprende (art. 3, punto 1, con il considerando 12 e le linee guida della Commissione), e questo stesso strumento è un sistema di IA in quel senso. Non contano i programmi che si limitano a eseguire automaticamente operazioni secondo regole fissate da persone, senza dedurre nulla: un foglio di calcolo che fa somme, per esempio. Se non sei sicuro, «Non so» è una risposta legittima."
+    en: "Under the law (Art. 3, point 1) an AI system is software that infers, from the input it receives, how to produce outputs: predictions, content, recommendations or decisions. Examples: a website chatbot, a text or image generator, software that screens CVs or scores customers. Rule-based and knowledge-based systems that infer a result from those rules count too, not only systems that learn from data: the definition covers them (Art. 3, point 1, with Recital 12 and the Commission's guidelines), and this very tool is an AI system in that sense. Programs that merely execute operations automatically under rules fixed by people, inferring nothing, do not count: a spreadsheet adding up numbers, for example. If unsure, 'I don't know' is a legitimate answer."
   help_in_eu_market:
     it: "«Immesso sul mercato» significa reso disponibile nell'Unione europea (art. 3, punti 9-11); l'ambito della legge copre anche la messa in servizio e l'uso da parte di chi opera nella UE (art. 2). In pratica: se l'azienda opera nella UE o serve clienti nella UE, rispondi «Sì»; se il caso è dubbio, «Non so» è la risposta onesta."
     en: "'Placed on the market' means made available in the European Union (Art. 3, points 9-11); the law's scope also covers putting into service and use by operators in the EU (Art. 2). In practice: if the company operates in the EU or serves EU customers, answer 'Yes'; if the case is unclear, 'I don't know' is the honest answer."
@@ -124,8 +127,8 @@ ui:
     it: "«Fornitore»: sviluppi il sistema (o lo fai sviluppare) e lo metti sul mercato con il tuo nome. «Utilizzatore»: usi nella tua attività un sistema fornito da altri. La maggior parte delle PMI che usa strumenti acquistati o in abbonamento è un utilizzatore."
     en: "'Provider': you develop the system (or have it developed) and place it on the market under your own name. 'Deployer': you use a system supplied by others in your business. Most SMEs using purchased or subscription tools are deployers."
   help_annex_iii_use_case:
-    it: "L'allegato III è l'elenco, scritto nella legge, degli usi considerati ad alto rischio: per esempio la selezione del personale o l'accesso al credito. Scegli l'ambito in cui il sistema viene usato; se nessuno corrisponde, scegli «Nessuno di questi»."
-    en: "Annex III is the list, written in the law, of the uses treated as high-risk: for example recruitment or access to credit. Pick the area the system is used in; if none matches, pick 'None of these'."
+    it: "L'allegato III è l'elenco, scritto nella legge, degli usi considerati ad alto rischio: per esempio la selezione del personale o l'accesso al credito. Qui ne trovi cinque; l'allegato ne elenca altri (per esempio identificazione biometrica, migrazione e frontiere, giustizia). Scegli l'ambito in cui il sistema viene usato. Se il tuo uso rientra in un ambito ad alto rischio che non è in elenco, o non sei sicuro, rispondi «Non so»: «Nessuno di questi» va scelto solo se il sistema non è usato in nessun ambito dell'allegato III."
+    en: "Annex III is the list, written in the law, of the uses treated as high-risk: for example recruitment or access to credit. Five of them are listed here; the Annex has more (for example biometric identification, migration and borders, justice). Pick the area the system is used in. If your use falls under a high-risk area that is not listed, or you are unsure, answer 'I don't know': 'None of these' is only for a system used in none of the Annex III areas."
   help_chapter_iii_obligations_met:
     it: "Il capo III è la parte della legge sui sistemi ad alto rischio: requisiti del sistema (gestione dei rischi, qualità dei dati, documentazione tecnica, registrazione degli eventi, trasparenza, sorveglianza umana, accuratezza e sicurezza, artt. 8-15) più gli obblighi che dipendono dal ruolo, per fornitori e utilizzatori (artt. 16-27). Se non sai se sono stati soddisfatti, la risposta onesta è «Non so»."
     en: "Chapter III is the part of the law on high-risk systems: system requirements (risk management, data quality, technical documentation, logging, transparency, human oversight, accuracy and security, Arts. 8-15) plus the role-dependent obligations for providers and deployers (Arts. 16-27). If you don't know whether they are met, the honest answer is 'I don't know'."
@@ -169,14 +172,14 @@ ui:
     it: "Divieto di punteggio sociale delle persone"
     en: "Ban on social scoring of people"
   deadline_ART5_EMOTION_WORKPLACE:
-    it: "Divieto di riconoscimento delle emozioni sul lavoro"
-    en: "Ban on emotion recognition at work"
+    it: "Divieto di riconoscimento delle emozioni sul lavoro e negli istituti di istruzione"
+    en: "Ban on emotion recognition at work and in education institutions"
   deadline_ART5_NCII:
     it: "Divieto di immagini intime non consensuali"
     en: "Ban on non-consensual intimate images"
   web_print_hint:
-    it: "«Stampa / Salva PDF» apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Se sul tuo dispositivo non funziona, usa «Scarica il report»: salva un file di testo con lo stesso contenuto."
-    en: "'Print / Save as PDF' opens your browser's print dialog: choose 'Save as PDF' there. If that does not work on your device, use 'Download the report': it saves a text file with the same content."
+    it: "«Stampa / Salva PDF» apre la finestra di stampa del browser: da lì scegli «Salva come PDF». Se sul tuo dispositivo non funziona, usa «Scarica il report»: salva un file di testo con gli stessi verdetti e citazioni, nell'ordine standard del report, con gli identificativi delle regole al posto dei titoli e senza legenda e testi di aiuto."
+    en: "'Print / Save as PDF' opens your browser's print dialog: choose 'Save as PDF' there. If that does not work on your device, use 'Download the report': it saves a text file with the same verdicts and citations, in the report's standard order, with rule identifiers instead of titles and without the legend and help texts."
   web_download:
     it: "Scarica il report (testo)"
     en: "Download the report (text)"
@@ -202,8 +205,8 @@ ui:
     it: "Cosa vuol dire in pratica?"
     en: "What does this mean in practice?"
   rule_help_HR_ANNEX_III:
-    it: "Per un uso ad alto rischio la legge chiede, tra l'altro: gestione dei rischi, dati di qualità, documentazione tecnica, registrazione automatica degli eventi, istruzioni chiare a chi lo usa, sorveglianza umana, accuratezza e sicurezza informatica (artt. 8-15), più obblighi che dipendono dal ruolo (fornitore o utilizzatore, artt. 16-27). Se questi obblighi non ti dicono niente, è il caso di parlarne con un consulente: la scadenza indicata sopra dice entro quando vanno soddisfatti."
-    en: "For a high-risk use the law requires, among other things: risk management, data quality, technical documentation, automatic event logging, clear instructions for users, human oversight, accuracy and cybersecurity (Arts. 8-15), plus role-dependent obligations (provider or deployer, Arts. 16-27). If these obligations mean nothing to you, talk to a professional: the deadline shown above says by when they must be met."
+    it: "Per un uso ad alto rischio la legge chiede, tra l'altro: gestione dei rischi, dati di qualità, documentazione tecnica, registrazione automatica degli eventi, istruzioni chiare a chi lo usa, sorveglianza umana, accuratezza e sicurezza informatica (artt. 8-15), più obblighi che dipendono dal ruolo (fornitore o utilizzatore, artt. 16-27). Se questi obblighi non ti dicono niente, è il caso di parlarne con un consulente. Se la regola non è ancora applicabile, la data compare nella sezione «Prossime scadenze»."
+    en: "For a high-risk use the law requires, among other things: risk management, data quality, technical documentation, automatic event logging, clear instructions for users, human oversight, accuracy and cybersecurity (Arts. 8-15), plus role-dependent obligations (provider or deployer, Arts. 16-27). If these obligations mean nothing to you, talk to a professional. If the rule is not yet applicable, the date appears in the 'Upcoming deadlines' section."
   rule_help_ART50_1:
     it: "Chi interagisce con il tuo sistema (per esempio un chatbot sul sito) deve poter capire che sta parlando con un'IA: va detto in modo chiaro, al più tardi alla prima interazione (art. 50(1))."
     en: "People interacting with your system (for example a website chatbot) must be able to tell they are talking to an AI: say it clearly, at the latest at the first interaction (Art. 50(1))."
@@ -211,8 +214,8 @@ ui:
     it: "I contenuti generati dall'IA (testo, audio, immagini, video) vanno marcati come artificiali in un formato leggibile dalle macchine, per esempio nei metadati del file (art. 50(2))."
     en: "AI-generated content (text, audio, images, video) must be marked as artificial in a machine-readable format, for example in the file's metadata (Art. 50(2))."
   rule_help_ART50_4:
-    it: "Se pubblichi un deep fake (immagini, audio o video realistici generati o manipolati dall'IA), devi dichiarare che il contenuto è artificiale (art. 50(4))."
-    en: "If you publish a deep fake (realistic AI-generated or manipulated images, audio or video), you must disclose that the content is artificial (Art. 50(4))."
+    it: "Se il tuo sistema genera o manipola deep fake (immagini, audio o video realistici), chi lo usa deve dichiarare che quel contenuto è artificiale (art. 50(4)). L'obbligo nasce dal sistema che li produce, non solo dal pubblicarli."
+    en: "If your system generates or manipulates deep fakes (realistic images, audio or video), whoever deploys it must disclose that the content is artificial (Art. 50(4)). The duty arises from the system producing them, not only from publishing."
   rule_help_ART5_SOCIAL_SCORING:
     it: "Usare l'IA per dare un punteggio alle persone in base a comportamento o caratteristiche, con effetti sfavorevoli in contesti che non c'entrano, è una pratica vietata del tutto: non c'è modo di renderla conforme (art. 5(1)(c))."
     en: "Using AI to score people based on behaviour or characteristics, with unfavourable effects in unrelated contexts, is an outright prohibited practice: there is no way to make it compliant (Art. 5(1)(c))."
@@ -220,5 +223,5 @@ ui:
     it: "Usare l'IA per riconoscere le emozioni di dipendenti o studenti è vietato, con la sola eccezione di scopi medici o di sicurezza (art. 5(1)(f))."
     en: "Using AI to infer the emotions of employees or students is prohibited, with the sole exception of medical or safety purposes (Art. 5(1)(f))."
   rule_help_ART5_NCII:
-    it: "I sistemi che generano immagini intime di persone reali senza il loro consenso sono vietati: sia quando è lo scopo del sistema, sia quando il sistema ne ha la capacità senza salvaguardie adeguate (art. 5, Omnibus)."
-    en: "Systems that generate intimate images of real people without their consent are prohibited: both when that is the system's purpose and when the system has that capability without adequate safeguards (Art. 5, Omnibus)."
+    it: "I sistemi che generano o manipolano materiale intimo (immagini, video o audio) di persone reali senza il loro consenso sono vietati: sia quando è lo scopo del sistema, sia quando il sistema ne ha la capacità senza salvaguardie adeguate (art. 5(1)(ba), introdotto dal Reg. (UE) 2026/1744)."
+    en: "Systems that generate or manipulate intimate material (images, video or audio) of real people without their consent are prohibited: both when that is the system's purpose and when the system has that capability without adequate safeguards (Art. 5(1)(ba), introduced by Reg. (EU) 2026/1744)."

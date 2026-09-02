@@ -35,11 +35,17 @@ function failClosed(detail) {
     "WebAssembly enabled is required. No result is shown (fail-closed).\n\n" +
     (detail ? "[" + detail + "]" : "");
   $("boot-status").hidden = true;
+  // Review F4: a still-visible Start button would let the user hide this
+  // error and re-enter the wizard against a broken engine. Retire it.
+  const start = $("boot-start");
+  if (start) { start.hidden = true; start.disabled = true; }
 }
 
 // --- application state ----------------------------------------------------
 const state = { lang: "it", facts: [], answers: {}, index: 0, boot: null,
-                webapi: null, version: null };
+                webapi: null, version: null,
+                jumped: false,       // review F7: came from results via a missing-answer link
+                legendOpen: true };  // user's legend toggle survives re-renders
 
 function ui(key) { return state.boot.i18n[state.lang].ui[key]; }
 function statusLabel(s) { return state.boot.i18n[state.lang].status_labels[s]; }
@@ -67,7 +73,10 @@ async function boot() {
     // clicks Start. The engine is ready; the click only reveals the wizard.
     const start = $("boot-start");
     start.hidden = false;
-    start.addEventListener("click", () => { $("boot").hidden = true; renderWizard(); });
+    start.addEventListener("click", () => {
+      start.disabled = true;               // a second click must not fall through onto an answer
+      $("boot").hidden = true; renderWizard();
+    });
   } catch (err) {
     failClosed(String(err && err.message ? err.message : err));
   }
@@ -85,19 +94,29 @@ function toolbar(onLang) {
     el("div", { cls: "lang-toggle" }, [mk("it", "Italiano"), mk("en", "English")]),
   ]);
 }
+// F14: a language toggle rebuilds the whole screen (the focused button is
+// destroyed by clear()); put focus back on the now-pressed toggle so keyboard
+// and screen-reader users hear the change where they made it.
+function refocusToggle(root) {
+  const btn = root.querySelector('.lang-toggle button[aria-pressed="true"]');
+  if (btn) btn.focus();
+}
 
 // --- E3 wizard ------------------------------------------------------------
-function renderWizard() {
+function renderWizard(focusPrompt = true) {
   const root = $("wizard"); root.hidden = false; $("results").hidden = true; clear(root);
-  root.appendChild(toolbar(renderWizard));
+  // Language toggle re-renders in place: keep focus on the toggle (F14).
+  root.appendChild(toolbar(() => renderWizard(false)));
+  if (!focusPrompt) refocusToggle(root);
   const fact = state.facts[state.index];
   const total = state.facts.length;
   root.appendChild(el("p", {
     text: ui("web_question") + " " + (state.index + 1) + " " + ui("web_of") + " " + total, cls: "cite",
   }));
   const prog = el("div", { cls: "progress", attrs: {
-    role: "progressbar", "aria-valuemin": "1", "aria-valuemax": String(total),
+    role: "progressbar", "aria-valuemin": "0", "aria-valuemax": String(total),
     "aria-valuenow": String(state.index + 1),
+    "aria-label": ui("web_question") + " " + (state.index + 1) + " " + ui("web_of") + " " + total,
   } });
   const bar = el("div", { cls: "progress-bar" });
   bar.style.width = `${((state.index + 1) / total) * 100}%`;   // CSSOM, not a style attr (CSP)
@@ -107,7 +126,7 @@ function renderWizard() {
   // question at every step instead of staying where the old button was.
   const promptEl = el("p", { text: fact.prompt[state.lang], cls: "q-prompt", attrs: { tabindex: "-1" } });
   root.appendChild(promptEl);
-  promptEl.focus();
+  if (focusPrompt) promptEl.focus();
 
   // Plain-language helper (UX pass 2026-08-27, findings F-P2/F-P3/F-P4):
   // rendered ONLY when the catalog carries help_<fact> (both languages,
@@ -145,25 +164,42 @@ function renderWizard() {
   root.appendChild(answers);
 
   const nav = el("div", { cls: "nav" });
-  nav.appendChild(el("button", { text: ui("web_back"), attrs: state.index === 0 ? { disabled: "" } : {}, on: { click: back } }));
+  // F7: from a jumped-to question, Back returns to the results (even on Q1).
+  nav.appendChild(el("button", {
+    text: state.jumped ? ui("web_back_results") : ui("web_back"),
+    attrs: (state.index === 0 && !state.jumped) ? { disabled: "" } : {},
+    on: { click: back },
+  }));
   root.appendChild(nav);
 }
 function advance() {
+  // Review F7: a question reached from a results card returns to the
+  // results as soon as it is answered - the promised answer -> outcome path.
+  if (state.jumped) { state.jumped = false; renderResults(); return; }
   if (state.index < state.facts.length - 1) { state.index++; renderWizard(); }
   else { renderResults(); }
 }
-function back() { if (state.index > 0) { state.index--; renderWizard(); } }
+function back() {
+  if (state.jumped) { state.jumped = false; renderResults(); return; }
+  if (state.index > 0) { state.index--; renderWizard(); }
+}
 
 // --- E4 results -----------------------------------------------------------
-function renderResults() {
+function renderResults(focusRoot = true) {
   let out;
   try {
     const asOf = localISODate();
     out = JSON.parse(state.webapi.evaluate_answers(JSON.stringify(state.answers), asOf, state.lang));
-  } catch (err) { failClosed(String(err)); $("wizard").hidden = true; $("boot").hidden = false; return; }
+  } catch (err) {
+    // F4 (verifier residual): when re-entered from the results screen (e.g.
+    // language toggle) the stale results must not stay on screen under the
+    // fail-closed error - hide BOTH sections, show only the boot error.
+    failClosed(String(err)); $("wizard").hidden = true; $("results").hidden = true; $("boot").hidden = false; return;
+  }
   const s = out.structured;
   const root = $("results"); root.hidden = false; $("wizard").hidden = true; clear(root);
-  root.appendChild(toolbar(renderResults));
+  root.appendChild(toolbar(() => renderResults(false)));
+  root.setAttribute("tabindex", "-1");       // F14: results receive focus (see end)
 
   // (1) disclaimer ALWAYS visible at top, not collapsible. Shown in the
   // selected language (bilingual header + that language's body): a display
@@ -195,7 +231,8 @@ function renderResults() {
   root.appendChild(el("h2", { text: ui("web_results_title") }));
   // Plain-language legend (UX round 2, 2026-08-27): what each status means
   // for a non-technical reader. Collapsible, shown once above the cards.
-  const legend = el("details", { cls: "explain legend", attrs: { open: "" } });
+  const legend = el("details", { cls: "explain legend", attrs: state.legendOpen ? { open: "" } : {} });
+  legend.addEventListener("toggle", () => { state.legendOpen = legend.open; });
   legend.appendChild(el("summary", { text: ui("web_legend_title") }));
   for (const st of ["COMPLIANT", "NON_COMPLIANT", "UNDETERMINED", "NOT_APPLICABLE"]) {
     const line = ui("legend_" + st);
@@ -243,7 +280,7 @@ function renderResults() {
           // UNDETERMINED becomes a path (answer -> outcome), not a dead end.
           ul.appendChild(el("li", {}, [el("button", {
             text: f.prompt[state.lang], cls: "jump",
-            on: { click: () => { state.index = idx; renderWizard(); } },
+            on: { click: () => { state.index = idx; state.jumped = true; renderWizard(); } },
           })]));
         } else {
           ul.appendChild(el("li", { text: name }));
@@ -273,7 +310,7 @@ function renderResults() {
     // UX round 2: a REAL save that works where window.print does not
     // (mobile). Downloads the engine's print_text as a local .txt via a
     // blob: URL - no network, CSP-compatible, same content as the print.
-    el("button", { text: ui("web_download"), on: { click: () => downloadReport(out.print_text) } }),
+    el("button", { text: ui("web_download"), on: { click: () => downloadReport(out.print_text, s.as_of) } }),
     el("button", { text: ui("web_restart"), cls: "secondary", on: { click: restart } }),
   ]);
   root.appendChild(actions);
@@ -288,8 +325,24 @@ function renderResults() {
   footer.appendChild(el("span", { text: " · " }));
   footer.appendChild(el("a", { text: "how to verify (AUDIT)", attrs: { href: REPO + "/blob/master/AUDIT.md", rel: "noopener" } }));
   root.appendChild(footer);
-  window.scrollTo(0, 0);
+  if (focusRoot) { window.scrollTo(0, 0); root.focus(); }   // F14: arriving from the wizard
+  else refocusToggle(root);                                   // language toggle: stay put
 }
+
+// Review F8: a printed report must not depend on which <details> the user
+// happened to open. Open them all for the print pass, restore afterwards.
+window.addEventListener("beforeprint", () => {
+  for (const d of document.querySelectorAll("#wizard details, #results details")) {
+    d.dataset.wasOpen = d.open ? "1" : "";
+    d.open = true;
+  }
+});
+window.addEventListener("afterprint", () => {
+  for (const d of document.querySelectorAll("#wizard details, #results details")) {
+    d.open = d.dataset.wasOpen === "1";
+    delete d.dataset.wasOpen;
+  }
+});
 
 // "Art. 50(1)" + paragraph "1" must not render as "Art. 50(1)(1)": our rules
 // already carry the paragraph inside the article string. Append it only when
@@ -339,20 +392,40 @@ function localizedDisclaimer(full, lang) {
   return [header, ...body, footer].join("\n");
 }
 
-// Save the engine's plain-text report as a local file. Blob + a[download]:
-// entirely client-side (object URL, no request), so the zero-exfiltration
-// guarantee is untouched. Filename carries the as_of date for traceability.
-function downloadReport(text) {
+// Save the engine's plain-text report as a local file, entirely client-side
+// (no request: the zero-exfiltration guarantee is untouched). The filename
+// carries the report's own as_of (render time), not the click time (review).
+// Review F9: in-app WebViews (LinkedIn/Facebook/Instagram, older iOS Safari)
+// ignore a[download] and would NAVIGATE to the blob, destroying the SPA.
+// Order of preference: Web Share with a File (mobile share sheet) -> anchor
+// download opened in a NEW browsing context (target=_blank) so a fallback
+// navigation never replaces this page.
+async function downloadReport(text, asOf) {
+  const name = `ai-act-self-check_${asOf}.txt`;
   const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  // Share sheet only where a[download] is unreliable (mobile / coarse pointer):
+  // desktop Chrome can also share files, but there a direct download is what
+  // the user expects (verifier note).
+  const mobile = (navigator.userAgentData && navigator.userAgentData.mobile) ||
+                 (window.matchMedia && window.matchMedia("(pointer: coarse)").matches);
+  if (mobile && navigator.canShare && typeof File === "function") {
+    try {
+      const file = new File([blob], name, { type: "text/plain" });
+      if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: name }); return; }
+    } catch (e) {
+      if (e && e.name === "AbortError") return;   // user dismissed the share sheet: respect it
+      /* unsupported: fall through to the download */
+    }
+  }
   const url = URL.createObjectURL(blob);
-  const a = el("a", { attrs: { href: url, download: `ai-act-self-check_${localISODate()}.txt` } });
+  const a = el("a", { attrs: { href: url, download: name, target: "_blank", rel: "noopener" } });
   document.body.appendChild(a);
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
-function restart() { state.answers = {}; state.index = 0; renderWizard(); }
+function restart() { state.answers = {}; state.index = 0; state.jumped = false; renderWizard(); }
 function localISODate() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
