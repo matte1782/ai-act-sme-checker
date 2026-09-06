@@ -76,6 +76,8 @@ seek human/legal review.
       Privacy: le risposte non lasciano il dispositivo · EUPL-1.2
     </footer>
   </main>
+  <!-- ADR-013a: classic guard first - it must run even if the module cannot. -->
+  <script src="./boot-guard.js"></script>
   <script type="module" src="./app.js"></script>
 </body>
 </html>

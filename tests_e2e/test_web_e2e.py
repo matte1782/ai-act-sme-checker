@@ -165,6 +165,47 @@ def test_prohibition_banner_on_article_5_violation(page):
     assert page.locator("#results .badge.NON_COMPLIANT").count() == 1
 
 
+def test_results_carry_the_coverage_note(page):
+    # ADR-013a / analysis 2026-09-06: the coverage limit lives on the results,
+    # not only on the boot screen; "A posto" must not read as a clean bill.
+    _boot(page)
+    _answer_all(page)
+    note = page.locator("#results .summary .coverage")
+    assert note.count() == 1
+    assert "art. 4" in note.inner_text() and "132/2025" in note.inner_text()
+
+
+def test_framed_page_refuses_to_boot(page):
+    # ADR-013a: inside another origin's iframe the tool fails closed - the
+    # <meta> CSP cannot express frame-ancestors.
+    page.set_content(f'<iframe id="f" src="{BASE}/index.html" width="900" height="700"></iframe>')
+    frame = page.frame_locator("#f")
+    frame.locator("#boot-error:not([hidden])").wait_for(timeout=BOOT_TIMEOUT)
+    # text_content: the technical detail sits in a collapsed <details>
+    assert "framed" in frame.locator("#boot-error").text_content()
+    assert frame.locator("#boot-start").is_hidden()
+
+
+def test_boot_guard_and_module_marker(page):
+    # ADR-013a: the classic guard is loaded before the module and the module
+    # sets the marker the guard watches; a healthy boot shows no error.
+    _boot(page)
+    assert page.evaluate("() => window.__aiact_module_started === true")
+    assert page.locator("#boot-error").is_hidden()
+    order = page.evaluate(
+        "() => [...document.scripts].map(s => s.getAttribute('src'))"
+    )
+    assert order.index("./boot-guard.js") < order.index("./app.js")
+
+
+def test_double_click_answers_one_question(page):
+    # A double click on an answer used to answer the next question too.
+    _boot(page)
+    page.locator("#wizard .answers button", has_text=re.compile(r"^Sì$")).first.dblclick()
+    counter = page.locator("#wizard p.cite", has_text="Domanda").first.inner_text()
+    assert counter.startswith("Domanda 2 ")
+
+
 def test_jump_back_returns_to_results(page):
     # Review F7: answering a question reached from a results card returns to
     # the results directly, not to the next question.

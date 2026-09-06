@@ -63,7 +63,7 @@ def test_f1_shipped_catalog_still_loads(tmp_path):
 
 # app.js keys read through a fallback (`if (x)` / `|| default`); everything
 # else the web dereferences must be load-required (ADR-012(4)).
-WEB_OPTIONAL_UI = {"web_next_steps", "web_print_hint"}
+WEB_OPTIONAL_UI = {"web_next_steps", "web_print_hint", "web_coverage_note"}
 
 
 def test_f1_pins_track_every_unguarded_web_key():

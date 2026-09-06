@@ -7,6 +7,10 @@
 // logic lives in JS. DOM is built with textContent only (E5, never innerHTML).
 import { loadPyodide } from "./vendor/pyodide/pyodide.mjs";
 
+// ADR-013a: tell boot-guard.js the module script actually ran (if this line
+// never executes, the guard reports the load failure instead of a spinner).
+window.__aiact_module_started = true;
+
 const $ = (id) => document.getElementById(id);
 const REPO = "https://github.com/matte1782/ai-act-sme-checker";
 
@@ -27,13 +31,26 @@ function clear(node) { while (node.firstChild) node.removeChild(node.firstChild)
 function failClosed(detail) {
   const box = $("boot-error");
   box.hidden = false;
-  box.textContent =
-    "Impossibile avviare lo strumento in questo browser. " +
-    "Serve un browser moderno con WebAssembly abilitato. " +
-    "Nessun risultato viene mostrato (fail-closed).\n\n" +
-    "This tool could not start in this browser. A modern browser with " +
-    "WebAssembly enabled is required. No result is shown (fail-closed).\n\n" +
-    (detail ? "[" + detail + "]" : "");
+  clear(box);
+  // ADR-013a: the old text blamed the browser ("WebAssembly required") for
+  // every failure, including a 404 or a stale cache. Neutral causes list;
+  // the technical detail (may be a traceback) stays available but folded.
+  box.appendChild(el("p", { text:
+    "Impossibile avviare lo strumento. Cause tipiche: browser senza WebAssembly, " +
+    "file serviti con tipo MIME sbagliato (.mjs/.wasm), policy di sicurezza (CSP) " +
+    "del sito o dell'azienda, versione del motore non verificabile, connessione " +
+    "interrotta. Nessun risultato viene mostrato (fail-closed)." }));
+  box.appendChild(el("p", { text:
+    "The tool could not start. Typical causes: a browser without WebAssembly, files " +
+    "served with a wrong MIME type (.mjs/.wasm), a site or corporate security policy " +
+    "(CSP), an unverifiable engine version, a broken connection. No result is shown " +
+    "(fail-closed)." }));
+  if (detail) {
+    const det = el("details", {});
+    det.appendChild(el("summary", { text: "Dettaglio tecnico / Technical detail" }));
+    det.appendChild(el("pre", { text: String(detail) }));
+    box.appendChild(det);
+  }
   $("boot-status").hidden = true;
   // Review F4: a still-visible Start button would let the user hide this
   // error and re-enter the wizard against a broken engine. Retire it.
@@ -52,22 +69,59 @@ function statusLabel(s) { return state.boot.i18n[state.lang].status_labels[s]; }
 function rationale(key) { return state.boot.i18n[state.lang].rationales[key] || ""; }
 
 // --- boot -----------------------------------------------------------------
+// ADR-013a helpers: a promise that cannot hang (Pyodide swallows WebAssembly
+// instantiation errors and never resolves), a fetch that cannot be a 404
+// HTML page, and the sha256 of the served engine bundle.
+const RUNTIME_TIMEOUT_MS = 120_000;
+function withTimeout(promise, ms, label) {
+  let timer;
+  const deadline = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${label} did not complete within ${ms / 1000} s`)), ms);
+  });
+  return Promise.race([promise, deadline]).finally(() => clearTimeout(timer));
+}
+async function fetchOk(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error(`${url}: HTTP ${resp.status}`);
+  return resp;
+}
+async function sha256Hex(buf) {
+  if (!(globalThis.crypto && crypto.subtle)) {
+    throw new Error("crypto.subtle unavailable (insecure context): the engine bundle cannot be verified; serve the tool over HTTPS or localhost");
+  }
+  const digest = await crypto.subtle.digest("SHA-256", buf);
+  return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
 async function boot() {
   if (typeof WebAssembly !== "object") { failClosed("no WebAssembly"); return; }
+  // ADR-013a: a page holding compliance answers must not run inside another
+  // site's frame (the <meta> CSP cannot express frame-ancestors; Pages sends
+  // no X-Frame-Options). Refusing here cannot be defeated by a sandbox.
+  if (window.top !== window.self) { failClosed("framed: this tool refuses to run inside another page"); return; }
   try {
     setProgress(10, "Avvio del runtime… / Starting the runtime…");
-    const pyodide = await loadPyodide({ indexURL: "./vendor/pyodide/" });
+    const pyodide = await withTimeout(loadPyodide({ indexURL: "./vendor/pyodide/" }), RUNTIME_TIMEOUT_MS, "runtime start");
     setProgress(40, "Caricamento delle librerie… / Loading libraries…");
-    await pyodide.loadPackage("pyyaml");
+    await withTimeout(pyodide.loadPackage("pyyaml"), RUNTIME_TIMEOUT_MS, "library load");
     setProgress(60, "Preparazione del motore… / Preparing the engine…");
-    const buf = await (await fetch("./assets/engine_bundle.zip")).arrayBuffer();
+    // The served bundle must be the one VERSION names (BUNDLE.sha256 frozen
+    // by scripts/build_web.sh): a stale cache after a deploy, a re-host that
+    // copied half the assets, or tampering all fail closed here.
+    state.version = await (await fetchOk("./assets/VERSION")).text();
+    const expected = /bundle_sha256 ([0-9a-f]{64})/.exec(state.version);
+    if (!expected) throw new Error("assets/VERSION carries no bundle_sha256 line");
+    const buf = await (await fetchOk("./assets/engine_bundle.zip")).arrayBuffer();
+    const served = await sha256Hex(buf);
+    if (served !== expected[1]) {
+      throw new Error(`engine bundle sha256 mismatch: served ${served.slice(0, 12)}…, VERSION says ${expected[1].slice(0, 12)}… (stale cache after a deploy, incomplete re-host, or tampering)`);
+    }
     pyodide.unpackArchive(buf, "zip", { extractDir: "/bundle" });
     pyodide.runPython("import sys, os; sys.path.insert(0, '/bundle'); os.chdir('/bundle')");
     setProgress(80, "Inizializzazione… / Initializing…");
     state.webapi = pyodide.pyimport("engine.webapi");
     state.boot = JSON.parse(state.webapi.boot_data());
     state.facts = state.boot.facts;
-    try { state.version = await (await fetch("./assets/VERSION")).text(); } catch (e) { state.version = ""; }
     setProgress(100, "Pronto / Ready");
     // F-P1 (pilot): do NOT auto-advance - the intro stays until the user
     // clicks Start. The engine is ready; the click only reveals the wizard.
@@ -141,25 +195,32 @@ function renderWizard(focusPrompt = true) {
   }
 
   const answers = el("div", { cls: "answers" });
-  const choose = (value) => { state.answers[fact.name] = value; advance(); };
+  // A double click (or double tap) used to answer the NEXT question too: the
+  // re-render is synchronous and the second click landed on the new button.
+  // Ignore the second click of a multi-click sequence (event.detail > 1);
+  // fast single clicks are untouched.
+  const choose = (value, ev) => {
+    if (ev && ev.detail > 1) return;
+    state.answers[fact.name] = value; advance();
+  };
   const cur = state.answers[fact.name];
   const sel = (on) => (on ? " selected" : "");
   if (fact.type === "bool") {
-    answers.appendChild(el("button", { text: ui("web_yes"), cls: "ans" + sel(cur === true), on: { click: () => choose(true) } }));
-    answers.appendChild(el("button", { text: ui("web_no"), cls: "ans" + sel(cur === false), on: { click: () => choose(false) } }));
-    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: () => choose(null) } }));
+    answers.appendChild(el("button", { text: ui("web_yes"), cls: "ans" + sel(cur === true), on: { click: (ev) => choose(true, ev) } }));
+    answers.appendChild(el("button", { text: ui("web_no"), cls: "ans" + sel(cur === false), on: { click: (ev) => choose(false, ev) } }));
+    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: (ev) => choose(null, ev) } }));
   } else if (fact.type === "enum") {
     for (const v of fact.values) {
       // Human label when the catalog has one (opt_<fact>_<value>); the RAW
       // enum value stays the submitted answer - labels are presentation only.
-      answers.appendChild(el("button", { text: ui("opt_" + fact.name + "_" + v) || v, cls: "ans" + sel(cur === v), on: { click: () => choose(v) } }));
+      answers.appendChild(el("button", { text: ui("opt_" + fact.name + "_" + v) || v, cls: "ans" + sel(cur === v), on: { click: (ev) => choose(v, ev) } }));
     }
-    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: () => choose(null) } }));
+    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown" + sel(cur === null), on: { click: (ev) => choose(null, ev) } }));
   } else {
     const input = el("input", { attrs: { type: "text", placeholder: "YYYY-MM-DD", value: (cur == null ? "" : cur) } });
     answers.appendChild(input);
-    answers.appendChild(el("button", { text: "OK", on: { click: () => choose(input.value.trim() || null) } }));
-    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown", on: { click: () => choose(null) } }));
+    answers.appendChild(el("button", { text: "OK", on: { click: (ev) => choose(input.value.trim() || null, ev) } }));
+    answers.appendChild(el("button", { text: ui("web_unknown"), cls: "unknown", on: { click: (ev) => choose(null, ev) } }));
   }
   root.appendChild(answers);
 
@@ -228,6 +289,10 @@ function renderResults(focusRoot = true) {
   sum.appendChild(el("p", { text: parts.join(" · "), cls: "summary-counts" }));
   const steps = ui("web_next_steps");
   if (steps) sum.appendChild(el("p", { text: steps, cls: "help-text" }));
+  // Coverage line ON the results (it used to live only on the boot screen):
+  // "A posto: N" must never read as "fine on the AI Act".
+  const coverage = ui("web_coverage_note");
+  if (coverage) sum.appendChild(el("p", { text: coverage, cls: "cite coverage" }));
   root.appendChild(sum);
 
   // (3) verdict cards
@@ -345,7 +410,7 @@ function renderResults(focusRoot = true) {
     // UX round 2: a REAL save that works where window.print does not
     // (mobile). Downloads the engine's print_text as a local .txt via a
     // blob: URL - no network, CSP-compatible, same content as the print.
-    el("button", { text: ui("web_download"), on: { click: () => downloadReport(out.print_text, s.as_of) } }),
+    el("button", { text: ui("web_download"), on: { click: () => downloadReport(out.print_text + (coverage ? "\n\n" + coverage + "\n" : ""), s.as_of) } }),
     el("button", { text: ui("web_restart"), cls: "secondary", on: { click: restart } }),
   ]);
   root.appendChild(actions);

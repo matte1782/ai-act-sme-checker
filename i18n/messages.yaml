@@ -292,6 +292,9 @@ ui:
   web_deadlines_note:
     it: "In ordine di data. Una regola compare qui anche se il tuo caso non la riguarda: fa fede la sua scheda qui sopra."
     en: "In date order. A rule appears here even if it does not concern your case: its card above is what counts."
+  web_coverage_note:
+    it: "Copertura di questa verifica: 7 regole (art. 50, paragrafi 1, 2 e 4; art. 5, in parte; allegato III, in parte), sul testo dell'AI Act come modificato dal Reg. (UE) 2026/1744 e sulle linee guida della Commissione. NON copre il resto dell'AI Act, in particolare l'art. 4 (alfabetizzazione, obbligo di ogni fornitore e utilizzatore dal 2 febbraio 2025), né la legge italiana 132/2025. «A posto» vale per la singola regola, non per l'AI Act."
+    en: "Coverage of this check: 7 rules (Art. 50, paragraphs 1, 2 and 4; Art. 5, in part; Annex III, in part), on the AI Act as amended by Reg. (EU) 2026/1744 and the Commission guidelines. It does NOT cover the rest of the AI Act, in particular Art. 4 (AI literacy, a duty of every provider and deployer since 2 February 2025), nor Italian Law 132/2025. 'Fine' holds for the single rule, not for the AI Act."
   web_prohibition_banner:
     it: "Attenzione: questa è una pratica VIETATA dall'AI Act. Non si sana con adempimenti o avvisi: va interrotta."
     en: "Warning: this is a practice PROHIBITED by the AI Act. It cannot be fixed with paperwork or notices: it must stop."

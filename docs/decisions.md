@@ -473,3 +473,31 @@ legal review" with ADR-009b on S06; Annex III back to informational per
 ADR-002 or modelled on the Annex's points with Art. 6(3) and 111(2); an
 ART4 rule with one fact. Each item is TDD with the oracle re-frozen
 only through ADR-009x amendments stating the legal reason.
+
+## ADR-013a (amends ADR-013): boot fail-closed for real, runtime bundle verification
+Date: 2026-09-07. Status: ACCEPTED. HEAD: 3857ea9.
+ADR-013 promised "an explicit fail-closed message, never a blank page".
+Reproduced on 2026-09-07: Pyodide 0.26.4 swallows a WebAssembly
+instantiation error (console.warn, no rethrow), so a .wasm served with a
+wrong MIME type, a corporate header CSP without 'unsafe-eval', or a
+browser below the floor left the page at "Avvio del runtime… 10 %" for
+ever; a .mjs served as text/plain left it at 0 % with an empty bar; a
+404 on the bundle showed "WebAssembly required" plus a raw traceback;
+the page booted inside a foreign iframe; the sha printed in the footer
+was never compared with the bundle actually executed. Decision:
+(1) web/boot-guard.js, a classic script loaded before the module, fails
+closed when the module never starts (15 s) or when the progress bar has
+not moved for 120 s; (2) boot() races the runtime start against a
+120 s timeout, checks every fetch's .ok, reads bundle_sha256 from
+assets/VERSION and verifies the served engine_bundle.zip with
+crypto.subtle before unpacking it (mismatch = stale cache, incomplete
+re-host or tampering: fail closed; an insecure context cannot verify,
+so HTTPS or localhost is now a re-host requirement, documented);
+(3) boot() refuses to run when window.top !== window.self; (4) the
+failure text names the typical causes instead of blaming the browser,
+with the technical detail folded. Also in this change (analysis
+2026-09-06): the coverage limit is rendered on the results page and
+appended to the downloaded text, and a 400 ms guard stops a double
+click from answering the next question. No engine, rule or oracle
+change; e2e pins for the frame refusal, the guard order, the coverage
+note and the double click.

@@ -94,8 +94,12 @@ disclaimer is always visible (also in print); a PROVISIONAL corpus
 shows a visible notice while preOJ. The engine bundle is deterministic
 and sha256-frozen (web/assets/BUNDLE.sha256), rebuilt by
 scripts/build_web.sh and verified in check.sh `== web`. WASM-absent
-browsers get an explicit fail-closed message, never a blank page.
-Impl: [web/app.js:L1-L469](web/app.js)
+browsers get an explicit fail-closed message, never a blank page:
+web/boot-guard.js (classic script, watchdogs on module start and on
+progress) plus boot() timeouts, .ok checks, refusal inside a frame and
+runtime verification of the served bundle against assets/VERSION
+(ADR-013a; HTTPS or localhost required for crypto.subtle).
+Impl: [web/app.js:L1-L534](web/app.js)
 Impl: [engine/webapi.py:L1-L115](engine/webapi.py)
 Impl: [scripts/build_web.sh:L1-L52](scripts/build_web.sh)
 
@@ -114,7 +118,7 @@ bundle sha, then PRINTS the annotated-tag command; never tags/pushes).
 CI is unverifiable offline (CI_UNVERIFIED_UNTIL_PUSH).
 Impl: [web/privacy.html:L1-L141](web/privacy.html)
 Impl: [.github/workflows/ci.yml:L1-L42](.github/workflows/ci.yml)
-Impl: [tests_e2e/test_web_e2e.py:L1-L212](tests_e2e/test_web_e2e.py)
+Impl: [tests_e2e/test_web_e2e.py:L1-L253](tests_e2e/test_web_e2e.py)
 Impl: [scripts/release.sh:L1-L64](scripts/release.sh)
 
 ## L6 Oracle & tests

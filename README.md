@@ -77,11 +77,14 @@ GitHub Pages incluso — vede gli indirizzi IP dei visitatori nei propri log.
 Le risposte al questionario no.
 
 1. Copia la cartella `web/` su qualunque hosting statico (es. GitHub Pages).
-2. **Requisito obbligatorio**: l'host deve servire `.mjs` come
-   `text/javascript` e `.wasm` come `application/wasm`. Se sbaglia i MIME
-   (o se apri i file via `file://`) l'app resta bloccata su «Caricamento del
-   motore…» senza messaggio d'errore. In locale usa `python scripts/serve_web.py`,
-   che imposta i MIME corretti.
+2. **Requisiti obbligatori**: l'host deve servire `.mjs` come
+   `text/javascript` e `.wasm` come `application/wasm`, e la pagina deve
+   essere servita in **HTTPS** (o da localhost): l'app verifica a runtime lo
+   sha256 del motore che sta eseguendo (ADR-013a) e senza contesto sicuro si
+   rifiuta di partire. Se i MIME sono sbagliati, o apri i file via `file://`,
+   l'app mostra un messaggio di errore con le cause tipiche (mai un
+   caricamento infinito). In locale usa `python scripts/serve_web.py`, che
+   imposta i MIME corretti.
 3. Verifica l'integrità degli artefatti (vedi sotto) e confronta la
    `BUNDLE.sha256` del sito pubblicato con quella del repository/release.
 
