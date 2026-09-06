@@ -7,9 +7,10 @@
 
 This project asks you to trust nothing. Every public claim below can be
 checked by you, from scratch, with commands that are known to work. Five
-independent auditors (a lawyer, a security auditor, a DPO, an institutional
-re-hoster and a sceptical engineer) ran this exercise cold: it took them
-32–85 minutes because this page did not exist. With it, most checks take
+independent adversarial reviews, run by AI-agent personas (ADR-007: a lawyer,
+a security auditor, a DPO, an institutional re-hoster and a sceptical
+engineer; no human external review yet, see section 5), ran this exercise
+cold: it took them 32–85 minutes because this page did not exist. With it, most checks take
 minutes. Where they found something that does **not** hold, it is written
 down in [What this does not prove](#5-what-this-does-not-prove).
 
@@ -131,7 +132,9 @@ Read this before quoting the tool to a client or a board.
    thing most needed — see below.
 3. **Chapter III (high-risk) is not substantively assessed.** The tool tells
    you the deadline and asks whether the obligations are met; it does not check
-   them. The Italian national law L. 132/2025 is out of scope entirely.
+   them. The Italian national law L. 132/2025 (and its implementing decrees,
+   in preliminary approval since 2026-06-10) is out of scope entirely; the
+   corpus manifest records it as PENDING so the omission is dated, not silent.
 4. **`operator_role` (provider/deployer) is collected but no rule branches on
    it yet**, so provider- and deployer-specific duties are not distinguished.
 5. **CSP protects the data path, not navigation.** It blocks fetch, XHR,
@@ -143,7 +146,9 @@ Read this before quoting the tool to a client or a board.
    them. See `web/privacy.html`.
 7. **Verification here is English-only** for the OJ text, and the timeline rows
    that drive no rule (Art. 4 literacy, GPAI Art. 51–55, Art. 57 sandboxes)
-   were checked less closely than the ones that do.
+   were checked less closely than the ones that do. Art. 4 (AI literacy) is a
+   live obligation on every provider and deployer since 2025-02-02 that v1
+   does not yet check (ADR-020, proposed).
 
 ## 6. Re-host it yourself (institutions)
 

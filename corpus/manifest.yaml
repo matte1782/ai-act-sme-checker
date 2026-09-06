@@ -55,7 +55,10 @@ smc_definition:
   caution: >-
     recital (4) of ST 9247/26 cites 'Recommendation 2025/3500/EC' while
     operative Art. 3(14b) cites (EU) 2025/1099; the operative provision
-    controls. Re-check the reference on the OJ-published omnibus text.
+    controls. Re-checked 2026-09-07 on the OJ text (oj-2026-1744-en):
+    both the recital and the operative provision cite (EU) 2025/1099;
+    the '2025/3500' reference does not occur. Discrepancy closed by
+    publication.
 
 sources:
   - id: aia-2024-1689-en
@@ -67,8 +70,10 @@ sources:
     amending_acts:
       - >-
         Digital Omnibus on AI (2025/0359 COD): EP position 2026-06-16,
-        Council approval 2026-06-29, signed 2026-07-08, NOT yet in OJ -
-        agreed text ingested as omnibus-st-9247-26-en
+        Council approval 2026-06-29, signed 2026-07-08, published as
+        Regulation (EU) 2026/1744 in OJ L of 2026-07-24 (ingested as
+        oj-2026-1744-en; the pre-OJ text is retained as
+        omnibus-st-9247-26-en, audit trail only)
     retrieved: "2026-07-14"
     sha256: "bba630444b3278e881066774002a1d7824308934f49ccfa203e65be43692f55e"
     status: FINAL
@@ -153,6 +158,42 @@ sources:
     status: FINAL
     file: raw/guidelines_ai_system_definition_en.pdf
 
+  - id: guidelines-art50-transparency-en
+    instrument: >-
+      Commission Guidelines on the implementation of the transparency
+      obligations for certain AI systems under Article 50 of the AI Act,
+      C(2026) 5054 final, adopted 20.7.2026 (annex to the approval
+      communication; 51 pp.). Interpretive source for ART50_1/2/4:
+      para (28) addresses Art. 50(1) to providers; section 3.2.1 lists
+      systems outside Art. 50(1) (spam filters, translation and
+      transcription tools, recommender and backend decision-support
+      systems); section 4.3 the Art. 50(2) exceptions; section 6.2 the
+      Art. 50(4) second-subparagraph text duty; para (146) the effect
+      of adhering to an adequate code of practice. ADR-016a note: the
+      28/07 refresh missed this document, adopted 8 days earlier.
+    celex_or_eli: "C(2026) 5054 final"
+    version_date: "2026-07-20"
+    amending_acts: []
+    retrieved: "2026-09-07"
+    sha256: "30861fc5de31205846f023068069c92fabc7271ebeac6af7bef68b97f0a33f66"
+    status: FINAL
+    file: raw/guidelines_art50_transparency_en.pdf
+
+  - id: cop-transparency-commission-opinion-en
+    instrument: >-
+      Commission Opinion of 8.7.2026 on the assessment of the Code of
+      Practice on Transparency of AI-generated content (Arts. 50(7) and
+      56(6) AI Act), C(2026) 4839 final, 12 pp.: the Code "adequately
+      covers the obligations provided for in Articles 50(2), (4) and
+      (5)". The AI Board conclusion of 9.7.2026 is not ingested.
+    celex_or_eli: "C(2026) 4839 final"
+    version_date: "2026-07-08"
+    amending_acts: []
+    retrieved: "2026-09-07"
+    sha256: "e9b85373cde28a6081fab307fa17fa4c90c2560a1c9a145fb461f696bca424ce"
+    status: FINAL
+    file: raw/cop_transparency_commission_opinion_en.pdf
+
   - id: rec-2025-1099-smc-en
     instrument: >-
       Commission Recommendation (EU) 2025/1099 of 21 May 2025 on the
@@ -176,3 +217,27 @@ pending:
       DRAFT only - targeted consultation open 2026-05-19 to 2026-07-23
       (digital-strategy.ec.europa.eu consultations, checked 2026-07-14);
       final expected end 2026. Excluded from the corpus until adopted.
+      Re-checked 2026-09-07: still not adopted.
+  - id: cop-transparency-ai-generated-content-text
+    instrument: >-
+      Code of Practice on Transparency of AI-generated Content (final
+      text published 10.6.2026; assessed adequate by the Commission on
+      8.7.2026 and by the AI Board on 9.7.2026)
+    status: PENDING
+    reason: >-
+      Voluntary instrument (Art. 50(7)). The adequacy opinion IS
+      ingested (cop-transparency-commission-opinion-en); the Code text
+      is not yet: ingest with sha256 when marking/labelling practices
+      enter a rule or a helper. Checked 2026-09-07.
+  - id: it-legge-132-2025-decreti-attuativi
+    instrument: >-
+      Italy, Legge 23 settembre 2025, n. 132 (national AI law) and its
+      implementing legislative decrees (delegation under Arts. 16 and
+      24: twelve months from the law's entry into force)
+    status: PENDING
+    reason: >-
+      National law is OUT OF SCOPE of v1 (AUDIT.md section 5). The
+      decrees were approved in preliminary examination by the Council
+      of Ministers on 2026-06-10 (Ministero del Lavoro notice) and are
+      not final. Recorded so the omission is dated and visible, never
+      silent. Checked 2026-09-07.

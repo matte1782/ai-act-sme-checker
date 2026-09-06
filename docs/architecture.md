@@ -9,7 +9,7 @@ carry an `Impl:` line per ADR-005.
 `corpus/manifest.yaml`: each legal source = {id, instrument,
 ELI/EUR-Lex ref, version_date, amending_acts[], sha256 of local
 text}. Rules cite corpus ids, never raw URLs.
-Impl: [corpus/manifest.yaml:L1-L178](corpus/manifest.yaml)
+Impl: [corpus/manifest.yaml:L1-L243](corpus/manifest.yaml)
 
 ## L2 Rules layer
 `rules/*.yaml`: rule = {id, legal_source{corpus_id, article,
@@ -113,7 +113,7 @@ scripts/release.sh (fail-closed: clean tree + GATE_PASS + reproducible
 bundle sha, then PRINTS the annotated-tag command; never tags/pushes).
 CI is unverifiable offline (CI_UNVERIFIED_UNTIL_PUSH).
 Impl: [web/privacy.html:L1-L141](web/privacy.html)
-Impl: [.github/workflows/ci.yml:L1-L36](.github/workflows/ci.yml)
+Impl: [.github/workflows/ci.yml:L1-L42](.github/workflows/ci.yml)
 Impl: [tests_e2e/test_web_e2e.py:L1-L212](tests_e2e/test_web_e2e.py)
 Impl: [scripts/release.sh:L1-L64](scripts/release.sh)
 

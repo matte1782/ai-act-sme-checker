@@ -1,0 +1,8 @@
+# CI runtime (ADR-015a): every dependency pinned; bump deliberately, in one
+# change with tests/test_gate7_ci.py. pytest-playwright 0.5.2 requires
+# pytest<9 (its own metadata), hence the pytest 8 line.
+pytest==8.4.2
+pyyaml==6.0.3
+playwright==1.62.0
+pytest-playwright==0.5.2
+pytest-base-url==2.1.0

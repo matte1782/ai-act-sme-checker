@@ -352,3 +352,124 @@ neither. The status, X4 precedence and the frozen oracle (ADR-009) are
 untouched; the CLI text report is unchanged. Rejected: a new INACTIVE
 status (would change the oracle and every output path for a display
 concern).
+
+## ADR-014a (amends ADR-014): public timestamp of the pre-registered protocol
+Date: 2026-09-07. Status: ACCEPTED. HEAD: b6aa51f.
+ADR-014 keeps docs/internal/ out of public history, so "pre-registered"
+had no externally verifiable date. This amendment publishes the digest:
+docs/internal/protocollo_user_test.md, 4469 bytes, sha256
+a86b51ca189aa240e1d1f74ec2eeaecd820d39c62e75b82cc53c5e95e7f7c79e
+(frozen text of 2026-07-20 plus NOTA 1 of 2026-08-03, append-only). The
+GitHub server time of the commit carrying this ADR is the timestamp;
+every future dated note re-publishes the digest the same way. The file
+itself stays private (participant-facing material).
+
+## ADR-015a (amends ADR-015): first release, commit identity, pinned toolchain
+Date: 2026-09-07. Status: ACCEPTED. HEAD: b6aa51f.
+(1) No release had ever been made (ADR-015 defines release = annotated
+tag). v0.1.0 is tagged on fc03b87, the build frozen for the moderated
+user-study cohort (bundle 0ab332f6, CI run 33652013757 green, live
+BUNDLE.sha256 verified equal on 2026-09-02); every future frozen study
+build is a tag. Process defect found on the way: the Stop hook appends
+to the tracked .idos/session_log.jsonl, so scripts/release.sh (clean
+tree required) can only run after committing that row - accepted, the
+row is part of the record. (2) The 31 commits up to fc03b87 and the
+row-commit b6aa51f carry the placeholder identity "Scout
+<test@example.com>" (machine default). The author is Matteo Panzeri;
+from this commit the repository identity is set locally to the author's
+GitHub no-reply address. History is NOT rewritten: every HEAD sha cited
+in this file, in AUDIT.md and in VERSION would become invalid.
+(3) Toolchain pinned in one place (requirements-ci.txt: pytest 8.4.2,
+pyyaml 6.0.3, playwright 1.62.0, pytest-playwright 0.5.2 - whose own
+metadata requires pytest<9 - pytest-base-url 2.1.0); runner image
+ubuntu-24.04 (never 'latest'); action majors on Node 24 (Node 20 leaves
+the runners on 2026-09-23); a weekly scheduled CI run so calendar-driven
+changes (rules entering into force, image drift) surface without a
+push; Pages deploys exactly the CI-tested sha (checkout ref =
+workflow_run.head_sha) and the manual workflow_dispatch bypass is
+removed. Pinned by tests/test_gate7_ci.py.
+
+## ADR-016a (amends ADR-016): corpus amendment - Art. 50 guidelines, Code of Practice opinion
+Date: 2026-09-07. Status: ACCEPTED. HEAD: b6aa51f.
+The 2026-07-28 refresh (ADR-016) declared the corpus FINAL but missed
+the Commission Guidelines on the Art. 50 transparency obligations,
+C(2026) 5054 final, adopted 2026-07-20 - eight days earlier - and the
+Commission Opinion C(2026) 4839 of 2026-07-08 assessing the Code of
+Practice on Transparency of AI-generated Content as adequate for Arts.
+50(2), (4) and (5). Logged as a DEFECT (.idos/events.jsonl 2026-09-07).
+Decision: both documents are ingested as FINAL sources (sha256 in the
+manifest; acquired from ec.europa.eu on 2026-09-07); the Code text
+(10.6.2026) and the Italian Law 132/2025 implementing decrees are
+recorded as PENDING so the omissions are dated, never silent; the stale
+"NOT yet in OJ" note and the SMC recital caution are discharged against
+the OJ text. NO rule, fact, oracle or verdict changes in this amendment.
+What the guidelines settle for the pending decisions: para (28)
+addresses Art. 50(1) to providers and section 3 imposes no Art. 50(1)
+duty on deployers (input to ADR-020 and to the ADR-009a question on
+S01); section 3.2.1 places spam filters, translation/transcription and
+backend decision-support systems outside Art. 50(1); section 4.3 the
+standard-editing exceptions of Art. 50(2); section 6.2 the Art. 50(4)
+text duty. Source watch is a standing duty from now on: every session
+that touches the corpus re-checks the pending list.
+
+## ADR-018: INV-1 scope - COMPLIANT iff the K3 value is decided
+Date: 2026-09-07. Status: PROPOSED (owner decision). HEAD: b6aa51f.
+Finding (analysis 2026-09-06, reproduced): engine/core.py demotes a
+K3-DECIDED FALSE (e.g. all(FALSE, UNKNOWN)) on a NON_COMPLIANT-verdict
+rule to UNDETERMINED whenever any unknown leaf exists, although no
+assignment of the unknowns can change the outcome. Effect: with "Non
+so" on a dependent question the gate question becomes inert; 10-17 of
+the 19 questions cannot change any verdict in typical SME profiles; the
+"gate=No -> Non so -> UNDETERMINED" chain was patched with helper texts.
+Proposal: a COMPLIANT verdict requires the K3 value to be decided (TRUE
+or FALSE), which already encodes relevance; keep or drop the demotion of
+the masked any(TRUE, UNKNOWN) shape (used by no shipped rule) as a
+separate choice. Oracle unchanged (verified: ORACLE_GREEN under the
+simulated fix); one test to amend
+(tests/test_gate4_perturbation.py::test_no_perturbation_ever_clears_on_unknowns).
+Rejected alternative: more helpers ("answer No here too") - they treat
+the symptom and instruct users to answer questions that do not apply.
+
+## ADR-019: scope before time; date selection cannot block an out-of-scope rule
+Date: 2026-09-07. Status: PROPOSED (owner decision). HEAD: b6aa51f.
+Finding (reproduced): X4 evaluates the temporal window, and X3 the
+branch-date selection, BEFORE applicable_if. A non-AI system (Q1=No)
+receives "not yet applicable (from 2027-12-02)" cards and a "missing
+answer: was the system placed on the market before 2 August 2026?"
+card; a legacy=Yes system loses its unknown on marking (inactive card,
+unknown_facts=[]); with Q11 unknown ART50_2 stays UNDETERMINED at any
+date, even after both branch dates have passed. NOT_APPLICABLE is
+unreachable for any in-scope system until 2027-12-02. Provenance of the
+current order: docs/gate4_premortem.md line 2 and two synthetic tests;
+no golden scenario pins INACTIVE for an out-of-scope system; the statute
+imposes no order. Proposal: applicable_if first (FALSE -> NOT_APPLICABLE
+regardless of dates); date selection short-circuits when every branch
+date is <= as_of; inactive verdicts still report the logic's unknown
+facts. Two tests to amend, premortem line 2 to revisit, oracle intact.
+
+## ADR-020: the operator role enters the rules; oracle and fact-model corrections
+Date: 2026-09-07. Status: PROPOSED (owner decision; three points for the
+2026-09-16 meeting). HEAD: b6aa51f.
+Findings (analysis 2026-09-06, statute quoted there; Guidelines C(2026)
+5054 ingested by ADR-016a): (a) operator_role (Q4) is used by no rule;
+Art. 50(1) and 50(2) are provider duties, Art. 50(4) a deployer duty,
+Art. 5(1a)(b) prohibits deployer USE only for the purpose - the rules
+fire for everyone; frozen S01 (deployer, undisclosed chatbot ->
+NON_COMPLIANT Art. 50(1)) encodes the misattribution and protocol task
+T1 rests on it. (b) Q3 is worded in the third person, so a B2C provider
+answering "Sì" exits every rule as NOT_APPLICABLE, social scoring
+included. (c) The Art. 5(1)(f) exception is a self-declared yes ->
+COMPLIANT on a prohibition (frozen S06) although Guidelines C(2025)
+5052 paras 256-259 read it narrowly. (d) HR_ANNEX_III is verdict-bearing
+after 2027-12-02 against ADR-002 and the S14 note; the enum names areas,
+not Annex III points; Art. 6(3), Art. 111(2) as replaced, Annex III
+point 1(c) are absent. (e) Art. 4 (AI literacy, every provider and
+deployer since 2025-02-02, in ADR-002(d)) has no rule. Proposal, in
+this order: role leaf in ART50_1/ART50_2/ART5_NCII (deployer ->
+UNDETERMINED "provider's duty, ask your vendor" or NOT_APPLICABLE:
+owner + professor); ADR-009a amending S01 accordingly; Q3 reworded in
+the first person with a helper; exception=Yes -> UNDETERMINED "requires
+legal review" with ADR-009b on S06; Annex III back to informational per
+ADR-002 or modelled on the Annex's points with Art. 6(3) and 111(2); an
+ART4 rule with one fact. Each item is TDD with the oracle re-frozen
+only through ADR-009x amendments stating the legal reason.

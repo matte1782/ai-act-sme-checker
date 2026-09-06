@@ -17,7 +17,8 @@ never leave your device.**
 ## Cosa fa · What it does
 
 - Triage di conformità all'AI Act per PMI: rispondi a 19 domande, ottieni verdetti
-  con la **citazione dell'articolo** e le **scadenze personalizzate**.
+  con la **citazione dell'articolo** e le **date da cui ogni regola si applica**
+  (non sono scadenze tue: fa fede la scheda della regola).
 - **Fail-closed**: quando le informazioni non bastano, la risposta è
   *"non determinabile — serve revisione umana/legale"*, mai un falso "conforme".
   Cento onesti *non determinabile* valgono più di un falso *conforme*.
@@ -25,8 +26,9 @@ never leave your device.**
   *non applicabile* (fuori ambito, Art. 2), *inattivo* (mostrato come *non determinabile*: obbligo non ancora in
   vigore — con la data di decorrenza).
 - *English:* an AI Act triage self-check: 19 questions → verdicts with the
-  **exact article citation** and **personalised deadlines**; fail-closed by
-  design ("undetermined" is an honest answer, never a false "compliant").
+  **exact article citation** and **the dates from which each rule applies**;
+  fail-closed by design ("undetermined" is an honest answer, never a false
+  "compliant").
 
 ## Cosa NON fa · What it does NOT do
 
@@ -37,8 +39,13 @@ never leave your device.**
 - I risultati si basano sul **corpus indicato in pagina**. Dal 28 luglio 2026
   il corpus è **FINAL**: allineato al Digital Omnibus come pubblicato in
   Gazzetta ufficiale (Regolamento (UE) 2026/1744, GU 24.7.2026, in vigore
-  dal 27.7.2026). Se in futuro il corpus tornasse provvisorio, l'app lo
-  segnala con un avviso in pagina.
+  dal 27.7.2026). Dal 7 settembre 2026 il corpus include anche le linee
+  guida della Commissione sulla trasparenza, art. 50 (C(2026) 5054, 20.7.2026)
+  e il parere di adeguatezza sul Codice di condotta (C(2026) 4839, 8.7.2026),
+  accanto a quelle sulle pratiche vietate. La legge italiana 132/2025 e i
+  suoi decreti attuativi restano fuori scope (registrati come PENDING nel
+  manifest). Se in futuro il corpus tornasse provvisorio, l'app lo segnala
+  con un avviso in pagina.
 - Sugli obblighi del **Capo III** (alto rischio) il tool non entra nel merito:
   indica la scadenza applicabile e chiede se gli obblighi sono stati
   soddisfatti; non verifica i singoli requisiti.

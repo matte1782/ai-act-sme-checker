@@ -7,9 +7,11 @@
 
 Questo progetto non ti chiede di fidarti. Ogni affermazione pubblica qui sotto
 puoi controllarla tu, da zero, con comandi che funzionano davvero. Cinque
-revisori indipendenti (un avvocato, un auditor di sicurezza, un DPO, un
-tecnico che doveva ri-ospitarlo e un ingegnere scettico) hanno fatto questo
-esercizio senza alcun contesto: ci hanno messo dai 32 agli 85 minuti, perché
+revisioni avversarie indipendenti, condotte da personas di agenti IA (ADR-007:
+un avvocato, un auditor di sicurezza, un DPO, un tecnico che doveva
+ri-ospitarlo e un ingegnere scettico; nessuna revisione esterna umana, ancora:
+vedi la sezione 5) hanno fatto questo esercizio senza alcun contesto: ci hanno
+messo dai 32 agli 85 minuti, perché
 questa pagina non esisteva. Con questa pagina, quasi tutti i controlli
 richiedono minuti. Dove hanno trovato qualcosa che **non** regge, è scritto
 in [Cosa questo non dimostra](#5-cosa-questo-non-dimostra).
