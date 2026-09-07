@@ -501,3 +501,22 @@ appended to the downloaded text, and a 400 ms guard stops a double
 click from answering the next question. No engine, rule or oracle
 change; e2e pins for the frame refusal, the guard order, the coverage
 note and the double click.
+
+## ADR-014b (amends ADR-014a): NOTA 2 appended to the pre-registered protocol
+Date: 2026-09-07. Status: ACCEPTED. HEAD: 5f0bf22.
+The owner accepted seven append-only precisions to the user-study
+protocol, decided before the first moderated session (none has taken
+place): the two August trials are a pilot cohort outside the count,
+which restarts on the tagged release v0.1.0; as_of recorded per session
+and moderated sessions closed by 2026-11-30 (the NCII rule enters into
+force on 2026-12-02); the hard "knows the author" exclusion replaced by
+two recorded flags analysed as separate strata (the available channel
+is the supervisor's academic network); "it is the chatbot provider's
+duty, ask the vendor" coded correct in T1 (Guidelines C(2026) 5054,
+para 28); M3 reported as a manipulation check; an operational
+three-level definition of success for T1; sample 5 moderated + 3 async
+with a stop rule (5 or 2026-11-30, whichever first) and no population
+inference. No metric or threshold changed. New digest of
+docs/internal/protocollo_user_test.md: 7091 bytes, sha256
+6a0a23e37e750132f110bf92063b51224f86e224080ea8aa1469caa67c336abb
+(previous: 4469 bytes, a86b51ca189aa240e1d1f74ec2eeaecd820d39c62e75b82cc53c5e95e7f7c79e).
